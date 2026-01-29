@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模擬大兵：入伍生存手冊</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-stone-950 text-stone-200 overflow-hidden">
+
+    <!-- Onboarding Modal -->
+    <div id="modal-onboarding"
+        class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 font-mono backdrop-blur-sm hidden">
+        <div
+            class="max-w-md w-full bg-stone-800 rounded-lg border-2 border-green-700 shadow-2xl overflow-hidden animate-fade-in">
+            <div class="bg-green-800 p-4 text-center relative">
+                <button id="btn-close-onboarding" class="absolute left-4 top-4 text-green-200 hover:text-white hidden">
+                    <i class="fa-solid fa-xmark text-[24px]"></i>
+                </button>
+                <h1 id="onboarding-title" class="text-2xl font-bold tracking-widest text-white">兵籍資料建立</h1>
+                <p id="onboarding-subtitle" class="text-green-200 text-sm">輸入資料以啟用完整功能</p>
+            </div>
+
+            <div class="p-6 space-y-4">
+                <div>
+                    <label class="block text-sm text-stone-400 mb-1">姓名</label>
+                    <input type="text" id="input-name"
+                        class="w-full bg-stone-900 border border-stone-600 rounded p-2 focus:border-green-500 focus:outline-none"
+                        placeholder="王小明">
+                </div>
+
+                <div>
+                    <label class="block text-sm text-stone-400 mb-1">預計入伍日期 (可略估)</label>
+                    <div class="relative">
+                        <input type="date" id="input-date"
+                            class="w-full bg-stone-900 border border-stone-600 rounded p-2 focus:border-green-500 focus:outline-none text-white pl-10 font-tech">
+                        <div class="absolute left-3 top-2.5 text-stone-500">
+                            <i class="fa-solid fa-calendar-days text-[16px]"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm text-stone-400 mb-1">身分</label>
+                    <select id="input-role"
+                        class="w-full bg-stone-900 border border-stone-600 rounded p-2 focus:border-green-500 focus:outline-none">
+                        <option value="student">一般大學生</option>
+                        <option value="overseas">海外留學生</option>
+                        <option value="parent_loss">家屬 (喪親/需照顧)</option>
+                        <option value="disability">身心障礙者</option>
+                    </select>
+                </div>
+
+                <div id="section-disability" class="hidden">
+                    <label class="block text-sm text-stone-400 mb-1">障礙類別</label>
+                    <select id="input-disability-type"
+                        class="w-full bg-stone-900 border border-stone-600 rounded p-2 focus:border-green-500 focus:outline-none">
+                        <option value="none">請選擇</option>
+                        <option value="physical">肢體障礙</option>
+                        <option value="mental">智能/精神障礙 (如唐氏症)</option>
+                        <option value="visual">視障</option>
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm text-stone-400 mb-1">身高 (cm)</label>
+                        <input type="number" id="input-height" value="175"
+                            class="w-full bg-stone-900 border border-stone-600 rounded p-2 font-tech">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-stone-400 mb-1">體重 (kg)</label>
+                        <input type="number" id="input-weight" value="70"
+                            class="w-full bg-stone-900 border border-stone-600 rounded p-2 font-tech">
+                    </div>
+                </div>
+
+                <button id="btn-submit-onboarding"
+                    class="w-full bg-green-700 hover:bg-green-600 text-white font-bold py-3 rounded mt-4 transition-colors">
+                    確認資料並登入
+                </button>
+                <p class="text-xs text-center text-stone-500 mt-2">*此系統僅供模擬參考，實際依內政部役政司為準</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Layout -->
+    <div class="flex h-screen bg-stone-950 text-stone-200 font-sans overflow-hidden">
+
+        <!-- Sidebar -->
+        <aside class="hidden md:flex flex-col w-64 bg-stone-900 border-r border-stone-800 shrink-0">
+            <div class="p-6 border-b border-stone-800">
+                <h1 class="text-xl font-bold text-white tracking-widest flex items-center gap-2">
+                    <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                    模擬大兵
+                </h1>
+                <p class="text-xs text-stone-500 mt-1">入伍生存手冊 v1.0</p>
+            </div>
+
+            <nav id="sidebar-nav" class="flex-1 p-4 space-y-2 overflow-y-auto">
+                <button data-tab="home"
+                    class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all bg-green-900/30 text-green-400 border border-green-800/50">
+                    <i class="fa-solid fa-chart-line text-[20px]"></i>
+                    <span class="font-bold text-sm">戰情儀表板</span>
+                </button>
+                <button data-tab="training"
+                    class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-stone-400 hover:bg-stone-800 hover:text-stone-200">
+                    <i class="fa-solid fa-dumbbell text-[20px]"></i>
+                    <span class="font-bold text-sm">體能訓練</span>
+                </button>
+                <button data-tab="inventory"
+                    class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-stone-400 hover:bg-stone-800 hover:text-stone-200">
+                    <i class="fa-solid fa-briefcase text-[20px]"></i>
+                    <span class="font-bold text-sm">入伍背包</span>
+                </button>
+                <button data-tab="chat"
+                    class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-stone-400 hover:bg-stone-800 hover:text-stone-200">
+                    <i class="fa-solid fa-comments text-[20px]"></i>
+                    <span class="font-bold text-sm">教官聊天室</span>
+                </button>
+                <button data-tab="docs"
+                    class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-stone-400 hover:bg-stone-800 hover:text-stone-200">
+                    <i class="fa-solid fa-bars text-[20px]"></i>
+                    <span class="font-bold text-sm">行政中心</span>
+                </button>
+            </nav>
+
+            <div class="p-4 border-t border-stone-800 bg-stone-900/50">
+                <div id="user-info-sidebar" class="hidden flex items-center gap-3">
+                    <div class="bg-green-800 p-2 rounded-full text-white w-9 h-9 flex items-center justify-center">
+                        <i class="fa-solid fa-user text-[20px]"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p id="sidebar-name" class="text-sm font-bold truncate text-white">王小明</p>
+                        <p id="sidebar-role" class="text-xs text-green-500 truncate">常備役</p>
+                    </div>
+                </div>
+                <button id="btn-login-sidebar"
+                    class="w-full bg-stone-800 hover:bg-stone-700 text-stone-300 py-2 rounded text-sm flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-right-to-bracket text-[16px]"></i> 點此登入
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col relative overflow-hidden h-full">
+
+            <!-- Header -->
+            <header
+                class="bg-stone-900 border-b border-stone-800 p-4 shrink-0 flex justify-between items-center z-10 shadow-md">
+                <div class="flex items-center gap-2 md:hidden">
+                    <div class="bg-green-700 p-2 rounded-full w-9 h-9 flex items-center justify-center">
+                        <i class="fa-solid fa-user text-white text-[20px]"></i>
+                    </div>
+                    <div>
+                        <h2 id="header-name-mobile" class="font-bold text-sm">訪客</h2>
+                        <div class="flex items-center gap-1 text-xs text-stone-400">
+                            <span id="header-status-mobile" class="text-stone-500">尚未建立兵籍資料</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="header-title" class="hidden md:block text-stone-400 text-sm">
+                    戰情中心
+                </div>
+
+                <div>
+                    <div id="header-guest-tools" class="">
+                        <button id="btn-login-header"
+                            class="text-xs bg-stone-800 hover:bg-stone-700 border border-stone-600 px-3 py-1.5 rounded flex items-center gap-1 transition-colors">
+                            <i class="fa-solid fa-right-to-bracket text-[12px]"></i> <span
+                                class="hidden md:inline">登入/設定</span><span class="md:hidden">登入</span>
+                        </button>
+                    </div>
+
+                    <div id="header-user-tools" class="hidden flex gap-2">
+                        <button id="btn-edit-profile"
+                            class="text-xs bg-stone-800 hover:bg-stone-700 border border-stone-600 px-3 py-1.5 rounded flex items-center gap-1 transition-colors text-stone-300">
+                            <i class="fa-solid fa-pen-to-square text-[12px]"></i> <span
+                                class="hidden md:inline">修改資料</span>
+                        </button>
+                        <button id="btn-logout"
+                            class="text-xs bg-red-900/30 hover:bg-red-900/50 border border-red-800 px-3 py-1.5 rounded flex items-center gap-1 transition-colors text-red-200">
+                            <i class="fa-solid fa-right-from-bracket text-[12px]"></i> <span
+                                class="hidden md:inline">登出</span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Scrollable Area -->
+            <div id="main-content-area" class="flex-1 overflow-y-auto p-4 md:p-8 scroll-smooth">
+                <div class="max-w-6xl mx-auto w-full space-y-6 pb-20 md:pb-0">
+
+                    <!-- TAB: HOME -->
+                    <div id="view-home" class="view-section grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+                        <!-- Left Column -->
+                        <div class="lg:col-span-4 space-y-6">
+
+                            <!-- Widget: Status Report -->
+                            <div id="widget-status-report"
+                                class="hidden bg-stone-900 border-l-4 border-green-700 p-5 rounded-lg shadow-lg">
+                                <div class="flex justify-between items-start mb-4">
+                                    <h3 class="font-bold text-lg text-white">兵役推估報告</h3>
+                                    <span id="status-icon" class="text-3xl">🪖</span>
+                                </div>
+                                <p id="status-type" class="text-green-600 font-bold text-2xl mb-2">常備役</p>
+                                <p class="text-stone-400 text-sm mb-4">判定依據：<span id="status-reason">體位正常</span></p>
+
+                                <div class="bg-stone-800 p-3 rounded text-sm text-stone-300">
+                                    <p class="font-bold text-yellow-500 mb-1 flex items-center gap-1"><i
+                                            class="fa-solid fa-circle-exclamation text-[14px]"></i> 指示：</p>
+                                    <span id="status-instruction">鍛鍊體能，調整作息，準備入營</span>
+                                </div>
+                            </div>
+
+                            <!-- Widget: Guest Prompt -->
+                            <div id="widget-guest-prompt"
+                                class="bg-stone-900 border-l-4 border-stone-600 p-6 rounded-lg shadow-lg flex flex-col items-center text-center space-y-4">
+                                <div class="bg-stone-800 p-4 rounded-full"><i
+                                        class="fa-solid fa-shield-halved text-[40px] text-stone-500"></i></div>
+                                <div>
+                                    <h3 class="font-bold text-lg text-white">兵役推估系統</h3>
+                                    <p class="text-stone-400 text-sm">輸入身高體重，立即預測您的役別</p>
+                                </div>
+                                <button id="btn-unlock-guest"
+                                    class="w-full bg-green-700 hover:bg-green-600 text-white font-bold py-2 rounded transition-colors">
+                                    建立資料以解鎖
+                                </button>
+                            </div>
+
+                            <!-- Widget: Countdown -->
+                            <div class="bg-stone-900 p-5 rounded-lg shadow-lg border border-stone-800">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="font-bold text-white flex items-center gap-2">
+                                        <i class="fa-solid fa-clock text-[18px] text-stone-500"></i>
+                                        <span id="countdown-title">距離入伍</span>
+                                    </h3>
+                                    <span id="target-date-display"
+                                        class="text-xs text-stone-500 font-tech hidden">目標：2024-01-01</span>
+                                    <button id="btn-end-fake"
+                                        class="hidden text-xs text-stone-400 flex items-center gap-1">
+                                        <i class="fa-solid fa-xmark text-[12px]"></i> 結束體驗
+                                    </button>
+                                </div>
+
+                                <div id="countdown-content-guest"
+                                    class="bg-stone-950 rounded-lg p-6 text-center border border-stone-800 flex flex-col items-center justify-center h-32">
+                                    <p class="text-stone-500 text-sm mb-3">尚未設定入伍日期</p>
+                                    <button id="btn-setup-date"
+                                        class="text-xs text-green-500 hover:underline">前往設定</button>
+                                </div>
+
+                                <div id="countdown-content-user"
+                                    class="hidden bg-stone-950 rounded-lg p-6 text-center border border-stone-800">
+                                    <div
+                                        class="font-tech text-5xl text-red-500 font-bold tracking-widest animate-pulse mb-2">
+                                        <span id="days-left-count">30</span> <span
+                                            class="text-base text-stone-500 font-sans font-normal align-middle">天</span>
+                                    </div>
+                                    <p class="text-xs text-stone-500">時間不等人，快檢查背包！</p>
+                                </div>
+
+                                <div id="countdown-content-exempt"
+                                    class="hidden bg-stone-950 rounded-lg p-6 text-center border border-green-900">
+                                    <div class="font-mono text-3xl text-green-500 font-bold tracking-widest">無需入伍</div>
+                                    <p class="text-xs text-green-700 mt-2 mb-4">恭喜！您已符合免役標準</p>
+                                    <button id="btn-fake-countdown"
+                                        class="text-xs bg-stone-900 hover:bg-stone-800 border border-stone-700 px-4 py-2 rounded text-stone-400 transition-colors flex items-center gap-2 mx-auto">
+                                        <i class="fa-solid fa-eye text-[12px]"></i> 體驗入伍緊張感
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="lg:col-span-8 space-y-6">
+
+                            <!-- Tasks Card -->
+                            <div id="tasks-card"
+                                class="bg-stone-900 p-6 rounded-lg shadow-lg opacity-50 pointer-events-none grayscale relative">
+                                <div id="tasks-lock-overlay"
+                                    class="absolute inset-0 flex items-center justify-center z-10">
+                                    <div
+                                        class="bg-black/80 px-4 py-2 rounded flex items-center gap-2 text-white text-sm">
+                                        <i class="fa-solid fa-lock text-[14px]"></i> 需登入檢視
+                                    </div>
+                                </div>
+
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="font-bold text-white flex items-center gap-2 text-lg">
+                                        <i class="fa-solid fa-square-check text-[20px] text-green-500"></i>
+                                        <span id="tasks-title">入伍倒數任務</span>
+                                    </h3>
+                                </div>
+
+                                <div id="tasks-list" class="space-y-3">
+                                    <div
+                                        class="flex items-center gap-4 p-4 bg-stone-800 rounded-lg border border-stone-700 hover:bg-stone-750 transition-colors">
+                                        <input type="checkbox" class="w-5 h-5 accent-green-600 cursor-pointer">
+                                        <div class="flex-1">
+                                            <p class="font-bold text-stone-200">去醫院做體檢</p>
+                                        </div>
+                                        <span class="text-xs bg-red-900 text-red-200 px-3 py-1 rounded-full">緊急</span>
+                                    </div>
+                                    <div
+                                        class="flex items-center gap-4 p-4 bg-stone-800 rounded-lg border border-stone-700 hover:bg-stone-750 transition-colors">
+                                        <input type="checkbox" class="w-5 h-5 accent-green-600 cursor-pointer">
+                                        <div class="flex-1">
+                                            <p class="font-bold text-stone-200">調整作息 (22:00就寢)</p>
+                                        </div>
+                                        <span
+                                            class="text-xs bg-stone-700 text-stone-300 px-3 py-1 rounded-full">每日</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Entertainment Links -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div id="link-video"
+                                    class="bg-gradient-to-br from-purple-900 to-blue-900 p-6 rounded-lg shadow-lg relative overflow-hidden cursor-pointer h-40 flex flex-col justify-between group hover:shadow-xl transition-all">
+                                    <div
+                                        class="absolute right-[-10px] top-[-10px] text-white opacity-10 group-hover:scale-110 transition-transform duration-500">
+                                        <i class="fa-solid fa-play text-[100px]"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-white text-xl z-10 mb-1">新兵生存 60秒</h3>
+                                        <p class="text-stone-300 text-sm z-10">軍中鬼故事、內務技巧</p>
+                                    </div>
+                                    <div
+                                        class="bg-white/10 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-full w-fit flex items-center gap-1 group-hover:bg-white/20 transition-colors">
+                                        <i class="fa-solid fa-play text-[12px]"></i> 觀看影片
+                                    </div>
+                                </div>
+
+                                <div id="link-game"
+                                    class="bg-gradient-to-br from-orange-900 to-red-900 p-6 rounded-lg shadow-lg relative overflow-hidden cursor-pointer h-40 flex flex-col justify-between group hover:shadow-xl transition-all">
+                                    <div
+                                        class="absolute right-[-10px] top-[-10px] text-white opacity-10 group-hover:scale-110 transition-transform duration-500">
+                                        <i class="fa-solid fa-gamepad text-[100px]"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-white text-xl z-10 mb-1">打發時間小遊戲</h3>
+                                        <p class="text-stone-300 text-sm z-10">站哨無聊打蚊子特訓</p>
+                                    </div>
+                                    <div
+                                        class="bg-white/10 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-full w-fit flex items-center gap-1 group-hover:bg-white/20 transition-colors">
+                                        <i class="fa-solid fa-gamepad text-[14px]"></i> START GAME
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB: TRAINING -->
+                    <div id="view-training" class="view-section hidden space-y-6">
+                        <div class="bg-stone-900 p-6 rounded-lg shadow-lg min-h-[500px]">
+                            <h3 class="font-bold text-white mb-4 flex items-center gap-2 text-xl">
+                                <i class="fa-solid fa-dumbbell text-[24px] text-green-500"></i> 菜鳥不累成狗計畫
+                            </h3>
+
+                            <div id="training-content">
+                                <p class="text-sm text-stone-400 mb-6">入伍前 30 天開始執行，讓你新訓第一週就能跟上部隊節奏。</p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    <!-- Day 1 -->
+                                    <div
+                                        class="bg-stone-800 rounded-lg p-5 border-l-4 border-stone-600 hover:border-green-500 hover:bg-stone-750 transition-all group shadow-md">
+                                        <div class="flex justify-between items-center mb-3">
+                                            <span
+                                                class="text-green-400 text-xs font-bold border border-green-800 px-2 py-1 rounded bg-green-900/20">Day
+                                                1</span>
+                                            <span
+                                                class="text-stone-300 font-bold group-hover:text-white">適應期：核心啟動</span>
+                                        </div>
+                                        <p class="text-stone-400 text-sm leading-relaxed">伏地挺身 10下 x 3組、棒式 30秒</p>
+                                    </div>
+                                    <!-- Day 2 -->
+                                    <div
+                                        class="bg-stone-800 rounded-lg p-5 border-l-4 border-stone-600 hover:border-green-500 hover:bg-stone-750 transition-all group shadow-md">
+                                        <div class="flex justify-between items-center mb-3">
+                                            <span
+                                                class="text-green-400 text-xs font-bold border border-green-800 px-2 py-1 rounded bg-green-900/20">Day
+                                                2</span>
+                                            <span
+                                                class="text-stone-300 font-bold group-hover:text-white">適應期：下肢肌力</span>
+                                        </div>
+                                        <p class="text-stone-400 text-sm leading-relaxed">深蹲 15下 x 3組、開合跳 50下</p>
+                                    </div>
+                                    <!-- Day 3 -->
+                                    <div
+                                        class="bg-stone-800 rounded-lg p-5 border-l-4 border-stone-600 hover:border-green-500 hover:bg-stone-750 transition-all group shadow-md">
+                                        <div class="flex justify-between items-center mb-3">
+                                            <span
+                                                class="text-green-400 text-xs font-bold border border-green-800 px-2 py-1 rounded bg-green-900/20">Day
+                                                3</span>
+                                            <span
+                                                class="text-stone-300 font-bold group-hover:text-white">強化期：心肺耐力</span>
+                                        </div>
+                                        <p class="text-stone-400 text-sm leading-relaxed">慢跑 15分鐘 (配速 7分速)</p>
+                                    </div>
+                                    <!-- Day 4 -->
+                                    <div
+                                        class="bg-stone-800 rounded-lg p-5 border-l-4 border-stone-600 hover:border-green-500 hover:bg-stone-750 transition-all group shadow-md">
+                                        <div class="flex justify-between items-center mb-3">
+                                            <span
+                                                class="text-green-400 text-xs font-bold border border-green-800 px-2 py-1 rounded bg-green-900/20">Day
+                                                4</span>
+                                            <span
+                                                class="text-stone-300 font-bold group-hover:text-white">強化期：上肢推力</span>
+                                        </div>
+                                        <p class="text-stone-400 text-sm leading-relaxed">伏地挺身 15下 x 3組、板凳撐體 10下</p>
+                                    </div>
+                                    <!-- Day 5 -->
+                                    <div
+                                        class="bg-stone-800 rounded-lg p-5 border-l-4 border-stone-600 hover:border-green-500 hover:bg-stone-750 transition-all group shadow-md">
+                                        <div class="flex justify-between items-center mb-3">
+                                            <span
+                                                class="text-green-400 text-xs font-bold border border-green-800 px-2 py-1 rounded bg-green-900/20">Day
+                                                5</span>
+                                            <span
+                                                class="text-stone-300 font-bold group-hover:text-white">恢復期：伸展放鬆</span>
+                                        </div>
+                                        <p class="text-stone-400 text-sm leading-relaxed">全身靜態伸展 20分鐘，早點睡覺</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB: INVENTORY -->
+                    <div id="view-inventory" class="view-section hidden">
+                        <div class="bg-stone-900 p-6 rounded-lg min-h-[500px] shadow-lg">
+                            <h3 class="font-bold text-white mb-6 flex items-center gap-2 text-xl">
+                                <i class="fa-solid fa-bag-shopping text-[24px] text-green-500"></i> 入伍背包檢核
+                            </h3>
+
+                            <div id="inventory-guest-msg"
+                                class="mb-6 bg-yellow-900/30 border border-yellow-700 p-4 rounded-lg text-sm text-yellow-400 flex items-center gap-2">
+                                <i class="fa-solid fa-circle-info text-[18px]"></i> 訪客模式無法儲存清單進度
+                            </div>
+
+                            <div id="inventory-quick-add" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                                <div class="bg-stone-800 p-4 rounded-lg text-center border border-stone-700 cursor-pointer hover:bg-stone-700 hover:border-green-500 transition-all group"
+                                    onclick="addQuickItem('life')">
+                                    <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">⌚</div>
+                                    <div class="font-bold text-white">一鍵採購生活組</div>
+                                    <div class="text-xs text-stone-500 mt-1">含手錶、沐浴乳、爽身粉</div>
+                                </div>
+                                <div class="bg-stone-800 p-4 rounded-lg text-center border border-stone-700 cursor-pointer hover:bg-stone-700 hover:border-green-500 transition-all group"
+                                    onclick="addQuickItem('med')">
+                                    <div class="text-3xl mb-2 group-hover:scale-110 transition-transform">💊</div>
+                                    <div class="font-bold text-white">申請慢性病藥物</div>
+                                    <div class="text-xs text-stone-500 mt-1">加入診斷證明書至清單</div>
+                                </div>
+                            </div>
+
+                            <div id="inventory-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                                <!-- Items will be injected by JS -->
+                            </div>
+
+                            <div
+                                class="mt-6 p-4 bg-yellow-900/20 border border-yellow-700 rounded-lg text-sm text-yellow-500 flex items-start gap-2">
+                                <i class="fa-solid fa-ban text-[18px] shrink-0 mt-0.5"></i>
+                                <p>違禁品提醒：手機 (部分型號)、藍牙耳機、電動刮鬍刀、香菸、打火機請勿放入背包。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB: CHAT -->
+                    <div id="view-chat" class="view-section hidden">
+                        <div
+                            class="flex flex-col h-[calc(100vh-140px)] bg-stone-900 rounded-lg overflow-hidden border border-stone-800 shadow-xl">
+                            <div class="bg-stone-800 p-4 border-b border-stone-700 flex items-center gap-4">
+                                <div
+                                    class="w-12 h-12 bg-green-800 rounded-full flex items-center justify-center font-bold text-2xl border-2 border-stone-600">
+                                    值</div>
+                                <div>
+                                    <div class="font-bold text-lg">值星教官</div>
+                                    <div class="text-xs text-green-500 flex items-center gap-1"><span
+                                            class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> 在線罵人中</div>
+                                </div>
+                            </div>
+
+                            <div id="chat-messages" class="flex-1 overflow-y-auto p-6 space-y-6 bg-stone-900/50">
+                                <div class="flex justify-start">
+                                    <div
+                                        class="max-w-[80%] md:max-w-[60%] p-4 rounded-xl text-base bg-stone-700 text-stone-200 rounded-bl-none shadow-md">
+                                        死菜鳥！有什麼問題快問！不要浪費我時間！
+                                    </div>
+                                </div>
+                            </div>
+
+                            <form id="chat-form" class="p-4 bg-stone-800 border-t border-stone-700 flex gap-3">
+                                <input type="text" id="chat-input" placeholder="問個白癡問題..."
+                                    class="flex-1 bg-stone-900 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 border border-stone-700"
+                                    autocomplete="off">
+                                <button type="submit"
+                                    class="bg-green-700 hover:bg-green-600 px-6 py-2 rounded-lg text-white font-bold transition-colors">發送</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- TAB: DOCS -->
+                    <div id="view-docs" class="view-section hidden">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="bg-stone-900 p-6 rounded-lg shadow-lg">
+                                <h3 class="font-bold text-white mb-6 flex items-center gap-2 text-xl">
+                                    <i class="fa-solid fa-file-lines text-[24px] text-green-500"></i> 役政文件中心
+                                </h3>
+                                <div class="space-y-3">
+                                    <div
+                                        class="flex justify-between items-center p-4 bg-stone-800 rounded-lg hover:bg-stone-700 cursor-pointer border border-stone-700 hover:border-stone-500 transition-colors group">
+                                        <span class="text-stone-300 group-hover:text-white">緩徵申請書下載</span>
+                                        <i
+                                            class="fa-solid fa-chevron-right text-[20px] text-stone-500 group-hover:text-white"></i>
+                                    </div>
+                                    <div
+                                        class="flex justify-between items-center p-4 bg-stone-800 rounded-lg hover:bg-stone-700 cursor-pointer border border-stone-700 hover:border-stone-500 transition-colors group">
+                                        <span class="text-stone-300 group-hover:text-white">體位複檢標準表</span>
+                                        <i
+                                            class="fa-solid fa-chevron-right text-[20px] text-stone-500 group-hover:text-white"></i>
+                                    </div>
+                                    <div
+                                        class="flex justify-between items-center p-4 bg-stone-800 rounded-lg hover:bg-stone-700 cursor-pointer border border-stone-700 hover:border-stone-500 transition-colors group">
+                                        <span class="text-stone-300 group-hover:text-white">各縣市役政單位通訊錄</span>
+                                        <i
+                                            class="fa-solid fa-chevron-right text-[20px] text-stone-500 group-hover:text-white"></i>
+                                    </div>
+                                    <div
+                                        class="flex justify-between items-center p-4 bg-stone-800 rounded-lg hover:bg-stone-700 cursor-pointer border border-stone-700 hover:border-stone-500 transition-colors group">
+                                        <span class="text-stone-300 group-hover:text-white">軍人權益懶人包</span>
+                                        <i
+                                            class="fa-solid fa-chevron-right text-[20px] text-stone-500 group-hover:text-white"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-stone-900 p-6 rounded-lg shadow-lg">
+                                <h3 class="font-bold text-white mb-6 flex items-center gap-2 text-xl">
+                                    <i class="fa-solid fa-shield-halved text-[24px] text-blue-500"></i> 後備與教召提醒
+                                </h3>
+                                <div class="bg-stone-950/50 p-6 rounded-lg border border-stone-800">
+                                    <p class="text-stone-300 mb-4 leading-relaxed">當完兵不是結束！退伍後 8
+                                        年內你都是後備軍人，國家隨時可能需要你（教召）。</p>
+                                    <ul class="text-sm text-stone-400 list-disc pl-5 space-y-2">
+                                        <li>教召期間視同現役軍人</li>
+                                        <li>出國旅遊需避開教召令下達期間，否則視為逃避召集</li>
+                                        <li>每年記得上網查詢教召資訊 (通常年初開放查詢)</li>
+                                        <li>無故未到將移送法辦</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB: VIDEO -->
+                    <div id="view-video" class="view-section hidden">
+                        <div id="video-list-container"
+                            class="h-[calc(100vh-140px)] w-full bg-stone-900 rounded-lg relative overflow-hidden flex flex-col border border-stone-800 shadow-2xl">
+                            <button class="absolute top-4 right-4 p-2 text-stone-400 hover:text-white z-10 hidden"
+                                id="video-close-btn">
+                                <i class="fa-solid fa-xmark text-[32px]"></i>
+                            </button>
+
+                            <!-- Video List -->
+                            <div id="video-gallery" class="w-full h-full overflow-y-auto p-8 flex flex-col relative">
+                                <div class="text-center text-stone-500 py-6 font-bold text-2xl">模擬短影音串流</div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                    <div class="video-item h-64 bg-blue-600 rounded-xl flex items-end p-6 cursor-pointer relative shrink-0 overflow-hidden group shadow-lg"
+                                        data-id="1" data-title="豆腐乾棉被教學" data-desc="捏角、壓線、拉平！只要三分鐘，班長不扣分。"
+                                        data-tag="#內務" data-color="bg-blue-600">
+                                        <div
+                                            class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors">
+                                        </div>
+                                        <div
+                                            class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity transform group-hover:scale-110 duration-300">
+                                            <i class="fa-solid fa-play text-white drop-shadow-lg text-[64px]"></i>
+                                        </div>
+                                        <div
+                                            class="text-white z-10 pointer-events-none transform group-hover:-translate-y-2 transition-transform">
+                                            <div class="font-bold text-xl drop-shadow-md leading-tight mb-1">豆腐乾棉被教學
+                                            </div>
+                                            <div class="text-sm opacity-90">#內務</div>
+                                        </div>
+                                    </div>
+                                    <div class="video-item h-64 bg-green-600 rounded-xl flex items-end p-6 cursor-pointer relative shrink-0 overflow-hidden group shadow-lg"
+                                        data-id="2" data-title="洗澡大作戰" data-desc="洗澡時間只有5分鐘？教你如何用一罐三合一洗戰鬥澡。"
+                                        data-tag="#生活" data-color="bg-green-600">
+                                        <div
+                                            class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors">
+                                        </div>
+                                        <div
+                                            class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity transform group-hover:scale-110 duration-300">
+                                            <i class="fa-solid fa-play text-white drop-shadow-lg text-[64px]"></i>
+                                        </div>
+                                        <div
+                                            class="text-white z-10 pointer-events-none transform group-hover:-translate-y-2 transition-transform">
+                                            <div class="font-bold text-xl drop-shadow-md leading-tight mb-1">洗澡大作戰</div>
+                                            <div class="text-sm opacity-90">#生活</div>
+                                        </div>
+                                    </div>
+                                    <div class="video-item h-64 bg-yellow-600 rounded-xl flex items-end p-6 cursor-pointer relative shrink-0 overflow-hidden group shadow-lg"
+                                        data-id="3" data-title="防蚊大作戰" data-desc="鳳山/成功嶺的蚊子有編號？防蚊液要這樣噴才有效！"
+                                        data-tag="#生存" data-color="bg-yellow-600">
+                                        <div
+                                            class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors">
+                                        </div>
+                                        <div
+                                            class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity transform group-hover:scale-110 duration-300">
+                                            <i class="fa-solid fa-play text-white drop-shadow-lg text-[64px]"></i>
+                                        </div>
+                                        <div
+                                            class="text-white z-10 pointer-events-none transform group-hover:-translate-y-2 transition-transform">
+                                            <div class="font-bold text-xl drop-shadow-md leading-tight mb-1">防蚊大作戰</div>
+                                            <div class="text-sm opacity-90">#生存</div>
+                                        </div>
+                                    </div>
+                                    <div class="video-item h-64 bg-red-600 rounded-xl flex items-end p-6 cursor-pointer relative shrink-0 overflow-hidden group shadow-lg"
+                                        data-id="4" data-title="打飯班的秘密" data-desc="雖然累但可以吃飽，還可以偷喝飲料？" data-tag="#公差"
+                                        data-color="bg-red-600">
+                                        <div
+                                            class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors">
+                                        </div>
+                                        <div
+                                            class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity transform group-hover:scale-110 duration-300">
+                                            <i class="fa-solid fa-play text-white drop-shadow-lg text-[64px]"></i>
+                                        </div>
+                                        <div
+                                            class="text-white z-10 pointer-events-none transform group-hover:-translate-y-2 transition-transform">
+                                            <div class="font-bold text-xl drop-shadow-md leading-tight mb-1">打飯班的秘密
+                                            </div>
+                                            <div class="text-sm opacity-90">#公差</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Video Player (Hidden by default) -->
+                            <div id="video-player"
+                                class="hidden w-full h-full p-8 flex flex-col justify-end pb-20 relative animate-fade-in bg-black">
+                                <button id="close-video-player"
+                                    class="absolute top-6 right-6 bg-black/50 hover:bg-black/70 p-3 rounded-full text-white z-10 transition-colors">
+                                    <i class="fa-solid fa-xmark text-[24px]"></i>
+                                </button>
+                                <div class="max-w-2xl">
+                                    <span id="player-tag"
+                                        class="bg-black/40 text-white px-3 py-1 rounded text-sm mb-3 inline-block backdrop-blur-md">#Tag</span>
+                                    <h2 id="player-title"
+                                        class="text-4xl md:text-5xl font-bold text-white mb-4 shadow-sm">Title</h2>
+                                    <p id="player-desc"
+                                        class="text-white/90 text-xl leading-relaxed max-w-xl drop-shadow-md">
+                                        Description...</p>
+                                </div>
+                                <div class="flex gap-4 text-white/70 text-sm mt-6">
+                                    <span class="flex items-center gap-1">❤️ 1.2k</span>
+                                    <span class="flex items-center gap-1">💬 342</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- TAB: GAME -->
+                    <div id="view-game" class="view-section hidden">
+                        <div
+                            class="h-[calc(100vh-140px)] w-full bg-stone-900 rounded-lg relative overflow-hidden flex flex-col items-center justify-center border border-stone-700 shadow-2xl">
+                            <button id="btn-quit-game"
+                                class="absolute top-6 right-6 p-2 bg-black/30 hover:bg-black/50 rounded-full text-stone-400 hover:text-white z-50 transition-colors hidden">
+                                <i class="fa-solid fa-xmark text-[24px]"></i>
+                            </button>
+
+                            <!-- Lobby -->
+                            <div id="game-lobby"
+                                class="text-center p-8 max-w-lg bg-stone-800/50 rounded-2xl backdrop-blur-sm border border-stone-700">
+                                <div class="text-orange-500 mx-auto mb-6 inline-block animate-bounce"><i
+                                        class="fa-solid fa-gamepad text-[80px]"></i></div>
+                                <h2 class="text-4xl font-bold text-white mb-4">打蚊子特訓</h2>
+                                <p class="text-stone-300 mb-8 text-lg leading-relaxed">
+                                    軍營蚊子特別兇！<br />
+                                    限時 <span class="text-orange-400 font-bold font-tech">30 秒</span>，點擊螢幕出現的蚊子。<br />
+                                    別讓牠們叮到你！
+                                </p>
+                                <button id="btn-start-game"
+                                    class="bg-orange-600 hover:bg-orange-500 text-white font-bold py-4 px-12 rounded-full text-xl shadow-lg transform hover:scale-105 transition-all">
+                                    開始任務
+                                </button>
+                            </div>
+
+                            <!-- Play Area -->
+                            <div id="game-play-area"
+                                class="hidden w-full h-full relative bg-gradient-to-b from-stone-800 to-stone-900 cursor-crosshair">
+                                <div
+                                    class="absolute top-6 left-6 right-6 flex justify-between items-center z-10 pointer-events-none">
+                                    <div
+                                        class="bg-black/50 px-6 py-2 rounded-full text-orange-400 font-mono font-bold text-3xl shadow-lg border border-white/10 font-tech">
+                                        SCORE: <span id="game-score">0</span>
+                                    </div>
+                                    <div id="game-timer"
+                                        class="px-6 py-2 rounded-full font-mono font-bold text-3xl shadow-lg border border-white/10 bg-black/50 font-tech text-white">
+                                        00:30
+                                    </div>
+                                </div>
+                                <div id="mosquito-container"></div>
+                            </div>
+
+                            <!-- Game Over -->
+                            <div id="game-over"
+                                class="hidden text-center p-8 animate-fade-in bg-stone-800/80 rounded-2xl backdrop-blur-md border border-stone-600">
+                                <div class="text-6xl mb-4">🏆</div>
+                                <h2 class="text-3xl font-bold text-white mb-2">任務結束</h2>
+                                <div id="final-score"
+                                    class="text-7xl font-mono font-bold text-orange-500 mb-6 font-tech">0</div>
+                                <div class="bg-stone-900/80 p-6 rounded-lg mb-8 text-stone-300 max-w-md mx-auto">
+                                    <p id="final-message" class="font-bold text-lg text-white">做得好！</p>
+                                </div>
+                                <div class="flex gap-4 justify-center">
+                                    <button id="btn-retry-game"
+                                        class="bg-stone-700 hover:bg-stone-600 text-white py-3 px-8 rounded-lg transition-colors font-bold text-lg">再試一次</button>
+                                    <button id="btn-back-home"
+                                        class="bg-green-700 hover:bg-green-600 text-white py-3 px-8 rounded-lg transition-colors font-bold text-lg">返回戰情</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Mobile Navbar -->
+            <nav
+                class="md:hidden fixed bottom-0 left-0 right-0 bg-stone-900 border-t border-stone-800 flex justify-around p-3 z-50 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.3)]">
+                <button data-tab="home" class="nav-btn-mobile flex flex-col items-center gap-1 text-green-500">
+                    <i class="fa-solid fa-chart-line text-[20px]"></i>
+                    <span class="text-[10px]">戰情</span>
+                </button>
+                <button data-tab="training" class="nav-btn-mobile flex flex-col items-center gap-1 text-stone-500">
+                    <i class="fa-solid fa-dumbbell text-[20px]"></i>
+                    <span class="text-[10px]">訓練</span>
+                </button>
+                <button data-tab="inventory" class="nav-btn-mobile flex flex-col items-center gap-1 text-stone-500">
+                    <i class="fa-solid fa-briefcase text-[20px]"></i>
+                    <span class="text-[10px]">背包</span>
+                </button>
+                <button data-tab="chat" class="nav-btn-mobile flex flex-col items-center gap-1 text-stone-500">
+                    <i class="fa-solid fa-comments text-[20px]"></i>
+                    <span class="text-[10px]">教官</span>
+                </button>
+                <button data-tab="docs" class="nav-btn-mobile flex flex-col items-center gap-1 text-stone-500">
+                    <i class="fa-solid fa-bars text-[20px]"></i>
+                    <span class="text-[10px]">行政</span>
+                </button>
+            </nav>
+
+        </div>
+    </div>
+
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+</body>
+
+</html>
