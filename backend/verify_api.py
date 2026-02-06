@@ -44,6 +44,8 @@ def run_tests():
         if user_info.get("username") != "testuser":
             print("Incorrect user info returned")
             return False
+        # Optional: show new fields if present
+        print(f"role: {user_info.get('role')}, height: {user_info.get('height')}, weight: {user_info.get('weight')}")
     except Exception as e:
         print(f"Get info exception: {e}")
         return False
@@ -52,7 +54,10 @@ def run_tests():
     print("\n3. Testing Edit User...")
     edit_data = {
         "gender": "Helicopter",
-        "date_of_birth": "1999-12-31"
+        "date_of_birth": "1999-12-31",
+        "role": 1,
+        "height": 180,
+        "weight": 75
     }
     try:
         response = requests.post(f"{BASE_URL}/api/user_edit", json=edit_data, headers=headers)
@@ -61,8 +66,14 @@ def run_tests():
             return False
         updated_user = response.json()
         print(f"Updated User: {updated_user}")
-        if updated_user.get("gender") != "Helicopter":
-            print("Gender not updated")
+        if updated_user.get("role") != 1:
+            print("Role not updated")
+            return False
+        if updated_user.get("height") != 180:
+            print("Height not updated")
+            return False
+        if updated_user.get("weight") != 75:
+            print("Weight not updated")
             return False
     except Exception as e:
         print(f"Edit exception: {e}")
