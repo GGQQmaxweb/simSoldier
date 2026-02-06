@@ -6,6 +6,22 @@ import contextlib
 
 from . import models, schemas, database, auth
 
+"""
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String, unique=True, index=True) # Name
+    role = Column(Integer, ForeignKey("roles.id")) # Role ID
+    game_currency = Column(Integer, default=0)
+    date_of_birth = Column(Date)
+    date_of_registration = Column(DateTime(timezone=True), server_default=func.now())
+    height = Column(Integer) # Height in cm
+    weight = Column(Integer) # Weight in kg
+    entrance_date = Column(Date) # Date of entrance to the Real Madrid Academy
+    do_have_chronic_medications = Column(bool, default=False) # Whether the user has chronic medications
+    hashed_password = Column(String)
+"""
 # Dependency to check/create items on startup
 @contextlib.asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -21,9 +37,13 @@ async def lifespan(app: FastAPI):
             hashed_pwd = auth.get_password_hash("password123")
             new_user = models.User(
                 username="testuser",
-                gender="Non-binary",
+                role=1,  # Assuming role ID 1 is a default role
                 game_currency=1000,
                 date_of_birth="2000-01-01",
+                weight=70,
+                height=175,
+                entrance_date="2015-09-01",
+                do_have_chronic_medications=False,
                 hashed_password=hashed_pwd
             )
             db.add(new_user)
@@ -36,6 +56,29 @@ async def lifespan(app: FastAPI):
     # Shutdown logic if any
 
 app = FastAPI(lifespan=lifespan)
+
+@app.post("/api/register", response_model=schemas.UserResponse)
+async def register_user(user: schemas.UserCreate, db: Session = Depends(database.get_db)):
+    db_user = db.query(models.User).filter(models.User.username == user.username).first()
+    if db_user:
+        raise HTTPException(status_code=400, detail="Username already registered")
+    
+    hashed_password = auth.get_password_hash(user.password)
+    new_user = models.User(
+        username=user.username,
+        role=user.role,  # Default role ID
+        date_of_birth=user.date_of_birth,
+        height=user.height,
+        weight=user.weight,
+        entrance_date=user.entrance_date,
+        do_have_chronic_medications=user.do_have_chronic_medications,
+        hashed_password=hashed_password,
+        game_currency=1000  # Initial game currency
+    )
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    return new_user
 
 @app.post("/api/login", response_model=schemas.Token)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(database.get_db)):
@@ -58,11 +101,18 @@ async def read_users_me(current_user: models.User = Depends(auth.get_current_use
 
 @app.post("/api/user_edit", response_model=schemas.UserResponse)
 async def update_user_me(user_update: schemas.UserUpdate, current_user: models.User = Depends(auth.get_current_user), db: Session = Depends(database.get_db)):
-    if user_update.gender:
-        current_user.gender = user_update.gender
     if user_update.date_of_birth:
         current_user.date_of_birth = user_update.date_of_birth
-    
+    if user_update.height:
+        current_user.height = user_update.height
+    if user_update.weight:
+        current_user.weight = user_update.weight
+    if user_update.entrance_date:
+        current_user.entrance_date = user_update.entrance_date
+    if user_update.do_have_chronic_medications is not None:
+        current_user.do_have_chronic_medications = user_update.do_have_chronic_medications
+    if user_update.password:
+        current_user.hashed_password = auth.get_password_hash(user_update.password)
     db.commit()
     db.refresh(current_user)
     return current_user
