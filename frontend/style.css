@@ -1,31 +1,180 @@
- body {
-     font-family: 'Noto Sans TC', sans-serif;
- }
+@charset "UTF-8";
 
- .font-tech {
-     font-family: 'Share+Tech+Mono', monospace;
- }
+:root {
+    /* Color Palette - Stone (Dark Theme Base) */
+    --c-stone-950: #0c0a09;
+    --c-stone-900: #1c1917;
+    --c-stone-800: #292524;
+    --c-stone-700: #44403c;
+    --c-stone-600: #57534e;
+    --c-stone-500: #78716c;
+    --c-stone-400: #a8a29e;
+    --c-stone-300: #d6d3d1;
+    --c-stone-200: #e7e5e4;
+    --c-white: #ffffff;
 
- @keyframes fade-in {
-     from {
-         opacity: 0;
-         transform: translateY(10px);
-     }
+    /* Color Palette - Green (Accents) */
+    --c-green-900: #14532d;
+    --c-green-600: #16a34a;
+    --c-green-500: #22c55e;
+    --c-green-400: #4ade80;
 
-     to {
-         opacity: 1;
-         transform: translateY(0);
-     }
- }
+    /* Semantic Colors */
+    --bg-base: var(--c-stone-950);
+    --bg-sidebar: var(--c-stone-950);
+    --bg-card: var(--c-stone-900);
+    --bg-input: var(--c-stone-950);
 
- .animate-fade-in {
-     animation: fade-in 0.3s ease-out forwards;
- }
+    --border-base: var(--c-stone-800);
+    --border-light: var(--c-stone-700);
 
- .no-scrollbar::-webkit-scrollbar {
-     display: none;
- }
+    --text-main: var(--c-stone-200);
+    --text-muted: var(--c-stone-400);
+    --text-accent: var(--c-green-400);
+}
 
- .no-scrollbar {
-     scrollbar-width: none;
- }
+body {
+    font-family: "Microsoft JhengHei", "Heiti TC", sans-serif !important;
+    background-color: var(--bg-base);
+    color: var(--text-main);
+}
+
+/* Ensure Tailwind fonts don't override it if applied specifically */
+.font-sans {
+    font-family: "Microsoft JhengHei", "Heiti TC", sans-serif !important;
+}
+
+/* --- Layout --- */
+.app-wrapper {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    background-color: var(--bg-base);
+}
+
+.sidebar {
+    width: 16rem;
+    /* w-64 */
+    background-color: var(--bg-sidebar);
+    border-right: 1px solid var(--border-base);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+}
+
+.main-scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
+    /* p-6 */
+}
+
+/* --- Components: Sidebar --- */
+.sidebar-header {
+    padding: 1.5rem;
+    /* p-6 */
+    border-bottom: 1px solid var(--border-base);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    /* gap-3 */
+}
+
+.sidebar-nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    /* p-4 */
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    /* space-y-2 -> gap-2 */
+}
+
+.nav-btn {
+    width: 100%;
+    text-align: left;
+    padding: 0.75rem 1rem;
+    /* px-4 py-3 */
+    border-radius: 0.5rem;
+    /* rounded-lg */
+    font-size: 0.875rem;
+    /* text-sm */
+    font-weight: 500;
+    color: var(--c-stone-500);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    /* gap-3 */
+}
+
+.nav-btn:hover {
+    background-color: rgba(68, 64, 60, 0.3);
+    /* stone-700/30 */
+    color: var(--c-stone-300);
+}
+
+.nav-btn.active {
+    background-color: rgba(20, 83, 45, 0.3);
+    /* green-900/30 */
+    color: var(--text-accent);
+    border: 1px solid rgba(20, 83, 45, 0.5);
+    box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+}
+
+.sidebar-footer {
+    padding: 1rem;
+    /* p-4 */
+    border-top: 1px solid var(--border-base);
+}
+
+/* --- Components: Header --- */
+.app-header {
+    background-color: rgba(12, 10, 9, 0.8);
+    /* stone-950/80 */
+    backdrop-filter: blur(4px);
+    border-bottom: 1px solid var(--border-base);
+    padding: 1rem 1.5rem;
+    /* px-6 py-4 */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+/* --- Components: Cards --- */
+.card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-base);
+    border-radius: 0.5rem;
+    /* rounded-lg */
+    padding: 1.5rem;
+    /* p-6 */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+    border-color: var(--c-stone-600);
+}
+
+/* --- Components: Buttons --- */
+.btn-toggle {
+    background-color: var(--c-stone-800);
+    /* hover handled in JS or specific classes */
+}
+
+/* --- Typography --- */
+.font-tech {
+    font-family: 'Share Tech Mono', monospace;
+}
