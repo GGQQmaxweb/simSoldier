@@ -28,7 +28,19 @@
 <body id="body"
     class="bg-stone-950 h-screen flex flex-col items-center justify-center text-stone-300 transition-opacity duration-500">
 
-    <div class="w-64 space-y-4 text-center">
+    <!-- SPLASH SCREEN CONTAINER -->
+    <div id="splash-screen"
+        class="fixed inset-0 flex flex-col items-center justify-center transition-opacity duration-700 z-50 bg-stone-950">
+        <div class="relative">
+            <i class="fa-solid fa-person-rifle text-[120px] text-green-600 animate-bounce"></i>
+            <div class="absolute -bottom-4 left-1/2 -translate-x-1/2 w-32 h-4 bg-black/50 blur-xl rounded-full"></div>
+        </div>
+        <h1 class="text-4xl font-bold text-white mt-8 font-tech tracking-[0.5em] animate-pulse">SIMSOLDIER</h1>
+        <p class="text-stone-500 mt-2 font-mono text-xs tracking-widest">VIRTUAL MILITARY TRAINING SYSTEM</p>
+    </div>
+
+    <!-- LOADING BAR CONTAINER -->
+    <div id="loader-content" class="w-64 space-y-4 text-center hidden">
         <!-- Spinner -->
         <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500 mb-4"></div>
 
@@ -43,35 +55,71 @@
         <p class="text-xs font-tech text-stone-500 mt-2">載入中...</p>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
     <script>
-        // Get destination from URL params (e.g., ?dest=index.html)
+        // Get destination from URL params
         const urlParams = new URLSearchParams(window.location.search);
         const dest = urlParams.get('dest') || 'index.html';
 
-        // Simulate Loadeing
+        const splash = document.getElementById('splash-screen');
+        const loader = document.getElementById('loader-content');
         const progressBar = document.getElementById('progress');
         const body = document.getElementById('body');
-        let width = 0;
 
-        // Total time approx 1.5s (1500ms)
-        // Update every 15ms -> 100 steps
-        // Step size = 1%
-        const interval = setInterval(() => {
-            if (width >= 100) {
-                clearInterval(interval);
+        // Logic: Check Session Storage
+        const hasSeenSplash = sessionStorage.getItem('simSoldier_splash_seen');
 
-                // Trigger Fade Out
-                body.classList.add('fade-out');
+        if (hasSeenSplash) {
+            // === SCENARIO 1: RETURNING USER ===
+            // 1. Force remove splash immediately
+            splash.style.display = 'none';
 
-                // Wait for fade out (500ms) then redirect
+            // 2. Show loader immediately
+            loader.classList.remove('hidden');
+
+            // 3. Start Loading Bar
+            startLoading();
+
+        } else {
+            // === SCENARIO 2: FIRST VISIT ===
+            // 1. Set flag so next time we skip
+            sessionStorage.setItem('simSoldier_splash_seen', 'true');
+
+            // 2. Play Splash Animation (1.5s total)
+            setTimeout(() => {
+                // Fade out splash
+                splash.style.opacity = '0';
+
                 setTimeout(() => {
-                    window.location.href = dest;
-                }, 500);
-            } else {
-                width++;
-                progressBar.style.width = width + '%';
-            }
-        }, 15);
+                    // Hide splash completely
+                    splash.style.display = 'none';
+
+                    // Show loader
+                    loader.classList.remove('hidden');
+
+                    // Start Loading Bar
+                    startLoading();
+                }, 700); // 0.7s fade out
+            }, 1200); // 1.2s display time
+        }
+
+        function startLoading() {
+            let width = 0;
+            // Update every 10ms -> fast loading
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    // Fade out body before redirect
+                    body.classList.add('fade-out');
+                    setTimeout(() => {
+                        window.location.href = dest;
+                    }, 500);
+                } else {
+                    width++;
+                    progressBar.style.width = width + '%';
+                }
+            }, 10);
+        }
     </script>
 </body>
 
