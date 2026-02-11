@@ -4,40 +4,36 @@ from sqlalchemy.orm import Session
 from datetime import timedelta
 import contextlib
 
-from . import models, schemas, database, auth
+from . import models, schemas, database, auth, chat
 
-"""
-class User(Base):
-    __tablename__ = "users"
-
-    id = Column(Integer, primary_key=True, index=True)
-    username = Column(String, unique=True, index=True) # Name
-    role = Column(Integer, ForeignKey("roles.id")) # Role ID
-    game_currency = Column(Integer, default=0)
-    date_of_birth = Column(Date)
-    date_of_registration = Column(DateTime(timezone=True), server_default=func.now())
-    height = Column(Integer) # Height in cm
-    weight = Column(Integer) # Weight in kg
-    entrance_date = Column(Date) # Date of entrance to the Real Madrid Academy
-    do_have_chronic_medications = Column(bool, default=False) # Whether the user has chronic medications
-    hashed_password = Column(String)
-"""
 # Dependency to check/create items on startup
 @contextlib.asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup logic
     models.Base.metadata.create_all(bind=database.engine)
     
-    # Check if we need to seed a user
+    # Check if we need to seed roles
     db = database.SessionLocal()
     try:
+        if db.query(models.Role).count() == 0:
+            print("Seeding roles...")
+            roles = [
+                models.Role(id=1, name="Soldier"),
+                models.Role(id=2, name="Commander"),
+                models.Role(id=3, name="Officer")
+            ]
+            db.add_all(roles)
+            db.commit()
+            print("Roles seeded.")
+
+        # Check if we need to seed a user
         user = db.query(models.User).first()
         if not user:
             print("Seeding initial user...")
             hashed_pwd = auth.get_password_hash("password123")
             new_user = models.User(
                 username="testuser",
-                role=1,  # Assuming role ID 1 is a default role
+                role=1,  # Assuming role ID 1 (Soldier) is the default role
                 game_currency=1000,
                 date_of_birth="2000-01-01",
                 weight=70,
@@ -113,6 +109,7 @@ async def update_user_me(user_update: schemas.UserUpdate, current_user: models.U
         current_user.do_have_chronic_medications = user_update.do_have_chronic_medications
     if user_update.password:
         current_user.hashed_password = auth.get_password_hash(user_update.password)
+    
     db.commit()
     db.refresh(current_user)
     return current_user
@@ -120,6 +117,10 @@ async def update_user_me(user_update: schemas.UserUpdate, current_user: models.U
 @app.post("/api/logout")
 async def logout():
     return {"message": "Successfully logged out. Please unset the token on the client side."}
+
+@app.post("/api/chat")
+async def chat_endpoint(request: schemas.ChatRequest, current_user: models.User = Depends(auth.get_current_user)):
+    return chat.ask_gemini(current_user, request.question)
 
 @app.get("/")
 def read_root():

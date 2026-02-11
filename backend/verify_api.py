@@ -57,8 +57,10 @@ def run_tests():
         "date_of_birth": "1999-12-31",
         "role": 1,
         "height": 180,
-        "weight": 75
-    }
+        "weight": 75,
+        "entrance_date": "2022-09-01",
+        "do_have_chronic_medications":True
+        }
     try:
         response = requests.post(f"{BASE_URL}/api/user_edit", json=edit_data, headers=headers)
         if response.status_code != 200:
@@ -75,10 +77,23 @@ def run_tests():
         if updated_user.get("weight") != 75:
             print("Weight not updated")
             return False
+        
+        
     except Exception as e:
         print(f"Edit exception: {e}")
         return False
-
+    # 5 chat    
+    print("\n5. Testing Chat...")
+    try:
+        response = requests.post(f"{BASE_URL}/api/chat", headers=headers, json={"question": "How many days of PTO do employees get?"})
+        if response.status_code != 200:
+            print(f"Chat failed: {response.text}")
+            return False
+        print(f"Chat response: {response.text}")
+    except Exception as e:
+        print(f"Chat exception: {e}")
+        return False
+        
     # 4. Logout (Client side really, but checking endpoint)
     print("\n4. Testing Logout...")
     try:
