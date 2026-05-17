@@ -1,0 +1,113 @@
+[
+    {
+        "id": 1,
+        "speaker": "",
+        "text": "下腹部一陣尖銳的抽痛，像是有人拿著錐子在裡面攪動。",
+        "image": "docs/LN_BG1.png",
+        "character": "",
+        "nextText": 2
+    },
+    {
+        "id": 2,
+        "speaker": "",
+        "text": "這種醒來的方式既不浪漫也不壯烈，甚至有點猥瑣。",
+        "image": "docs/LN_BG1.png",
+        "character": "",
+        "nextText": 3
+    },
+    {
+        "id": 3,
+        "speaker": "",
+        "text": "趴在桌上睡了不知道多久，半張臉被壓得發麻，口水在手臂上乾掉後留下一層緊繃的薄膜。",
+        "image": "docs/LN_BG1.png",
+        "character": "",
+        "nextText": 4
+    },
+    {
+        "id": 4,
+        "speaker": "主角",
+        "text": "「哀」",
+        "image": "docs/LN_BG1.png",
+        "character": "docs/LN_CH1.png",
+        "nextText": 5
+    },
+    {
+        "id": 5,
+        "speaker": "",
+        "text": "猛地從書桌上撐起身體，動作太大，手肘似乎撞倒了桌邊空的寶特瓶。",
+        "image": "docs/LN_BG1.png",
+        "character": "",
+        "nextText": 6
+    },
+    {
+        "id": 6,
+        "speaker": "",
+        "text": "但現在這些顯得不慎重要。",
+        "image": "docs/LN_BG1.png",
+        "character": "",
+        "nextText": 7
+    },
+    {
+        "id": 7,
+        "speaker": "",
+        "text": "推開房門躡手腳地走過父母的房門，隔著木門，還是能隱約聽到父親沉重的鼾聲。",
+        "image": "docs/LN_BG1.png",
+        "character": "",
+        "nextText": 8
+    },
+    {
+        "id": 8,
+        "speaker": "",
+        "text": "進了廁所，很順手的按了開關。",
+        "image": "docs/LN_BG2.png",
+        "character": "",
+        "nextText": 9
+    },
+    {
+        "id": 9,
+        "speaker": "",
+        "text": "尿液撞擊馬桶水的聲音在寂靜的深夜裡大得嚇人。",
+        "image": "docs/LN_BG2.png",
+        "character": "",
+        "nextText": 10
+    },
+    {
+        "id": 10,
+        "speaker": "",
+        "text": "走到洗手台前，下意識的撥了下頭髮。",
+        "image": "docs/LN_BG2.png",
+        "character": "",
+        "nextText": 11
+    },
+    {
+        "id": 11,
+        "speaker": "主角",
+        "text": "「啊」",
+        "image": "docs/LN_BG2.png",
+        "character": "docs/LN_CH2.png",
+        "nextText": 12
+    },
+    {
+        "id": 12,
+        "speaker": "",
+        "text": "抬頭看向鏡子。",
+        "image": "docs/LN_BG2.png",
+        "character": "",
+        "nextText": 13
+    },
+    {
+        "id": 13,
+        "speaker": "",
+        "text": "鏡子裡的那顆平頭，不是平常的樣子，是下午三點半之後的那個我。",
+        "image": "docs/LN_BG2.png",
+        "character": "",
+        "nextText": 14
+    },
+    {
+        "id": 14,
+        "speaker": "",
+        "text": "回到房間躺回床上，閉上眼睛，試著在那種規律的鼾聲中，最後一次抓住這個平凡得要命的自由。",
+        "image": "docs/LN_BG1.png",
+        "character": ""
+    }
+]

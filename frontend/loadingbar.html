@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>載入中...</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .font-tech {
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .loading-bar {
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        .fade-out {
+            opacity: 0;
+            transition: opacity 0.5s ease-out;
+        }
+    </style>
+</head>
+
+<body id="body"
+    class="bg-stone-950 h-screen flex flex-col items-center justify-center text-stone-300 transition-opacity duration-500">
+
+    <!-- SPLASH SCREEN CONTAINER -->
+    <div id="splash-screen"
+        class="fixed inset-0 flex flex-col items-center justify-center transition-opacity duration-700 z-50 bg-stone-950">
+        <div class="relative">
+            <i class="fa-solid fa-person-rifle text-[120px] text-green-600 animate-bounce"></i>
+            <div class="absolute -bottom-4 left-1/2 -translate-x-1/2 w-32 h-4 bg-black/50 blur-xl rounded-full"></div>
+        </div>
+        <h1 class="text-4xl font-bold text-white mt-8 font-tech tracking-[0.5em] animate-pulse">SIMSOLDIER</h1>
+        <p class="text-stone-500 mt-2 font-mono text-xs tracking-widest">VIRTUAL MILITARY TRAINING SYSTEM</p>
+    </div>
+
+    <!-- LOADING BAR CONTAINER -->
+    <div id="loader-content" class="w-64 space-y-4 text-center hidden">
+        <!-- Spinner -->
+        <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500 mb-4"></div>
+
+        <h2 class="text-xl font-bold tracking-widest animate-pulse">全力載入ING!!</h2>
+
+        <!-- Progress Bar Container -->
+        <div class="w-full bg-stone-900 rounded-full h-2.5 border border-stone-800 overflow-hidden">
+            <div id="progress"
+                class="bg-green-600 h-2.5 rounded-full loading-bar shadow-[0_0_10px_rgba(34,197,94,0.5)]"></div>
+        </div>
+
+        <p class="text-xs font-tech text-stone-500 mt-2">載入中...</p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script>
+        // Get destination from URL params
+        const urlParams = new URLSearchParams(window.location.search);
+        const dest = urlParams.get('dest') || 'index.html';
+
+        const splash = document.getElementById('splash-screen');
+        const loader = document.getElementById('loader-content');
+        const progressBar = document.getElementById('progress');
+        const body = document.getElementById('body');
+
+        // Logic: Check Session Storage
+        const hasSeenSplash = sessionStorage.getItem('simSoldier_splash_seen');
+
+        if (hasSeenSplash) {
+            // === SCENARIO 1: RETURNING USER ===
+            // 1. Force remove splash immediately
+            splash.style.display = 'none';
+
+            // 2. Show loader immediately
+            loader.classList.remove('hidden');
+
+            // 3. Start Loading Bar
+            startLoading();
+
+        } else {
+            // === SCENARIO 2: FIRST VISIT ===
+            // 1. Set flag so next time we skip
+            sessionStorage.setItem('simSoldier_splash_seen', 'true');
+
+            // 2. Play Splash Animation (1.5s total)
+            setTimeout(() => {
+                // Fade out splash
+                splash.style.opacity = '0';
+
+                setTimeout(() => {
+                    // Hide splash completely
+                    splash.style.display = 'none';
+
+                    // Show loader
+                    loader.classList.remove('hidden');
+
+                    // Start Loading Bar
+                    startLoading();
+                }, 700); // 0.7s fade out
+            }, 1200); // 1.2s display time
+        }
+
+        function startLoading() {
+            let width = 0;
+            // Update every 10ms -> fast loading
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    // Fade out body before redirect
+                    body.classList.add('fade-out');
+                    setTimeout(() => {
+                        window.location.href = dest;
+                    }, 500);
+                } else {
+                    width++;
+                    progressBar.style.width = width + '%';
+                }
+            }, 10);
+        }
+    </script>
+</body>
+
+</html>
