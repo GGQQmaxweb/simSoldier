@@ -34,6 +34,10 @@
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js" crossorigin="anonymous"></script>
 
+    <!-- Leaflet CSS & JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
     <!-- logic moved to js/main.js -->
 </head>
 
@@ -1352,13 +1356,10 @@
                                     </div>
                                 </div>
 
-                                <!-- Right Column: Google Map -->
+                                <!-- Right Column: OpenStreetMap -->
                                 <div
-                                    class="lg:col-span-2 bg-stone-800 rounded-lg overflow-hidden border border-stone-700 h-full sticky top-0 shadow-xl">
-                                    <iframe
-                                        src="https://www.google.com/maps/d/u/0/embed?mid=16N88jPdRGWanJAVlVUWoE1moYqVvi1A&ehbc=2E312F&noprof=1"
-                                        width="100%" height="100%" style="border:0;" allowfullscreen=""
-                                        loading="lazy"></iframe>
+                                    class="lg:col-span-2 bg-stone-800 rounded-lg overflow-hidden border border-stone-700 h-full sticky top-0 shadow-xl relative z-10">
+                                    <div id="map" class="w-full h-full z-0 relative"></div>
                                 </div>
                             </div>
                         </div>
@@ -1614,6 +1615,18 @@
                 const details = card.querySelector('.location-details');
                 const icon = element.querySelector('.fa-chevron-down');
 
+                // 關閉其他已展開的營區介紹
+                const allDetails = document.querySelectorAll('.location-details');
+                allDetails.forEach(otherDetails => {
+                    if (otherDetails !== details && !otherDetails.classList.contains('hidden')) {
+                        otherDetails.classList.add('hidden');
+                        const otherIcon = otherDetails.parentElement.querySelector('.fa-chevron-down');
+                        if (otherIcon) {
+                            otherIcon.style.transform = 'rotate(0deg)';
+                        }
+                    }
+                });
+
                 if (details) {
                     details.classList.toggle('hidden');
                     if (icon) {
@@ -1642,6 +1655,9 @@
                 </button>
             </div>
         </div>
+
+        <!-- Map Initialization Script -->
+        <script src="js/map.js"></script>
 
         <!-- Main Application Script -->
         <script type="module" src="js/main.js?v=20"></script>

@@ -3,7 +3,7 @@
         "id": 1,
         "speaker": "",
         "text": "下腹部一陣尖銳的抽痛，像是有人拿著錐子在裡面攪動。",
-        "image": "docs/LN_BG1.png",
+        "image": "img/LN_BG1.png",
         "character": "",
         "nextText": 2
     },
@@ -11,7 +11,7 @@
         "id": 2,
         "speaker": "",
         "text": "這種醒來的方式既不浪漫也不壯烈，甚至有點猥瑣。",
-        "image": "docs/LN_BG1.png",
+        "image": "img/LN_BG1.png",
         "character": "",
         "nextText": 3
     },
@@ -19,7 +19,7 @@
         "id": 3,
         "speaker": "",
         "text": "趴在桌上睡了不知道多久，半張臉被壓得發麻，口水在手臂上乾掉後留下一層緊繃的薄膜。",
-        "image": "docs/LN_BG1.png",
+        "image": "img/LN_BG1.png",
         "character": "",
         "nextText": 4
     },
@@ -27,15 +27,15 @@
         "id": 4,
         "speaker": "主角",
         "text": "「哀」",
-        "image": "docs/LN_BG1.png",
-        "character": "docs/LN_CH1.png",
+        "image": "img/LN_BG1.png",
+        "character": "img/LN_CH1.png",
         "nextText": 5
     },
     {
         "id": 5,
         "speaker": "",
         "text": "猛地從書桌上撐起身體，動作太大，手肘似乎撞倒了桌邊空的寶特瓶。",
-        "image": "docs/LN_BG1.png",
+        "image": "img/LN_BG1.png",
         "character": "",
         "nextText": 6
     },
@@ -43,7 +43,7 @@
         "id": 6,
         "speaker": "",
         "text": "但現在這些顯得不慎重要。",
-        "image": "docs/LN_BG1.png",
+        "image": "img/LN_BG1.png",
         "character": "",
         "nextText": 7
     },
@@ -51,7 +51,7 @@
         "id": 7,
         "speaker": "",
         "text": "推開房門躡手腳地走過父母的房門，隔著木門，還是能隱約聽到父親沉重的鼾聲。",
-        "image": "docs/LN_BG1.png",
+        "image": "img/LN_BG1.png",
         "character": "",
         "nextText": 8
     },
@@ -59,7 +59,7 @@
         "id": 8,
         "speaker": "",
         "text": "進了廁所，很順手的按了開關。",
-        "image": "docs/LN_BG2.png",
+        "image": "img/LN_BG2.png",
         "character": "",
         "nextText": 9
     },
@@ -67,7 +67,7 @@
         "id": 9,
         "speaker": "",
         "text": "尿液撞擊馬桶水的聲音在寂靜的深夜裡大得嚇人。",
-        "image": "docs/LN_BG2.png",
+        "image": "img/LN_BG2.png",
         "character": "",
         "nextText": 10
     },
@@ -75,7 +75,7 @@
         "id": 10,
         "speaker": "",
         "text": "走到洗手台前，下意識的撥了下頭髮。",
-        "image": "docs/LN_BG2.png",
+        "image": "img/LN_BG2.png",
         "character": "",
         "nextText": 11
     },
@@ -83,15 +83,15 @@
         "id": 11,
         "speaker": "主角",
         "text": "「啊」",
-        "image": "docs/LN_BG2.png",
-        "character": "docs/LN_CH2.png",
+        "image": "img/LN_BG2.png",
+        "character": "img/LN_CH2.png",
         "nextText": 12
     },
     {
         "id": 12,
         "speaker": "",
         "text": "抬頭看向鏡子。",
-        "image": "docs/LN_BG2.png",
+        "image": "img/LN_BG2.png",
         "character": "",
         "nextText": 13
     },
@@ -99,7 +99,7 @@
         "id": 13,
         "speaker": "",
         "text": "鏡子裡的那顆平頭，不是平常的樣子，是下午三點半之後的那個我。",
-        "image": "docs/LN_BG2.png",
+        "image": "img/LN_BG2.png",
         "character": "",
         "nextText": 14
     },
@@ -107,7 +107,7 @@
         "id": 14,
         "speaker": "",
         "text": "回到房間躺回床上，閉上眼睛，試著在那種規律的鼾聲中，最後一次抓住這個平凡得要命的自由。",
-        "image": "docs/LN_BG1.png",
+        "image": "img/LN_BG1.png",
         "character": "",
         "nextText": 15
     },
@@ -115,7 +115,7 @@
         "id": 15,
         "speaker": "",
         "text": "大廳地板依舊磨得發亮，黑白相間的格子地磚向四周延展開來。",
-        "image": "docs/FD_TPstation.png",
+        "image": "img/FD_TPstation.png",
         "character": "",
         "nextText": 16
     },
@@ -123,7 +123,7 @@
         "id": 16,
         "speaker": "",
         "text": "抬頭望去，那個巨大的時刻表正發出細微的機械聲，跳動著南下北上的班次。",
-        "image": "docs/FD_TPstation.png",
+        "image": "img/FD_TPstation.png",
         "character": "",
         "nextText": 17
     },
@@ -131,7 +131,7 @@
         "id": 17,
         "speaker": "",
         "text": "這地方熟得不能再熟。",
-        "image": "docs/FD_TPstation.png",
+        "image": "img/FD_TPstation.png",
         "character": "",
         "nextText": 18
     },
@@ -139,7 +139,7 @@
         "id": 18,
         "speaker": "",
         "text": "大二那年去台中看表演、去年跟死黨去花蓮溯溪，回憶的起點都是從這裡開始的。",
-        "image": "docs/FD_TPstation.png",
+        "image": "img/FD_TPstation.png",
         "character": "",
         "nextText": 19
     },
@@ -147,7 +147,7 @@
         "id": 19,
         "speaker": "",
         "text": "明明是熟悉的地方揹著熟悉的背包看著熟悉的時刻表，但今天卻沒有以往的興奮感。",
-        "image": "docs/FD_TPstation.png",
+        "image": "img/FD_TPstation.png",
         "character": "",
         "nextText": 20
     },
@@ -155,7 +155,7 @@
         "id": 20,
         "speaker": "老媽",
         "text": "「你的冰美式還要喝嗎?」",
-        "image": "docs/FD_TPstation.png",
+        "image": "img/FD_TPstation.png",
         "character": "",
         "nextText": 21
     },
@@ -163,15 +163,15 @@
         "id": 21,
         "speaker": "主角",
         "text": "「再喝一口」",
-        "image": "docs/FD_TPstation.png",
-        "character": "docs/LN_CH2.png",
+        "image": "img/FD_TPstation.png",
+        "character": "img/LN_CH2.png",
         "nextText": 22
     },
     {
         "id": 22,
         "speaker": "老媽",
         "text": "「你們幾點集合」",
-        "image": "docs/FD_TPstation.png",
+        "image": "img/FD_TPstation.png",
         "character": "",
         "nextText": 23
     },
@@ -179,15 +179,15 @@
         "id": 23,
         "speaker": "主角",
         "text": "「八點半」",
-        "image": "docs/FD_TPstation.png",
-        "character": "docs/LN_CH2.png",
+        "image": "img/FD_TPstation.png",
+        "character": "img/LN_CH2.png",
         "nextText": 24
     },
     {
         "id": 24,
         "speaker": "老媽",
         "text": "「時間不早了，趕快過去吧，別遲到了」",
-        "image": "docs/FD_TPstation.png",
+        "image": "img/FD_TPstation.png",
         "character": "",
         "nextText": 25
     },
@@ -195,7 +195,7 @@
         "id": 25,
         "speaker": "",
         "text": "向老媽揮了揮手。",
-        "image": "docs/FD_TPstation.png",
+        "image": "img/FD_TPstation.png",
         "character": "",
         "nextText": 26
     },
@@ -203,7 +203,7 @@
         "id": 26,
         "speaker": "",
         "text": "穿越拖著行李箱的旅客、有說有笑的情侶、趕著開會的上班族。",
-        "image": "docs/FD_TPstation.png",
+        "image": "img/FD_TPstation.png",
         "character": "",
         "nextText": 27
     },
@@ -211,7 +211,7 @@
         "id": 27,
         "speaker": "",
         "text": "當然偶爾也有一些頂著三分頭的男生。",
-        "image": "docs/FD_TPstation.png",
+        "image": "img/FD_TPstation.png",
         "character": "",
         "nextText": 28
     },
@@ -219,7 +219,7 @@
         "id": 28,
         "speaker": "",
         "text": "想必我們的目的地是相同的",
-        "image": "docs/FD_TPstation.png",
+        "image": "img/FD_TPstation.png",
         "character": "",
         "nextText": 29
     },
@@ -227,7 +227,7 @@
         "id": 29,
         "speaker": "",
         "text": "從手扶梯下來到達月台",
-        "image": "docs/FD_PPtrain.png",
+        "image": "img/FD_PPtrain.png",
         "character": "",
         "nextText": 30
     },
@@ -235,15 +235,15 @@
         "id": 30,
         "speaker": "帶隊官",
         "text": "「這邊！步三連的來這邊坐好！」",
-        "image": "docs/FD_PPtrain.png",
-        "character": "docs/Leader.png",
+        "image": "img/FD_PPtrain.png",
+        "character": "img/Leader.png",
         "nextText": 31
     },
     {
         "id": 31,
         "speaker": "",
         "text": "公所的帶隊官揮著小旗子，語氣並不兇，給人一種駕輕就熟的感覺。",
-        "image": "docs/FD_PPtrain.png",
+        "image": "img/FD_PPtrain.png",
         "character": "",
         "nextText": 32
     },
@@ -251,23 +251,23 @@
         "id": 32,
         "speaker": "帶隊官",
         "text": "「叫什麼名字」",
-        "image": "docs/FD_PPtrain.png",
-        "character": "docs/Leader.png",
+        "image": "img/FD_PPtrain.png",
+        "character": "img/Leader.png",
         "nextText": 33
     },
     {
         "id": 33,
         "speaker": "主角",
         "text": "「張麻子」",
-        "image": "docs/FD_PPtrain.png",
-        "character": "docs/LN_CH2.png",
+        "image": "img/FD_PPtrain.png",
+        "character": "img/LN_CH2.png",
         "nextText": 34
     },
     {
         "id": 34,
         "speaker": "",
         "text": "他核對身分以後就揮揮手示意我到旁邊坐著。",
-        "image": "docs/FD_PPtrain.png",
+        "image": "img/FD_PPtrain.png",
         "character": "",
         "nextText": 35
     },
@@ -275,7 +275,7 @@
         "id": 35,
         "speaker": "",
         "text": "旁邊的同梯轉頭看了我一眼。",
-        "image": "docs/FD_PPtrain.png",
+        "image": "img/FD_PPtrain.png",
         "character": "",
         "nextText": 36
     },
@@ -283,7 +283,7 @@
         "id": 36,
         "speaker": "",
         "text": "他的平頭理得很徹底，甚至看得到頭皮上的青筋。",
-        "image": "docs/FD_PPtrain.png",
+        "image": "img/FD_PPtrain.png",
         "character": "",
         "nextText": 37
     },
@@ -291,7 +291,7 @@
         "id": 37,
         "speaker": "",
         "text": "我們沒有交談，只是互相點了點頭。",
-        "image": "docs/FD_PPtrain.png",
+        "image": "img/FD_PPtrain.png",
         "character": "",
         "nextText": 38
     },
@@ -299,7 +299,7 @@
         "id": 38,
         "speaker": "",
         "text": "在這種場合，任何寒暄都顯得不必要，因為目的地是一樣的。",
-        "image": "docs/FD_PPtrain.png",
+        "image": "img/FD_PPtrain.png",
         "character": "",
         "nextText": 39
     },
@@ -307,7 +307,7 @@
         "id": 39,
         "speaker": "",
         "text": "這時，遠處傳來了低沉的轟鳴聲。",
-        "image": "docs/FD_PPtrain.png",
+        "image": "img/FD_PPtrain.png",
         "character": "",
         "nextText": 40
     },
@@ -315,7 +315,7 @@
         "id": 40,
         "speaker": "",
         "text": "兩道刺眼的白光從隧道深處射出，照亮了月台邊緣的黃色警戒線。",
-        "image": "docs/FD_PPtrain.png",
+        "image": "img/FD_PPtrain.png",
         "character": "",
         "nextText": 41
     },
@@ -323,7 +323,7 @@
         "id": 41,
         "speaker": "",
         "text": "除了火車進站的風冷冷地拂過了我的平頭。",
-        "image": "docs/FD_PPtrain.png",
+        "image": "img/FD_PPtrain.png",
         "character": "",
         "nextText": 42
     },
@@ -331,7 +331,7 @@
         "id": 42,
         "speaker": "",
         "text": "還伴隨著一股”焦味”。",
-        "image": "docs/FD_PPtrain.png",
+        "image": "img/FD_PPtrain.png",
         "character": "",
         "nextText": 43
     },
@@ -339,7 +339,7 @@
         "id": 43,
         "speaker": "",
         "text": "那是氣軔減壓帶來的煞車皮摩擦制動車輪所帶來的氣味。",
-        "image": "docs/FD_PPtrain.png",
+        "image": "img/FD_PPtrain.png",
         "character": "",
         "nextText": 44
     },
@@ -347,7 +347,7 @@
         "id": 44,
         "speaker": "",
         "text": "那是一台E1000型PP自強。",
-        "image": "docs/FD_PPtrain.png",
+        "image": "img/FD_PPtrain.png",
         "character": "",
         "nextText": 45
     },
@@ -355,7 +355,7 @@
         "id": 45,
         "speaker": "",
         "text": "銀色的車廂緩緩滑行，最後精準地停在面前。",
-        "image": "docs/FD_PPtrain.png",
+        "image": "img/FD_PPtrain.png",
         "character": "",
         "nextText": 46
     },
@@ -363,7 +363,7 @@
         "id": 46,
         "speaker": "",
         "text": "車窗倒映出一群坐在地上的人影，看起來毫無生氣。",
-        "image": "docs/FD_PPtrain.png",
+        "image": "img/FD_PPtrain.png",
         "character": "",
         "nextText": 47
     },
@@ -371,7 +371,7 @@
         "id": 47,
         "speaker": "",
         "text": "(框啷，框啷，框啷，框啷)",
-        "image": "docs/FD_passenger carriage.png",
+        "image": "img/FD_passenger carriage.png",
         "character": "",
         "nextText": 48
     },
@@ -379,7 +379,7 @@
         "id": 48,
         "speaker": "",
         "text": "車廂安靜得只聽得見規律的鐵軌的撞擊聲。",
-        "image": "docs/FD_passenger carriage.png",
+        "image": "img/FD_passenger carriage.png",
         "character": "",
         "nextText": 49
     },
@@ -387,7 +387,7 @@
         "id": 49,
         "speaker": "",
         "text": "有人在跟隔壁的同梯聊天；有人盯著窗外的景色發呆；有人戴著耳機在享受著音樂。",
-        "image": "docs/FD_passenger carriage.png",
+        "image": "img/FD_passenger carriage.png",
         "character": "",
         "nextText": 50
     },
@@ -395,7 +395,7 @@
         "id": 50,
         "speaker": "",
         "text": "而我把頭靠在車窗上透過玻璃的震動試著在最後的自由時間裡補眠。",
-        "image": "docs/FD_passenger carriage.png",
+        "image": "img/FD_passenger carriage.png",
         "character": "",
         "nextText": 51
     },
@@ -403,15 +403,15 @@
         "id": 51,
         "speaker": "帶隊官",
         "text": "「步三連的，行李拿好，準備下車！」",
-        "image": "docs/FD_passenger carriage.png",
-        "character": "docs/Leader.png",
+        "image": "img/FD_passenger carriage.png",
+        "character": "img/Leader.png",
         "nextText": 52
     },
     {
         "id": 52,
         "speaker": "",
         "text": "帶隊官的聲音撕裂了車廂內的死寂；所有人像觸電一樣彈起來，手忙腳亂地抓起地上的包包。",
-        "image": "docs/FD_passenger carriage.png",
+        "image": "img/FD_passenger carriage.png",
         "character": "",
         "nextText": 53
     },
@@ -419,7 +419,7 @@
         "id": 53,
         "speaker": "",
         "text": "車門打開的瞬間，一股與車廂內完全不匹配的氣流迎面而來。",
-        "image": "docs/FD_station.png",
+        "image": "img/FD_station.png",
         "character": "",
         "nextText": 54
     },
@@ -427,15 +427,15 @@
         "id": 54,
         "speaker": "帶隊官",
         "text": "「這邊集合列隊」",
-        "image": "docs/FD_station.png",
-        "character": "docs/Leader.png",
+        "image": "img/FD_station.png",
+        "character": "img/Leader.png",
         "nextText": 55
     },
     {
         "id": 55,
         "speaker": "",
         "text": "帶隊官以不小的音量說到。",
-        "image": "docs/FD_station.png",
+        "image": "img/FD_station.png",
         "character": "",
         "nextText": 56
     },
@@ -443,7 +443,7 @@
         "id": 56,
         "speaker": "",
         "text": "車站出口外面，沒有計程車，也沒有接送的家人。",
-        "image": "docs/FD_station.png",
+        "image": "img/FD_station.png",
         "character": "",
         "nextText": 57
     },
@@ -451,7 +451,7 @@
         "id": 57,
         "speaker": "",
         "text": "只有一整排發動中、排氣管正冒著熱氣的灰色遊覽車。",
-        "image": "docs/Yilan_station.png",
+        "image": "img/Yilan_station.png",
         "character": "",
         "nextText": 58
     },
@@ -459,15 +459,15 @@
         "id": 58,
         "speaker": "帶隊官",
         "text": "「一排四個，上去位置坐滿！」",
-        "image": "docs/Yilan_station.png",
-        "character": "docs/Leader.png",
+        "image": "img/Yilan_station.png",
+        "character": "img/Leader.png",
         "nextText": 59
     },
     {
         "id": 59,
         "speaker": "",
         "text": "我挑了一個靠窗的位置坐下。",
-        "image": "docs/Yilan_station.png",
+        "image": "img/Yilan_station.png",
         "character": "",
         "nextText": 60
     },
@@ -475,15 +475,15 @@
         "id": 60,
         "speaker": "馬邦德",
         "text": "「歹勢」",
-        "image": "docs/FD_bus.png",
-        "character": "docs/All-knowing.png",
+        "image": "img/FD_bus.png",
+        "character": "img/All-knowing.png",
         "nextText": 61
     },
     {
         "id": 61,
         "speaker": "",
         "text": "旁邊很快擠進來另一個滿頭大汗的同梯，他的肩膀撞到你。",
-        "image": "docs/FD_bus.png",
+        "image": "img/FD_bus.png",
         "character": "",
         "nextText": 62
     },
@@ -491,7 +491,7 @@
         "id": 62,
         "speaker": "",
         "text": "搖搖頭示意沒關係後。",
-        "image": "docs/FD_bus.png",
+        "image": "img/FD_bus.png",
         "character": "",
         "nextText": 63
     },
@@ -499,7 +499,7 @@
         "id": 63,
         "speaker": "",
         "text": "(噠噠噠 )\n",
-        "image": "docs/FD_bus.png",
+        "image": "img/FD_bus.png",
         "character": "",
         "nextText": 64
     },
@@ -507,7 +507,7 @@
         "id": 64,
         "speaker": "",
         "text": "(轟隆隆 )\n",
-        "image": "docs/FD_bus.png",
+        "image": "img/FD_bus.png",
         "character": "",
         "nextText": 65
     },
@@ -515,7 +515,7 @@
         "id": 65,
         "speaker": "",
         "text": "遊覽車就這樣沿著道路行駛了一段時間。",
-        "image": "docs/FD_bus.png",
+        "image": "img/FD_bus.png",
         "character": "",
         "nextText": 66
     },
@@ -523,7 +523,7 @@
         "id": 66,
         "speaker": "",
         "text": "也聽了不少首司機的愛歌。",
-        "image": "docs/FD_bus.png",
+        "image": "img/FD_bus.png",
         "character": "",
         "nextText": 67
     },
@@ -531,7 +531,7 @@
         "id": 67,
         "speaker": "???",
         "text": "「我應該在車底，不應該在車裡」",
-        "image": "docs/FD_bus.png",
+        "image": "img/FD_bus.png",
         "character": "",
         "nextText": 68
     },
@@ -539,15 +539,15 @@
         "id": 68,
         "speaker": "馬邦德",
         "text": "「這我現在想做的事」",
-        "image": "docs/FD_bus.png",
-        "character": "docs/All-knowing.png",
+        "image": "img/FD_bus.png",
+        "character": "img/All-knowing.png",
         "nextText": 69
     },
     {
         "id": 69,
         "speaker": "",
         "text": "剛那個滿頭大汗的同梯以一種開玩笑的口吻說到。",
-        "image": "docs/FD_bus.png",
+        "image": "img/FD_bus.png",
         "character": "",
         "nextText": 70
     },
@@ -555,7 +555,7 @@
         "id": 70,
         "speaker": "",
         "text": "我忍不住笑了一聲，這句即時的黑色幽默，緩解了我一路積壓的緊張心情。",
-        "image": "docs/FD_bus.png",
+        "image": "img/FD_bus.png",
         "character": "",
         "nextText": 71
     },
@@ -563,7 +563,7 @@
         "id": 71,
         "speaker": "",
         "text": "…",
-        "image": "docs/FD_bus.png",
+        "image": "img/FD_bus.png",
         "character": "",
         "nextText": 72
     },
@@ -571,7 +571,7 @@
         "id": 72,
         "speaker": "",
         "text": "遊覽車緩慢煞停，引擎的轟鳴聲熄滅，車廂內的冷氣也跟著停了。",
-        "image": "docs/FD_bus.png",
+        "image": "img/FD_bus.png",
         "character": "",
         "nextText": 73
     },
@@ -579,23 +579,23 @@
         "id": 73,
         "speaker": "帶隊官",
         "text": "「各位役男，行李拿好，下車！」",
-        "image": "docs/FD_bus.png",
-        "character": "docs/Leader.png",
+        "image": "img/FD_bus.png",
+        "character": "img/Leader.png",
         "nextText": 74
     },
     {
         "id": 74,
         "speaker": "帶隊官",
         "text": "「動作快！每個人過來拿兵籍資料袋，拿完去旁邊排隊過安檢！」 ",
-        "image": "docs/FD_camp.png",
-        "character": "docs/Leader.png",
+        "image": "img/FD_camp.png",
+        "character": "img/Leader.png",
         "nextText": 75
     },
     {
         "id": 75,
         "speaker": "",
         "text": "安檢的氣氛像是在防走私。",
-        "image": "docs/FD_camp.png",
+        "image": "img/FD_camp.png",
         "character": "",
         "nextText": 76
     },
@@ -603,39 +603,39 @@
         "id": 76,
         "speaker": "長官",
         "text": "「包包全部打開！手機、行動電源、剪刀、打火機全部拿在手上！有帶違禁品自己開口，不要被我翻到！」 ",
-        "image": "docs/FD_camp.png",
-        "character": "docs/Leader.png",
+        "image": "img/FD_camp.png",
+        "character": "img/Leader.png",
         "nextText": 77
     },
     {
         "id": 77,
         "speaker": "支援阿姨",
         "text": "「你檢查完了嗎」",
-        "image": "docs/FD_camp.png",
-        "character": "docs/staff.png",
+        "image": "img/FD_camp.png",
+        "character": "img/staff.png",
         "nextText": 78
     },
     {
         "id": 78,
         "speaker": "主角",
         "text": "「阿.....好..好了」",
-        "image": "docs/FD_camp.png",
-        "character": "docs/LN_CH2.png",
+        "image": "img/FD_camp.png",
+        "character": "img/LN_CH2.png",
         "nextText": 79
     },
     {
         "id": 79,
         "speaker": "支援阿姨",
         "text": "「那可以去那邊了」",
-        "image": "docs/FD_camp.png",
-        "character": "docs/staff.png",
+        "image": "img/FD_camp.png",
+        "character": "img/staff.png",
         "nextText": 80
     },
     {
         "id": 80,
         "speaker": "",
         "text": "他指了指一個像是活動中心的建築。",
-        "image": "docs/FD_camp.png",
+        "image": "img/FD_camp.png",
         "character": "",
         "nextText": 81
     },
@@ -643,7 +643,7 @@
         "id": 81,
         "speaker": "",
         "text": "在簡單的點頭示意後，我朝著他指的方向移動腳步。",
-        "image": "docs/FD_camp.png",
+        "image": "img/FD_camp.png",
         "character": "",
         "nextText": 82
     },
@@ -651,7 +651,7 @@
         "id": 82,
         "speaker": "",
         "text": "在門口就可以聽到原子筆沙沙沙的書寫聲。 ",
-        "image": "docs/FD_Activity Center.png",
+        "image": "img/FD_Activity Center.png",
         "character": "",
         "nextText": 83
     },
@@ -659,7 +659,7 @@
         "id": 83,
         "speaker": "",
         "text": "進去之後就清一色都低著頭振筆疾書。",
-        "image": "docs/FD_Activity Center.png",
+        "image": "img/FD_Activity Center.png",
         "character": "",
         "nextText": 84
     },
@@ -667,15 +667,15 @@
         "id": 84,
         "speaker": "發紙筆的長官",
         "text": "「這資料表你去找個空位寫」",
-        "image": "docs/FD_Activity Center.png",
-        "character": "docs/Leader.png",
+        "image": "img/FD_Activity Center.png",
+        "character": "img/Leader.png",
         "nextText": 85
     },
     {
         "id": 85,
         "speaker": "",
         "text": "姓名、戶籍地址、有沒有前科、有沒有吸毒……像個機器人一樣重複填寫自己的隱私。",
-        "image": "docs/FD_Activity Center.png",
+        "image": "img/FD_Activity Center.png",
         "character": "",
         "nextText": 86
     },
@@ -683,7 +683,7 @@
         "id": 86,
         "speaker": "",
         "text": "就在寫到「緊急聯絡人」時，台前突然換了一個穿著筆挺軍服、頭髮抓得一絲不苟的少尉，手裡還拿著一張彩色文宣。",
-        "image": "docs/FD_Activity Center.png",
+        "image": "img/FD_Activity Center.png",
         "character": "",
         "nextText": 87
     },
@@ -691,15 +691,15 @@
         "id": 87,
         "speaker": "宣傳官",
         "text": "「各位弟兄，大家填資料辛苦了。利用這個時間，長官來跟大家分享一個翻轉人生的機會。」",
-        "image": "docs/FD_Activity Center.png",
-        "character": "docs/Battalion Commander.png",
+        "image": "img/FD_Activity Center.png",
+        "character": "img/Battalion Commander.png",
         "nextText": 88
     },
     {
         "id": 88,
         "speaker": "",
         "text": "台上的招募員露出了標準的業務微笑，台下的新兵們抬了頭看了一眼便低下頭繼續填寫資料。",
-        "image": "docs/FD_Activity Center.png",
+        "image": "img/FD_Activity Center.png",
         "character": "",
         "nextText": 89
     },
@@ -707,8 +707,8 @@
         "id": 89,
         "speaker": "宣傳官",
         "text": "「大家進來當兵，一個月領六千多塊，對不對？長官坦白跟你們說，這點錢連交女朋友都不夠。但是，如果你們今天轉服志願役，起薪就是四萬五以上。四年存下一百萬不是夢！而且我們營區福利好、可以定期外宿、上下班……」\n",
-        "image": "docs/FD_Activity Center.png",
-        "character": "docs/Battalion Commander.png",
+        "image": "img/FD_Activity Center.png",
+        "character": "img/Battalion Commander.png",
         "nextText": 90
     }
 ]

@@ -406,20 +406,44 @@
         const mainText = document.getElementById('text-content');
         const optionsContainer = document.getElementById('options');
         const autoBtn = document.getElementById('auto-btn');
+        const rawImageBaseUrl = 'https://raw.githubusercontent.com/XXXG-00W0-wing/simSoldier_Story/refs/heads/main/img/';
 
         let state = {};
         let currentNextText = null;
         let isAuto = false;
         let autoTimer = null;
 
+        function resolveImageUrl(src) {
+            if (!src) return '';
+            if (/^https?:\/\//i.test(src) || /^data:/i.test(src)) {
+                return src;
+            }
+            const imageName = src.replace(/^.*[\\/]/, '');
+            return rawImageBaseUrl + imageName;
+        }
+
+        function preloadStoryImages(nodes) {
+            const urls = new Set();
+            nodes.forEach(node => {
+                if (node.image) urls.add(resolveImageUrl(node.image));
+                if (node.character) urls.add(resolveImageUrl(node.character));
+            });
+
+            urls.forEach(url => {
+                const img = new Image();
+                img.src = url;
+            });
+        }
+
         let textNodes = [];
         let historyLog = [];
         let isHistoryOpen = false;
         // Load story data from story.json
-        fetch('./story.json')
+        fetch('https://raw.githubusercontent.com/XXXG-00W0-wing/simSoldier_Story/refs/heads/main/story.json')
             .then(response => response.json())
             .then(data => {
                 textNodes = data;
+                preloadStoryImages(textNodes);
                 // 初始化不直接顯示劇情，等待點擊「開始遊戲」
             })
             .catch(err => {
@@ -727,16 +751,17 @@
 
             // 更新背景
             if (node.image) {
-                bgLayer.style.backgroundImage = `url('${node.image}')`;
+                bgLayer.style.backgroundImage = `url('${resolveImageUrl(node.image)}')`;
             }
 
             // 更新角色
             if (node.character) {
-                charImg.src = node.character;
+                const characterUrl = resolveImageUrl(node.character);
+                charImg.src = characterUrl;
                 charImg.style.display = 'block';
                 setTimeout(() => { charImg.style.opacity = '1'; }, 10);
 
-                centerCharImg.src = node.character;
+                centerCharImg.src = characterUrl;
                 centerCharImg.style.display = 'block';
                 setTimeout(() => { centerCharImg.style.opacity = '1'; }, 10);
             } else {
