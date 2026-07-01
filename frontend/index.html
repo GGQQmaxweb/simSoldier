@@ -263,6 +263,11 @@
                     <i class="fa-solid fa-map-location-dot text-[20px]"></i>
                     <span class="font-bold text-sm">新訓地點</span>
                 </button>
+                <button data-tab="delay"
+                    class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-stone-400 hover:bg-stone-800 hover:text-stone-200">
+                    <i class="fa-solid fa-calendar-minus text-[20px]"></i>
+                    <span class="font-bold text-sm">延役專區</span>
+                </button>
                 <button data-tab="rhapsody"
                     class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-stone-400 hover:bg-stone-800 hover:text-stone-200">
                     <i class="fa-solid fa-music text-[20px]"></i>
@@ -1567,6 +1572,10 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <!-- TAB: DELAY -->
+                    <div id="view-delay" class="view-section hidden space-y-6 flex flex-col h-[calc(100vh-180px)] md:h-[calc(100vh-120px)] w-full">
+                    </div>
 
                     <!-- TAB: QUIZ -->
                     <div id="view-quiz"
@@ -1776,6 +1785,10 @@
                     <button data-tab="quiz" class="nav-btn-mobile flex flex-col items-center gap-1 text-stone-500">
                         <i class="fa-solid fa-graduation-cap text-[20px]"></i>
                         <span class="text-[10px]">課堂</span>
+                    </button>
+                    <button data-tab="delay" class="nav-btn-mobile flex flex-col items-center gap-1 text-stone-500">
+                        <i class="fa-solid fa-calendar-minus text-[20px]"></i>
+                        <span class="text-[10px]">延役</span>
                     </button>
                 </nav>
 

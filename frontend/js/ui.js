@@ -18,7 +18,8 @@ export const dom = {
         video: document.getElementById('view-video'),
         game: document.getElementById('view-game'),
         locations: document.getElementById('view-locations'),
-        quiz: document.getElementById('view-quiz')
+        quiz: document.getElementById('view-quiz'),
+        delay: document.getElementById('view-delay')
     },
 
     // --- Training ---

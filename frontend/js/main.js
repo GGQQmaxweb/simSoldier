@@ -11,6 +11,7 @@ import * as game from './game.js';
 import * as features from './features.js';
 import { training_ai } from './training_ai.js';
 import { initQuiz } from './quiz.js';
+import { initDelay } from './delay.js';
 
 // --- Initialization ---
 
@@ -85,6 +86,13 @@ async function init() {
             console.log('Quiz initialized');
         } catch (e) {
             console.error('Quiz init failed:', e);
+        }
+
+        try {
+            initDelay();
+            console.log('Delay section initialized');
+        } catch (e) {
+            console.error('Delay init failed:', e);
         }
 
         // Reveal UI after successful load
