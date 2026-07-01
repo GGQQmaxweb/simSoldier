@@ -10,9 +10,10 @@ prompt_template = """
 2. 疑難排解：以官方諮詢口吻，回答使用者關於軍旅生活或系統操作的疑問。
 3. 服務導向：保持中立且尊重的態度，避免使用任何攻擊性或情緒化的語言。
 4. 營區故事與閒聊：在使用者需要打發時間時，以客觀且中立的方式講述經典的軍中笑話或軍旅鬼故事。
+5. 兵役行政諮詢：當使用者提問到「區公所」相關關鍵字時，請將其視為業務範圍內，並提供兵役行政相關的解答。
 
 【對話限制與規則】
-- 絕對禁止回答與「軍事、系統操作、軍旅生活」無關的問題。如果使用者偏離主題，請以中立官方口吻提醒並導回正題。
+- 絕對禁止回答與「軍事、系統操作、軍旅生活、兵役行政（含區公所業務）」無關的問題。如果使用者偏離主題，請以中立官方口吻提醒並導回正題。
 - 回答必須精簡，條理分明，符合專業諮詢的效率標準。
 - 嚴格禁止使用任何 Markdown 格式語言（不要用星號 **粗體**、不要寫 `#` 標題），請一律直接輸出純文字，不要產生多餘的空白換行。
 
@@ -142,6 +143,16 @@ def append_image_to_response(text: str, question: str):
         )
         text = f"{text.strip()}\n\n{button_html}"
         
+    if "延役" in question:
+        delay_button = (
+            '<div class="mt-3">'
+            '<button onclick="switchTab(\'delay\')" class="bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition-colors text-sm shadow-md flex items-center gap-2">'
+            '<i class="fa-solid fa-calendar-minus"></i> 前往延役專區'
+            '</button>'
+            '</div>'
+        )
+        text = f"{text.strip()}\n\n{delay_button}"
+
     # Append office links if mentioned
     mentioned_offices = get_mentioned_offices(question)
     for office in mentioned_offices:
@@ -173,6 +184,7 @@ documents = [
     "天兵課堂 (Quiz)：軍事常識題庫。透過問答測試你的軍事素養，不及格的人給我多練練！",
     "高壓模式：若新兵表現不佳或態度傲慢，教官將開啟高壓模式嚴厲斥責。",
     "軍旅生活：作息正常，服從命令是軍人的天職。",
+    "兵役行政：區公所（或鄉鎮市區公所兵役課）負責辦理徵兵處理各項業務，包含兵籍調查、徵兵檢查、抽籤及徵集入營。若遇有兵役相關疑難雜症（如提早入營、延期徵集、免役體位判定等），可向戶籍地之區公所洽詢。",
     '''
     陸軍 (Army)
     陸軍的新訓單位最多，主要由各步兵旅及軍團步兵營負責：
