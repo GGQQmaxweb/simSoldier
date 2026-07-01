@@ -180,10 +180,10 @@ export function initDelay() {
                             </div>
                         </div>
                     </div>
-                    
                     <div class="mt-6 p-4 bg-stone-800/60 border border-stone-700 rounded-lg text-sm text-stone-300 flex items-start gap-3">
                         <i class="fa-solid fa-circle-info text-blue-400 mt-1"></i>
                         <p>役男入營前需完成前 3 項作業（兵籍調查、徵兵檢查、抽籤），完成後始依序徵集作業。</p>
+                        <a href="#" id="btn-delay-flow" class="text-green-500 hover:text-green-400 underline font-bold cursor-pointer whitespace-nowrap">延役流程圖</a>
                     </div>
                 </section>
             </div>
@@ -193,10 +193,49 @@ export function initDelay() {
                 (聯絡資料請於「役男入營時程申請系統」查詢)
             </div>
         </div>
+
+        <!-- Image Modal for 延役流程圖 -->
+        <div id="modal-delay-image" class="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-4 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+            <div class="relative max-w-5xl w-full flex flex-col items-center">
+                <button id="btn-close-delay-image" class="absolute -top-12 right-0 md:-right-8 text-stone-400 hover:text-white transition-colors text-3xl focus:outline-none">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <img src="docs/延役流程.png" alt="延役流程圖" class="max-w-full max-h-[85vh] rounded-lg shadow-2xl object-contain border border-stone-700">
+            </div>
+        </div>
     `;
 
     const container = document.getElementById('view-delay');
     if (container) {
         container.innerHTML = delayHTML;
+
+        // Image Modal Logic
+        const btnDelayFlow = document.getElementById('btn-delay-flow');
+        const modalDelayImage = document.getElementById('modal-delay-image');
+        const btnCloseDelayImage = document.getElementById('btn-close-delay-image');
+
+        if (btnDelayFlow && modalDelayImage && btnCloseDelayImage) {
+            btnDelayFlow.addEventListener('click', (e) => {
+                e.preventDefault();
+                modalDelayImage.classList.remove('hidden');
+                // Trigger reflow for transition
+                void modalDelayImage.offsetWidth;
+                modalDelayImage.classList.remove('opacity-0');
+            });
+
+            const closeModal = () => {
+                modalDelayImage.classList.add('opacity-0');
+                setTimeout(() => {
+                    modalDelayImage.classList.add('hidden');
+                }, 300);
+            };
+
+            btnCloseDelayImage.addEventListener('click', closeModal);
+            modalDelayImage.addEventListener('click', (e) => {
+                if (e.target === modalDelayImage) {
+                    closeModal();
+                }
+            });
+        }
     }
 }

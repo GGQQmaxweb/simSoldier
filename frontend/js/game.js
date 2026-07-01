@@ -19,11 +19,7 @@ function initGameDOM() {
         shockOverlay = document.getElementById('shock-overlay');
         btnBackHome = document.getElementById('btn-back-home');
 
-        if (btnDrawVillage) {
-            btnDrawVillage.addEventListener('click', () => {
-                startDraw(true);
-            });
-        }
+
         if (btnBackHome) {
             btnBackHome.addEventListener('click', () => {
                 quitGame();
@@ -35,6 +31,11 @@ function initGameDOM() {
 // 供 main.js 呼叫 (親自抽籤)
 export function startGame() {
     startDraw(false);
+}
+
+// 供 main.js 呼叫 (里長代抽)
+export function startVillageDraw() {
+    startDraw(true);
 }
 
 export function quitGame() {

@@ -153,6 +153,63 @@ def append_image_to_response(text: str, question: str):
         )
         text = f"{text.strip()}\n\n{delay_button}"
 
+    if question and ("體檢" in question or "複檢" in question):
+        medical_button = (
+            '<div class="mt-3">'
+            '<a href="https://servap3.docms.gov.taipei/bingo/bingo/S23_Info04" target="_blank" '
+            'class="bg-rose-700 hover:bg-rose-600 text-white font-bold py-2 px-4 rounded transition-colors text-sm shadow-md inline-flex items-center gap-2">'
+            '<i class="fa-solid fa-file-medical"></i> 前往體檢與複檢資訊'
+            '</a>'
+            '</div>'
+        )
+        text = f"{text.strip()}\n\n{medical_button}"
+
+    if question and "體檢" in question:
+        checklist_html = (
+            '<div class="mt-4 p-4 bg-stone-900 border border-stone-700 rounded-lg shadow-lg text-sm text-stone-200">'
+            '<h4 class="font-bold text-yellow-500 mb-3 flex items-center gap-1.5">'
+            '<i class="fa-solid fa-clipboard-list text-base"></i> 體檢當日應備文件與查檢表'
+            '</h4>'
+            '<div class="space-y-3">'
+            '<div>'
+            '<p class="font-bold text-stone-100 flex items-center gap-1"><i class="fa-solid fa-square-check text-green-500"></i> 1. 必備核心文件</p>'
+            '<ul class="list-disc list-inside pl-4 space-y-1 text-stone-300">'
+            '<li>國民身分證正本（驗證身分專用，健保卡或駕照通常不可替代）。</li>'
+            '<li>徵兵檢查通知單正本（報到時需繳回）。</li>'
+            '<li>最近 3 個月內 1 吋彩色半身照片 2 張（黏貼於體檢表使用，建議多帶 1 張備用）。</li>'
+            '</ul>'
+            '</div>'
+            '<div>'
+            '<p class="font-bold text-stone-100 flex items-center gap-1"><i class="fa-solid fa-file-circle-plus text-blue-500"></i> 2. 補充證明文件（攸關體位判定、免役或改判）</p>'
+            '<ul class="list-disc list-inside pl-4 space-y-1 text-stone-300">'
+            '<li>重大傷病卡、身心障礙證明。</li>'
+            '<li>公私立大醫院開立的「特定疾病診斷證明書」。</li>'
+            '<li>過往的手術病歷摘要、X 光片、精密檢查報告（如心電圖、氣喘檢查等）。</li>'
+            '</ul>'
+            '</div>'
+            '<div>'
+            '<p class="font-bold text-stone-100 flex items-center gap-1"><i class="fa-solid fa-shirt text-purple-500"></i> 3. 當日穿著與個人準備建議</p>'
+            '<ul class="list-disc list-inside pl-4 space-y-1 text-stone-300">'
+            '<li>身穿容易穿脫的衣物與鞋子（體檢需更換隔離袍，且會頻繁穿脫鞋子測量身高體重）。</li>'
+            '<li>配戴隱形眼鏡者，當天請改戴「有度數的眼鏡」（因為需要測量「裸視」與「矯正視力」，戴隱形眼鏡會耽誤拔除與檢測時間）。</li>'
+            '<li>體檢前不需要空腹（除非通知單有特別註明），但前三天請保持作息正常，避免飲食太過油膩，以免影響尿糖、肝功能等抽血驗尿數據。</li>'
+            '</ul>'
+            '</div>'
+            '</div>'
+            '</div>'
+        )
+        text = f"{text.strip()}\n\n{checklist_html}"
+
+    if question and "身家調查" in question:
+        backpack_button = (
+            '<div class="mt-3">'
+            '<button onclick="switchTab(\'inventory\')" class="bg-amber-700 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded transition-colors text-sm shadow-md flex items-center gap-2">'
+            '<i class="fa-solid fa-suitcase"></i> 前往入伍背包查看身家調查資訊'
+            '</button>'
+            '</div>'
+        )
+        text = f"{text.strip()}\n\n{backpack_button}"
+
     # Append office links if mentioned
     mentioned_offices = get_mentioned_offices(question)
     for office in mentioned_offices:
@@ -173,9 +230,33 @@ def append_image_to_response(text: str, question: str):
 # sym:documents
 # Example data can be extended or replaced with real user manuals / system documentation.
 documents = [
+    """
+    體檢當日應備文件與查檢表：
+    1. 必備核心文件
+    - 國民身分證正本（驗證身分專用，健保卡或駕照通常不可替代）。
+    - 徵兵檢查通知單正本（報到時需繳回）。
+    - 最近 3 個月內 1 吋彩色半身照片 2 張（黏貼於體檢表使用，建議多帶 1 張備用）。
+    2. 補充證明文件（攸關體位判定、免役或改判）
+    - 重大傷病卡、身心障礙證明。
+    - 公私立大醫院開立的「特定疾病診斷證明書」。
+    - 過往的手術病歷摘要、X 光片、精密檢查報告（如心電圖、氣喘檢查等）。
+    3. 當日穿著與個人準備建議
+    - 身穿容易穿脫的衣物與鞋子（體檢需更換隔離袍，且會頻繁穿脫鞋子測量身高體重）。
+    - 配戴隱形眼鏡者，當天請改戴「有度數的眼鏡」（因為需要測量「裸視」與「矯正視力」，戴隱形眼鏡會耽誤拔除與檢測時間）。
+    - 體檢前不需要空腹（除非通知單有特別註明），但前三天請保持作息正常，避免飲食太過油膩，以免影響尿糖、肝功能等抽血驗尿數據。
+    """,
     "系統基本操作：本系統「simSoldier」整合了各項軍事模擬功能，請透過側邊導覽列切換。新兵應定期檢查各項功能以確保訓練進度。",
     "訓練佈告欄 (Home)：查看當前回應狀況、大兵任務進度與 BMI 體位分析等核心資訊。",
     "今日課表 (Training)：進行 AI 動體能訓練。包含：徒手深蹲、伏地挺身、仰臥起坐。系統會透過鏡頭自動計數，請確保全身入鏡。",
+    """
+    身家調查內容與注意事項：
+    身家調查會問什麼、要做什麼：
+    1. 基本資料：姓名、身分證字號、戶籍與現住址、聯絡電話。
+    2. 就學意願：大四畢業想直接入伍？還是要繼續升學？攸關是否要辦理延役。
+    3. 健康狀況：是否領有身心障礙證明？有無重大傷病、開刀紀錄或遙傳疾病？調查後，系統會註記在體檢表上，供醫生參考。
+    4. 專長與證照：具備哪些國家級證照（如資訊安全、汽修、廚師、醫護等）？非常重要！這會影響到後續「專長兵抽籤」的資格。
+    5. 個人專長：專長科系、目前從事職業。
+    """,
     "入伍背包 (Inventory)：清查入伍必備物品（如：徵集令、身分證、私章、藥品等）。請勾選已準備好的物品，避免遺漏。",
     "教官聊天室 (Chat)：也就是現在這裡，提供軍事諮詢、系統操作引導與心理輔導。有問題儘管問，但別問些無關緊要的廢話！",
     "行政中心 (Onboarding)：查看或修改個人基本資料，包含姓名、役期、身高體重與病史設定。",

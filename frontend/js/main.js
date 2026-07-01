@@ -310,7 +310,63 @@ function setupEventListeners() {
     // Game Links & Control
     dom.linkGame.addEventListener('click', () => switchTab('game'));
     // dom.linkVideo.addEventListener('click', () => switchTab('video')); // Removed since element is deleted
-    dom.btnStartGame.addEventListener('click', game.startGame);
+    // Draw Rules Modal Logic
+    const btnShowDrawRules = document.getElementById('btn-show-draw-rules');
+    const drawRulesModal = document.getElementById('draw-rules-modal');
+    const agreeDrawRules = document.getElementById('agree-draw-rules');
+    const btnCancelDraw = document.getElementById('btn-cancel-draw');
+
+    if (btnShowDrawRules && drawRulesModal && agreeDrawRules && btnCancelDraw) {
+        btnShowDrawRules.addEventListener('click', () => {
+            drawRulesModal.classList.remove('hidden');
+            agreeDrawRules.checked = false;
+            dom.btnStartGame.disabled = true;
+        });
+
+        btnCancelDraw.addEventListener('click', () => {
+            drawRulesModal.classList.add('hidden');
+        });
+
+        agreeDrawRules.addEventListener('change', (e) => {
+            dom.btnStartGame.disabled = !e.target.checked;
+        });
+
+        dom.btnStartGame.addEventListener('click', () => {
+            drawRulesModal.classList.add('hidden');
+            game.startGame();
+        });
+    } else {
+        dom.btnStartGame.addEventListener('click', game.startGame);
+    }
+
+    // Village Draw Rules Modal Logic
+    const btnShowVillageRules = document.getElementById('btn-show-village-rules');
+    const villageRulesModal = document.getElementById('village-rules-modal');
+    const agreeVillageRules = document.getElementById('agree-village-rules');
+    const btnCancelVillageDraw = document.getElementById('btn-cancel-village-draw');
+    const btnDrawVillageInner = document.getElementById('btn-draw-village');
+
+    if (btnShowVillageRules && villageRulesModal && agreeVillageRules && btnCancelVillageDraw && btnDrawVillageInner) {
+        btnShowVillageRules.addEventListener('click', () => {
+            villageRulesModal.classList.remove('hidden');
+            agreeVillageRules.checked = false;
+            btnDrawVillageInner.disabled = true;
+        });
+
+        btnCancelVillageDraw.addEventListener('click', () => {
+            villageRulesModal.classList.add('hidden');
+        });
+
+        agreeVillageRules.addEventListener('change', (e) => {
+            btnDrawVillageInner.disabled = !e.target.checked;
+        });
+
+        btnDrawVillageInner.addEventListener('click', () => {
+            villageRulesModal.classList.add('hidden');
+            game.startVillageDraw();
+        });
+    }
+
     dom.btnQuitGame.addEventListener('click', game.quitGame);
     dom.btnRetryGame.addEventListener('click', game.startGame);
     dom.btnBackHome.addEventListener('click', () => {
@@ -385,14 +441,14 @@ function setupEventListeners() {
                 btnRhapsodyFullscreen.innerHTML = '<i class="fa-solid fa-compress text-xl"></i>';
                 btnRhapsodyFullscreen.title = '退出全螢幕';
                 console.log('🎮 Entered fullscreen mode');
-                } else {
-                    // Exit fullscreen mode - restore to 60rem layout using setAttribute
-                    viewRhapsody.setAttribute('style', RHAPSODY_NORMAL_STYLE);
-                    document.body.style.overflow = '';
-                    btnRhapsodyFullscreen.innerHTML = '<i class="fa-solid fa-expand text-xl"></i>';
-                    btnRhapsodyFullscreen.title = '切換全螢幕';
-                    console.log('🎮 Exited fullscreen mode');
-                }
+            } else {
+                // Exit fullscreen mode - restore to 60rem layout using setAttribute
+                viewRhapsody.setAttribute('style', RHAPSODY_NORMAL_STYLE);
+                document.body.style.overflow = '';
+                btnRhapsodyFullscreen.innerHTML = '<i class="fa-solid fa-expand text-xl"></i>';
+                btnRhapsodyFullscreen.title = '切換全螢幕';
+                console.log('🎮 Exited fullscreen mode');
+            }
         });
     } else {
         console.warn('⚠️ Rhapsody fullscreen: button or container not found');

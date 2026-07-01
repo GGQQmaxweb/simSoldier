@@ -38,4 +38,10 @@ export const INITIAL_BACKPACK = [
     { id: 12, name: "零錢 (投販賣機)", category: "life", acquired: false, required: false },
     { id: 13, name: "免洗內褲", category: "clothing", acquired: false, required: false },
     { id: 14, name: "黑色長襪", category: "clothing", acquired: false, required: true, note: "過腳踝" },
+    {
+        id: 15, name: "身家調查資料（預先了解）", category: "document", acquired: false, required: false,
+        note: "調查內容：基本資料、就學意願、健康狀況、專長與證照、個人專長。專長證照(資訊安全/汽修/廚師/醫護等)非常重要，影響專長兵抽籤資格！",
+        link: "https://dca.moi.gov.tw/ris/info.aspx"
+    },
 ];
+

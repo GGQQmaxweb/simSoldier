@@ -219,6 +219,50 @@
         </div>
     </div>
 
+    <!-- Timeline Detail Modal -->
+    <div id="modal-timeline"
+        class="fixed inset-0 z-[60] bg-black/90 flex items-center justify-center p-4 font-mono backdrop-blur-sm hidden">
+        <div
+            class="max-w-xl w-full bg-stone-900 rounded-lg border border-green-900/50 shadow-2xl relative overflow-hidden animate-fade-in">
+            <div class="bg-green-800 p-4 flex justify-between items-center relative">
+                <h3 id="timeline-modal-title" class="text-2xl font-bold text-white tracking-widest"></h3>
+                <button id="btn-close-timeline" class="text-green-200 hover:text-white transition-colors">
+                    <i class="fa-solid fa-xmark text-[28px]"></i>
+                </button>
+            </div>
+            <div class="p-6 md:p-8">
+                <p id="timeline-modal-content"
+                    class="text-stone-300 text-lg md:text-xl leading-relaxed whitespace-pre-wrap font-medium"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const modalTimeline = document.getElementById('modal-timeline');
+            const timelineModalTitle = document.getElementById('timeline-modal-title');
+            const timelineModalContent = document.getElementById('timeline-modal-content');
+            const btnCloseTimeline = document.getElementById('btn-close-timeline');
+
+            document.body.addEventListener('click', (e) => {
+                const btn = e.target.closest('.timeline-btn');
+                if (btn) {
+                    const title = btn.getAttribute('data-title');
+                    const content = btn.getAttribute('data-content');
+                    timelineModalTitle.textContent = title;
+                    timelineModalContent.textContent = content;
+                    modalTimeline.classList.remove('hidden');
+                }
+            });
+
+            if (btnCloseTimeline) {
+                btnCloseTimeline.addEventListener('click', () => {
+                    modalTimeline.classList.add('hidden');
+                });
+            }
+        });
+    </script>
+
     <!-- Main Layout -->
     <div class="flex h-screen bg-stone-950 text-stone-200 font-sans overflow-hidden">
 
@@ -500,6 +544,97 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Timeline Section -->
+                        <div
+                            class="bg-stone-900 p-6 rounded-lg shadow-lg border border-stone-800 flex flex-col justify-center">
+                            <h3 class="font-bold text-white mb-8 flex items-center gap-2 text-xl">
+                                <i class="fa-solid fa-timeline text-green-500"></i>
+                                <span>徵兵處理流程</span>
+                            </h3>
+
+                            <div class="flex flex-col md:flex-row w-full gap-2 md:gap-6">
+                                <!-- Timeline part (Left) -->
+                                <div
+                                    class="relative flex flex-col md:flex-row justify-between items-start md:items-start w-full md:w-3/4 md:px-8 h-full">
+                                    <!-- horizontal line (desktop) -->
+                                    <div class="hidden md:block absolute left-16 right-16 top-3 h-1 bg-stone-700 rounded">
+                                    </div>
+                                    <!-- vertical line (mobile fallback) -->
+                                    <div class="md:hidden absolute left-[1.65rem] top-4 bottom-10 w-1 bg-stone-700 rounded">
+                                    </div>
+
+                                    <!-- 兵籍調查 -->
+                                    <div
+                                        class="relative flex flex-row md:flex-col items-center group w-full md:w-1/3 mb-8 md:mb-0">
+                                        <div
+                                            class="w-6 h-6 shrink-0 rounded-full bg-stone-500 border-4 border-stone-900 group-hover:bg-green-500 transition-colors md:mb-4 mr-4 md:mr-0 z-10 relative">
+                                        </div>
+                                        <button class="timeline-btn text-left md:text-center focus:outline-none w-full"
+                                            data-title="兵籍調查"
+                                            data-content="役男在接獲戶籍地鄉(鎮、巿、區)公所通知辦理兵籍調查時，除可至「徵兵及齡男子兵籍調查線上申報系統」進行網路申報，亦可親自、委託代理人前往指定地點、臨櫃、傳真或郵寄的方式完成兵籍調查。">
+                                            <h4
+                                                class="text-lg font-bold text-stone-200 group-hover:text-green-400 transition-colors whitespace-nowrap">
+                                                兵籍調查</h4>
+                                            <p
+                                                class="text-sm text-stone-500 mt-1 group-hover:text-stone-300 transition-colors">
+                                                點擊查看詳細說明</p>
+                                        </button>
+                                    </div>
+
+                                    <!-- 役男徵兵體檢作業 -->
+                                    <div
+                                        class="relative flex flex-row md:flex-col items-center group w-full md:w-1/3 mb-8 md:mb-0">
+                                        <div
+                                            class="w-6 h-6 shrink-0 rounded-full bg-stone-500 border-4 border-stone-900 group-hover:bg-green-500 transition-colors md:mb-4 mr-4 md:mr-0 z-10 relative">
+                                        </div>
+                                        <button class="timeline-btn text-left md:text-center focus:outline-none w-full"
+                                            data-title="役男徵兵體檢作業"
+                                            data-content="應依指定時間、地點、攜帶徵兵檢查通知書、國民身分證及照片等前往報到接受體格檢查。&#10;&#10;應受檢查役男，如在外謀生或就學，不能返回戶籍地受檢，得使用線上預約系統申請跨縣市代辦體檢，或臨櫃向寄居地直轄市、縣（市）政府申請代檢。">
+                                            <h4
+                                                class="text-lg font-bold text-stone-200 group-hover:text-green-400 transition-colors whitespace-nowrap">
+                                                徵兵體檢作業</h4>
+                                            <p
+                                                class="text-sm text-stone-500 mt-1 group-hover:text-stone-300 transition-colors">
+                                                點擊查看詳細說明</p>
+                                        </button>
+                                    </div>
+
+                                    <!-- 抽籤 -->
+                                    <div
+                                        class="relative flex flex-row md:flex-col items-center group w-full md:w-1/3 mb-8 md:mb-0">
+                                        <div
+                                            class="w-6 h-6 shrink-0 rounded-full bg-stone-500 border-4 border-stone-900 group-hover:bg-green-500 transition-colors md:mb-4 mr-4 md:mr-0 z-10 relative">
+                                        </div>
+                                        <button class="timeline-btn text-left md:text-center focus:outline-none w-full"
+                                            data-title="抽籤"
+                                            data-content="役男如經徵兵檢查後，判定為常備兵役體位，或是替代役體位者，應辦理抽籤，凡參加抽籤役男親自到場抽籤。&#10;&#10;本人確因故不能到場時，可委託有行為能力之家屬代抽，事後不得提出異議。">
+                                            <h4
+                                                class="text-lg font-bold text-stone-200 group-hover:text-green-400 transition-colors whitespace-nowrap">
+                                                抽籤</h4>
+                                            <p
+                                                class="text-sm text-stone-500 mt-1 group-hover:text-stone-300 transition-colors">
+                                                點擊查看詳細說明</p>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- 注意事項 (Right, not in timeline) -->
+                                <div class="flex flex-col items-center justify-start md:justify-center w-full md:w-1/4 md:border-l md:border-stone-700 md:pl-6 pt-6 md:pt-0 border-t border-stone-700 md:border-t-0">
+                                    <button class="timeline-btn text-center focus:outline-none w-full group py-2"
+                                        data-title="注意事項"
+                                        data-content="1. 凡應徵役男接到徵集令時，應在徵集令（第一聯）回執上記入收到日期並簽章或按指模。&#10;2. 如徵集令由徵兵處理通報人代收其應辦手續按前項規定辦理，並應儘速通報應徵役男，依照規定時間地點前往報到入營。&#10;3. 接到徵集令後，應妥為做入營準備，如公務上之交代或私事之處理，凡合於常備役體位服替代役役男延期徵訓事故表所定各項延期徵訓事故原因者，得由本人或戶長填具申請書，報由區公所核轉市政府核辦。&#10;4. 報到時應攜帶徵集令、國民身分證、私章、戶口名簿影本、郵局存摺正面影本、最高學歷畢業證書、特殊專長及國家考試及格證書與技術師（士）證照等資料，並隨身穿著季節便服一套。&#10;5. 務希準時到達集合地點集合，逾時應自行入營報到，乘座車輛船隻須遵守交通秩序並接受領隊人員之指導。&#10;6. 輸入入營之車輛船隻，有一定容量、送行家屬及親友不得隨同搭乘。&#10;7. 逾期不到應徵役男，依妨害兵役治罪條例移送法院。&#10;8. 應徵人員如係機關學校，公私營事業機構，及人民團體（含公司）等之職工，請於接到徵集令三天內到原服務單位辦理保留底缺。&#10;9. 入營當天如遇重大災害（颱風、地震、水災等）致影響交通或有重大安全顧慮時，請密切注意各傳播媒體之報導，如宣布所屬縣市公務機關停止上班時，原訂入營日期取消，更動後之入營日期另候通知或逕向戶籍所在地區公所兵役單位洽詢。&#10;10. 請於入營前完成向郵局辦理開戶手續，以利入伍後薪餉發放。&#10;11. 凡應徵入營役男，可憑徵集令影本，向原投保單位辦理全民健保轉出手續（轉出日期為入營日期），原健保卡不必繳回，可繼續使用，並隨徵集令附「替代役役男參加全民健康保險須知」分送替代役役男；另為辦理軍訓課程折算役期作業，高級中等學校畢業者，檢據畢（結）業證書；高級中等學校未畢（肄）業及大專以上畢業者，應先向就讀學校查詢申請手續，辦理全民國防教育軍事訓練課程成績單證明並將相關證明文件（影本一份抽存）於入營後繳交。&#10;12. 役男身高、體重不符合服役標準者，得向直轄市、縣（市）政府或鄉（鎮、市、區）公所役政單位提出，俾於入營前專案予以重新測量或洽送醫院鑑定改判體位。">
+                                        <div class="w-10 h-10 md:w-12 md:h-12 mx-auto rounded-full bg-stone-800 border-2 border-yellow-600 flex items-center justify-center group-hover:bg-yellow-600 transition-colors mb-2 md:mb-3 shadow-lg">
+                                            <i class="fa-solid fa-file-contract text-yellow-500 group-hover:text-stone-900 text-lg md:text-xl"></i>
+                                        </div>
+                                        <h4 class="text-lg font-bold text-yellow-500 group-hover:text-yellow-400 transition-colors whitespace-nowrap">
+                                            注意事項</h4>
+                                        <p class="text-sm text-stone-500 mt-1 group-hover:text-stone-300 transition-colors">
+                                            點擊查看細則</p>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -918,6 +1053,19 @@
                                     了解權益 <i class="fa-solid fa-arrow-right"></i>
                                 </button>
                             </div>
+
+                            <div
+                                class="bg-stone-900 p-6 rounded-lg shadow-lg border border-stone-800 hover:border-amber-500/50 transition-colors">
+                                <div class="text-3xl text-amber-400 mb-4"><i class="fa-solid fa-clipboard-user"></i>
+                                </div>
+                                <h3 class="font-bold text-white text-lg mb-2">身家調查</h3>
+                                <p class="text-stone-400 text-sm mb-4">基本資料、就學意願、健康狀況、專長證照等調查項目說明。</p>
+                                <button
+                                    class="btn-doc text-amber-400 text-xs flex items-center gap-1 hover:text-white transition-colors"
+                                    data-doc="shengjia">
+                                    查看內容 <i class="fa-solid fa-arrow-right"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -938,13 +1086,107 @@
                                     <p class="text-stone-400 mb-8 text-sm">請役男或代抽家屬上前進行抽籤</p>
 
                                     <div class="flex flex-col gap-4">
-                                        <button id="btn-start-game"
+                                        <button id="btn-show-draw-rules"
                                             class="bg-stone-700 hover:bg-stone-600 border border-stone-500 text-stone-200 font-bold py-4 px-8 rounded-lg text-lg shadow-lg transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-3">
                                             <i class="fa-solid fa-hand-pointer text-green-500"></i> 親自抽籤
                                         </button>
-                                        <button id="btn-draw-village"
+                                        <button id="btn-show-village-rules"
                                             class="bg-stone-800 hover:bg-stone-700 border border-stone-600 text-stone-400 hover:text-stone-300 font-bold py-3 px-8 rounded-lg text-md transition-all flex items-center justify-center gap-3">
                                             <i class="fa-solid fa-user-tie"></i> 本人未到，請里長代抽
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Draw Rules Modal -->
+                            <div id="draw-rules-modal"
+                                class="hidden absolute inset-0 z-50 flex items-center justify-center bg-stone-900/90 backdrop-blur-sm">
+                                <div
+                                    class="bg-stone-800 border-2 border-stone-600 rounded-xl shadow-2xl p-6 max-w-2xl w-full mx-4 max-h-[90vh] flex flex-col">
+                                    <h3 class="text-2xl font-bold text-stone-200 mb-4 border-b border-stone-700 pb-2">
+                                        抽籤相關規定</h3>
+                                    <div
+                                        class="text-stone-300 text-sm overflow-y-auto pr-2 flex-grow space-y-4 mb-4 text-left">
+                                        <p>當役男體檢被判定為「常備役體位」後，區公所會依據役男的最高學歷、就讀科系、國家級專長證照進行分類。抽籤時會依照以下順序和種類進行：</p>
+                                        <div>
+                                            <h4 class="font-bold text-stone-100 mb-1">【類別 A】專長兵抽籤（優先抽）：</h4>
+                                            <ul class="list-disc list-inside ml-2">
+                                                <li><span class="text-stone-400">對象：</span>
+                                                    具備特定國家級證照（如：資訊安全、醫事人員、汽車修護、廚師丙級以上）或特定稀缺科系畢業之役男。</li>
+                                                <li><span class="text-stone-400">機制：</span>
+                                                    這些役男會先抽「專長兵籤」（名額較少、單位較專業）。如果專長兵沒抽中，才會退回一般兵抽籤桶。</li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-stone-100 mb-1">【類別 B】一般兵抽籤（主要抽）：</h4>
+                                            <p>沒有特殊證照的絕大多數役男，會依學歷再細分為「大專以上」、「高中職」、「國中以下」等組別，依序抽取以下四大軍種：</p>
+                                            <ul class="list-disc list-inside ml-2 mt-1">
+                                                <li>陸軍（籤數最多，通常佔 8-9 成）</li>
+                                                <li>海軍艦艇兵</li>
+                                                <li>海軍陸戰隊</li>
+                                                <li>空軍</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-start mb-6 border-t border-stone-700 pt-4">
+                                        <input type="checkbox" id="agree-draw-rules"
+                                            class="w-5 h-5 rounded border-stone-500 bg-stone-700 text-green-600 focus:ring-green-500 cursor-pointer">
+                                        <label for="agree-draw-rules"
+                                            class="ml-3 text-stone-200 cursor-pointer select-none font-bold">我已了解並同意上述抽籤規定</label>
+                                    </div>
+                                    <div class="flex justify-end gap-3">
+                                        <button id="btn-cancel-draw"
+                                            class="px-6 py-2 rounded-lg bg-stone-700 text-stone-300 hover:bg-stone-600 transition-colors font-bold">取消</button>
+                                        <button id="btn-start-game"
+                                            class="px-6 py-2 rounded-lg bg-green-700 text-stone-200 hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-bold flex items-center gap-2"
+                                            disabled>
+                                            <i class="fa-solid fa-check"></i> 同意並開始抽籤
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Village Draw Rules Modal -->
+                            <div id="village-rules-modal"
+                                class="hidden absolute inset-0 z-50 flex items-center justify-center bg-stone-900/90 backdrop-blur-sm">
+                                <div
+                                    class="bg-stone-800 border-2 border-stone-600 rounded-xl shadow-2xl p-6 max-w-2xl w-full mx-4 max-h-[90vh] flex flex-col">
+                                    <h3 class="text-2xl font-bold text-stone-200 mb-4 border-b border-stone-700 pb-2">
+                                        「家長代抽」與「官方代抽」規定</h3>
+                                    <div
+                                        class="text-stone-300 text-sm overflow-y-auto pr-2 flex-grow space-y-4 mb-4 text-left">
+                                        <div>
+                                            <h4 class="font-bold text-stone-100 mb-1">可以請誰代抽（法定代理人）</h4>
+                                            <p>必須是具有行為能力的直系親屬（父母、祖父母）、配偶或成年兄弟姊妹。</p>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-stone-100 mb-1">家長代抽必備四大文件（Checklist）：</h4>
+                                            <ol class="list-decimal list-inside ml-2">
+                                                <li>兵役抽籤通知單正本。</li>
+                                                <li>役男身分證正本（或印章）。</li>
+                                                <li>代抽家長的國民身分證正本。</li>
+                                                <li>戶口名簿（用以證明與役男的親屬關係）。</li>
+                                            </ol>
+                                        </div>
+                                        <div class="p-3 bg-stone-700/50 rounded-lg border border-stone-600 mt-4">
+                                            <h4 class="font-bold text-red-400 mb-1"><i
+                                                    class="fa-solid fa-circle-exclamation"></i> 注意事項</h4>
+                                            <p>如果抽籤時間一到，役男跟家長都沒現身，公所工作人員會在現場唱名三次。若仍無人回應，將由現場的鄉（鎮、市、區）長或其指派的代表「當場代抽」。</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-start mb-6 border-t border-stone-700 pt-4">
+                                        <input type="checkbox" id="agree-village-rules"
+                                            class="w-5 h-5 rounded border-stone-500 bg-stone-700 text-green-600 focus:ring-green-500 cursor-pointer">
+                                        <label for="agree-village-rules"
+                                            class="ml-3 text-stone-200 cursor-pointer select-none font-bold">我已了解並同意代抽規定</label>
+                                    </div>
+                                    <div class="flex justify-end gap-3">
+                                        <button id="btn-cancel-village-draw"
+                                            class="px-6 py-2 rounded-lg bg-stone-700 text-stone-300 hover:bg-stone-600 transition-colors font-bold">取消</button>
+                                        <button id="btn-draw-village"
+                                            class="px-6 py-2 rounded-lg bg-green-700 text-stone-200 hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-bold flex items-center gap-2"
+                                            disabled>
+                                            <i class="fa-solid fa-check"></i> 同意並請里長代抽
                                         </button>
                                     </div>
                                 </div>
@@ -1572,9 +1814,10 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- TAB: DELAY -->
-                    <div id="view-delay" class="view-section hidden space-y-6 flex flex-col h-[calc(100vh-180px)] md:h-[calc(100vh-120px)] w-full">
+                    <div id="view-delay"
+                        class="view-section hidden space-y-6 flex flex-col h-[calc(100vh-180px)] md:h-[calc(100vh-120px)] w-full">
                     </div>
 
                     <!-- TAB: QUIZ -->
@@ -1799,7 +2042,7 @@
         <div id="modal-docs"
             class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 font-mono backdrop-blur-sm hidden">
             <div
-                class="max-w-2xl w-full bg-stone-800 rounded-lg border-2 border-green-700 shadow-2xl overflow-hidden animate-fade-in relative">
+                class="max-w-6xl w-full bg-stone-800 rounded-lg border-2 border-green-700 shadow-2xl overflow-hidden animate-fade-in relative">
                 <button id="btn-close-docs"
                     class="absolute right-4 top-4 text-stone-400 hover:text-white transition-colors z-10">
                     <i class="fa-solid fa-xmark text-2xl"></i>

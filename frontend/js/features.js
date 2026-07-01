@@ -34,6 +34,97 @@ const DOCS_DATA = {
         title: "軍人權益懶人包",
         content: "包含薪資福利、喪葬補助、軍保醫療、以及申訴管道 (1985) 之完整說明。<br><br>當兵不是坐牢，保障自身權益是您的義務。若遇不當管教或權益受損，請利用申訴管道。",
         link: "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=F0030049"
+    },
+    shengjia: {
+        title: "身家調查說明",
+        content: `
+<p class="text-stone-400 text-sm mb-4">身家調查是徵兵體檢前的重要準備作業，由公所兵役科人員進行訪談並填寫資料。調查結果會影響後續體檢、延役與專長兵抽籤資格，務必如實填寫。</p>
+
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-3">
+
+  <div class="bg-stone-800 rounded-lg p-4 border border-stone-700">
+    <div class="flex items-center gap-2 mb-2">
+      <i class="fa-solid fa-id-card text-blue-400 text-lg"></i>
+      <h4 class="font-bold text-white">一、基本資料</h4>
+    </div>
+    <ul class="text-stone-300 text-sm space-y-1 list-disc list-inside ml-2">
+      <li>姓名</li>
+      <li>身分證字號</li>
+      <li>戶籍地址與現住址</li>
+      <li>聯絡電話</li>
+    </ul>
+  </div>
+
+  <div class="bg-stone-800 rounded-lg p-4 border border-stone-700">
+    <div class="flex items-center gap-2 mb-2">
+      <i class="fa-solid fa-graduation-cap text-green-400 text-lg"></i>
+      <h4 class="font-bold text-white">二、就學意願</h4>
+    </div>
+    <p class="text-stone-300 text-sm mb-2">攸關是否辦理延役，必須如實說明：</p>
+    <ul class="text-stone-300 text-sm space-y-1 list-disc list-inside ml-2">
+      <li>大四畢業後是否直接入伍？</li>
+      <li>是否有繼續升學（碩班、插大等）的計畫？</li>
+      <li class="text-amber-300">⚠ 有升學意願者可申請延役，於20歲之年11月15日前暫不接受徵集。</li>
+    </ul>
+  </div>
+
+  <div class="bg-stone-800 rounded-lg p-4 border border-stone-700">
+    <div class="flex items-center gap-2 mb-2">
+      <i class="fa-solid fa-heart-pulse text-red-400 text-lg"></i>
+      <h4 class="font-bold text-white">三、健康狀況</h4>
+    </div>
+    <p class="text-stone-300 text-sm mb-2">調查後系統會在體檢表上自動註記，供醫生參考：</p>
+    <ul class="text-stone-300 text-sm space-y-1 list-disc list-inside ml-2">
+      <li>是否領有身心障礙證明（手冊）？請說明疾病類別及等級</li>
+      <li>是否有重大傷病、開刀紀錄？請填寫疾病名稱或手術日期</li>
+      <li>是否有遺傳性疾病？</li>
+      <li>是否曾就讀身心障礙之特殊教育班、特殊教育學校或資源班？</li>
+    </ul>
+  </div>
+
+  <div class="bg-stone-800 rounded-lg p-4 border border-amber-700/50 border-2">
+    <div class="flex items-center gap-2 mb-2">
+      <i class="fa-solid fa-certificate text-amber-400 text-lg"></i>
+      <h4 class="font-bold text-white">四、專長證照 <span class="text-amber-400 text-xs font-normal ml-1">⭐ 非常重要！影響專長兵抽籤資格</span></h4>
+    </div>
+    <p class="text-stone-300 text-sm mb-2">具備以下類型的<strong class="text-amber-300">國家級證照</strong>，才有資格參與「專長兵優先抽籤」：</p>
+    <ul class="text-stone-300 text-sm space-y-1 list-disc list-inside ml-2">
+      <li>資訊安全相關證照</li>
+      <li>汽車修護技術士</li>
+      <li>廚師丙級以上</li>
+      <li>醫護人員執照（醫師、護理師等）</li>
+      <li>其他經政府認定之技術士或專業執照</li>
+    </ul>
+    <p class="text-amber-300 text-xs mt-2">※ 記得攜帶證照正本或影本備查！</p>
+  </div>
+
+  <div class="bg-stone-800 rounded-lg p-4 border border-stone-700">
+    <div class="flex items-center gap-2 mb-2">
+      <i class="fa-solid fa-briefcase text-purple-400 text-lg"></i>
+      <h4 class="font-bold text-white">五、個人專長</h4>
+    </div>
+    <ul class="text-stone-300 text-sm space-y-1 list-disc list-inside ml-2">
+      <li>就讀科系（專長科系）</li>
+      <li>目前從事職業</li>
+      <li>民間職業專長（請說明初學／半熟練／熟練／精通）</li>
+      <li>方言能力（閩南語、客家語、原住民語 — 粗通或流利）</li>
+      <li>外國語言（英語、日語等 — 讀說寫譯能力）</li>
+    </ul>
+  </div>
+
+</div>
+
+<div class="mt-6">
+  <h4 class="text-stone-400 text-sm font-bold mb-2 uppercase tracking-wider">官方身家調查表格參考</h4>
+  <a href="docs/身家調查表格.pdf" download="身家調查表格.pdf"
+     class="inline-flex items-center gap-3 bg-amber-600 hover:bg-amber-500 active:scale-95 text-white font-bold px-6 py-3 rounded-lg shadow-lg transition-all duration-150">
+    <i class="fa-solid fa-file-pdf text-xl"></i>
+    <span>下載身家調查表格 PDF</span>
+    <i class="fa-solid fa-download text-sm opacity-70"></i>
+  </a>
+</div>
+        `,
+        link: null
     }
 };
 
@@ -55,6 +146,7 @@ export function renderInventory() {
                 <div>
                     <div class="font-bold border-stone-200 ${item.acquired ? 'text-green-400 line-through decoration-green-500/50' : 'text-stone-200'}">${item.name}</div>
                     ${item.note ? `<div class="text-xs text-stone-500">${item.note}</div>` : ''}
+                    ${item.link ? `<a href="${item.link}" target="_blank" onclick="event.stopPropagation()" class="mt-1.5 inline-flex items-center gap-1 text-xs text-amber-400 hover:text-amber-300 border border-amber-800/60 hover:border-amber-600 bg-amber-900/20 hover:bg-amber-900/40 px-2 py-0.5 rounded transition-colors"><i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> 前往役政署身家調查資訊</a>` : ''}
                 </div>
             </div>
             ${item.required ? '<span class="text-xs bg-red-900/50 text-red-300 px-2 py-1 rounded">必備</span>' : ''}
