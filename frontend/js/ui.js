@@ -197,3 +197,4 @@ export function switchTab(tabId) {
         }
     });
 }
+window.switchTab = switchTab;

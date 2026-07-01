@@ -35,8 +35,10 @@
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js" crossorigin="anonymous"></script>
 
     <!-- Leaflet CSS & JS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <!-- logic moved to js/main.js -->
 </head>
@@ -1002,15 +1004,13 @@
                     <!-- TAB: RHAPSODY (Embedded Game) -->
                     <div id="view-rhapsody"
                         class="view-section hidden h-[calc(100vh-160px)] md:h-[calc(100vh-100px)] w-full bg-stone-900 rounded-lg shadow-lg border border-stone-800 relative overflow-visible"
-                        style="width:calc(100% + 60rem); margin-left:-30rem; margin-right:-30rem; max-width:none;"> 
-                        <iframe src="game/game.html"
-                            class="absolute inset-0 w-full h-full border-0"
+                        style="width:calc(100% + 60rem); margin-left:-30rem; margin-right:-30rem; max-width:none;">
+                        <iframe src="game/game.html" class="absolute inset-0 w-full h-full border-0"
                             title="大兵狂想曲遊戲"></iframe>
                         <!-- Fullscreen Toggle Button -->
                         <button id="btn-rhapsody-fullscreen" type="button"
                             class="absolute top-1/2 z-[9999] bg-green-700 hover:bg-green-600 text-white p-3 rounded-full shadow-lg transition-colors pointer-events-auto"
-                            title="切換全螢幕"
-                            style="right: 1rem; transform: translateY(-50%);">
+                            title="切換全螢幕" style="right: 1rem; transform: translateY(-50%);">
                             <i class="fa-solid fa-expand text-xl"></i>
                         </button>
                     </div>
@@ -1350,6 +1350,209 @@
                                                 </p>
                                                 <div class="text-sm text-green-500 flex items-center gap-1">
                                                     <i class="fa-solid fa-train"></i> 屏東火車站轉客運
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Card: 凌雲崗 -->
+                                    <div
+                                        class="bg-stone-800 rounded-lg overflow-hidden border border-stone-700 hover:border-green-500 transition-colors group">
+                                        <div class="flex justify-between items-center p-5 cursor-pointer hover:bg-stone-700/50 transition-colors"
+                                            onclick="toggleLocation(this)">
+                                            <h4 class="font-bold text-lg text-white">凌雲崗營區 (第6軍團步兵營)</h4>
+                                            <i
+                                                class="fa-solid fa-chevron-down text-stone-400 transition-transform duration-300"></i>
+                                        </div>
+                                        <div class="location-details hidden border-t border-stone-700 animate-fade-in">
+                                            <div class="p-5">
+                                                <div class="flex flex-wrap gap-2 mb-4">
+                                                    <span
+                                                        class="text-xs bg-green-900/40 text-green-200 px-2 py-1 rounded">興安專案</span>
+                                                    <span
+                                                        class="text-xs bg-stone-700 text-stone-300 px-2 py-1 rounded">步兵營</span>
+                                                    <span
+                                                        class="text-xs bg-green-900/40 text-green-200 px-2 py-1 rounded">桃園龍潭</span>
+                                                </div>
+                                                <p class="text-sm text-stone-400 leading-relaxed mb-4">
+                                                    位於桃園龍潭，近年興安專案改善營區設施完工，生活與訓練環境大幅提升。
+                                                </p>
+                                                <div class="text-sm text-green-500 flex items-center gap-1">
+                                                    <i class="fa-solid fa-train"></i> 埔心火車站轉搭計程車
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Card: 太平里 -->
+                                    <div
+                                        class="bg-stone-800 rounded-lg overflow-hidden border border-stone-700 hover:border-green-500 transition-colors group">
+                                        <div class="flex justify-between items-center p-5 cursor-pointer hover:bg-stone-700/50 transition-colors"
+                                            onclick="toggleLocation(this)">
+                                            <h4 class="font-bold text-lg text-white">太平里營區 (109旅)</h4>
+                                            <i
+                                                class="fa-solid fa-chevron-down text-stone-400 transition-transform duration-300"></i>
+                                        </div>
+                                        <div class="location-details hidden border-t border-stone-700 animate-fade-in">
+                                            <div class="p-5">
+                                                <div class="flex flex-wrap gap-2 mb-4">
+                                                    <span
+                                                        class="text-xs bg-orange-900/40 text-orange-200 px-2 py-1 rounded">步兵旅</span>
+                                                    <span
+                                                        class="text-xs bg-stone-700 text-stone-300 px-2 py-1 rounded">坡度陡</span>
+                                                    <span
+                                                        class="text-xs bg-orange-900/40 text-orange-200 px-2 py-1 rounded">桃園楊梅</span>
+                                                </div>
+                                                <p class="text-sm text-stone-400 leading-relaxed mb-4">
+                                                    位於桃園楊梅中山南路，為陸軍步兵109旅駐地，營區內有部分坡度。
+                                                </p>
+                                                <div class="text-sm text-green-500 flex items-center gap-1">
+                                                    <i class="fa-solid fa-train"></i> 楊梅火車站轉搭計程車
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Card: 龍華 -->
+                                    <div
+                                        class="bg-stone-800 rounded-lg overflow-hidden border border-stone-700 hover:border-green-500 transition-colors group">
+                                        <div class="flex justify-between items-center p-5 cursor-pointer hover:bg-stone-700/50 transition-colors"
+                                            onclick="toggleLocation(this)">
+                                            <h4 class="font-bold text-lg text-white">龍華營區 (109旅)</h4>
+                                            <i
+                                                class="fa-solid fa-chevron-down text-stone-400 transition-transform duration-300"></i>
+                                        </div>
+                                        <div class="location-details hidden border-t border-stone-700 animate-fade-in">
+                                            <div class="p-5">
+                                                <div class="flex flex-wrap gap-2 mb-4">
+                                                    <span
+                                                        class="text-xs bg-green-900/40 text-green-200 px-2 py-1 rounded">交通便利</span>
+                                                    <span
+                                                        class="text-xs bg-stone-700 text-stone-300 px-2 py-1 rounded">步兵旅</span>
+                                                    <span
+                                                        class="text-xs bg-green-900/40 text-green-200 px-2 py-1 rounded">桃園大溪</span>
+                                                </div>
+                                                <p class="text-sm text-stone-400 leading-relaxed mb-4">
+                                                    位於桃園大溪介壽路，營舍依地形配置，鄰近大溪市區，生活便利。
+                                                </p>
+                                                <div class="text-sm text-green-500 flex items-center gap-1">
+                                                    <i class="fa-solid fa-bus"></i> 桃園火車站轉乘5000路公車
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Card: 犁頭山 -->
+                                    <div
+                                        class="bg-stone-800 rounded-lg overflow-hidden border border-stone-700 hover:border-green-500 transition-colors group">
+                                        <div class="flex justify-between items-center p-5 cursor-pointer hover:bg-stone-700/50 transition-colors"
+                                            onclick="toggleLocation(this)">
+                                            <h4 class="font-bold text-lg text-white">犁頭山營區 (206旅)</h4>
+                                            <i
+                                                class="fa-solid fa-chevron-down text-stone-400 transition-transform duration-300"></i>
+                                        </div>
+                                        <div class="location-details hidden border-t border-stone-700 animate-fade-in">
+                                            <div class="p-5">
+                                                <div class="flex flex-wrap gap-2 mb-4">
+                                                    <span
+                                                        class="text-xs bg-orange-900/40 text-orange-200 px-2 py-1 rounded">地勢起伏</span>
+                                                    <span
+                                                        class="text-xs bg-stone-700 text-stone-300 px-2 py-1 rounded">步兵旅</span>
+                                                    <span
+                                                        class="text-xs bg-orange-900/40 text-orange-200 px-2 py-1 rounded">新竹新埔</span>
+                                                </div>
+                                                <p class="text-sm text-stone-400 leading-relaxed mb-4">
+                                                    位於新竹新埔與竹北交界處，鄰近文山國小，周邊環境單純但地勢有起伏。
+                                                </p>
+                                                <div class="text-sm text-green-500 flex items-center gap-1">
+                                                    <i class="fa-solid fa-train"></i> 竹北火車站轉搭計程車
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Card: 成功嶺 101旅 -->
+                                    <div
+                                        class="bg-stone-800 rounded-lg overflow-hidden border border-stone-700 hover:border-green-500 transition-colors group">
+                                        <div class="flex justify-between items-center p-5 cursor-pointer hover:bg-stone-700/50 transition-colors"
+                                            onclick="toggleLocation(this)">
+                                            <h4 class="font-bold text-lg text-white">成功嶺營區 (101旅)</h4>
+                                            <i
+                                                class="fa-solid fa-chevron-down text-stone-400 transition-transform duration-300"></i>
+                                        </div>
+                                        <div class="location-details hidden border-t border-stone-700 animate-fade-in">
+                                            <div class="p-5">
+                                                <div class="flex flex-wrap gap-2 mb-4">
+                                                    <span
+                                                        class="text-xs bg-red-900/40 text-red-200 px-2 py-1 rounded">經典營區</span>
+                                                    <span
+                                                        class="text-xs bg-stone-700 text-stone-300 px-2 py-1 rounded">步兵旅</span>
+                                                    <span
+                                                        class="text-xs bg-red-900/40 text-red-200 px-2 py-1 rounded">台中烏日</span>
+                                                </div>
+                                                <p class="text-sm text-stone-400 leading-relaxed mb-4">
+                                                    與104/302旅共用成功嶺營區，訓練場地與生活機能完整，是歷史悠久的新訓中心。
+                                                </p>
+                                                <div class="text-sm text-green-500 flex items-center gap-1">
+                                                    <i class="fa-solid fa-train"></i> 高鐵台中站 / 台鐵成功站
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Card: 北埔 -->
+                                    <div
+                                        class="bg-stone-800 rounded-lg overflow-hidden border border-stone-700 hover:border-green-500 transition-colors group">
+                                        <div class="flex justify-between items-center p-5 cursor-pointer hover:bg-stone-700/50 transition-colors"
+                                            onclick="toggleLocation(this)">
+                                            <h4 class="font-bold text-lg text-white">北埔營區 (花防部步兵營)</h4>
+                                            <i
+                                                class="fa-solid fa-chevron-down text-stone-400 transition-transform duration-300"></i>
+                                        </div>
+                                        <div class="location-details hidden border-t border-stone-700 animate-fade-in">
+                                            <div class="p-5">
+                                                <div class="flex flex-wrap gap-2 mb-4">
+                                                    <span
+                                                        class="text-xs bg-blue-900/40 text-blue-200 px-2 py-1 rounded">依山傍海</span>
+                                                    <span
+                                                        class="text-xs bg-stone-700 text-stone-300 px-2 py-1 rounded">花防部</span>
+                                                    <span
+                                                        class="text-xs bg-blue-900/40 text-blue-200 px-2 py-1 rounded">花蓮新城</span>
+                                                </div>
+                                                <p class="text-sm text-stone-400 leading-relaxed mb-4">
+                                                    位於花蓮縣新城鄉北埔，為東部地區主要新訓基地，空氣清新，景色優美。
+                                                </p>
+                                                <div class="text-sm text-green-500 flex items-center gap-1">
+                                                    <i class="fa-solid fa-train"></i> 北埔火車站步行約15分鐘
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Card: 左營 -->
+                                    <div
+                                        class="bg-stone-800 rounded-lg overflow-hidden border border-stone-700 hover:border-green-500 transition-colors group">
+                                        <div class="flex justify-between items-center p-5 cursor-pointer hover:bg-stone-700/50 transition-colors"
+                                            onclick="toggleLocation(this)">
+                                            <h4 class="font-bold text-lg text-white">左營營區 (海軍新訓中心)</h4>
+                                            <i
+                                                class="fa-solid fa-chevron-down text-stone-400 transition-transform duration-300"></i>
+                                        </div>
+                                        <div class="location-details hidden border-t border-stone-700 animate-fade-in">
+                                            <div class="p-5">
+                                                <div class="flex flex-wrap gap-2 mb-4">
+                                                    <span
+                                                        class="text-xs bg-blue-900/40 text-blue-200 px-2 py-1 rounded">海軍</span>
+                                                    <span
+                                                        class="text-xs bg-stone-700 text-stone-300 px-2 py-1 rounded">游泳訓練</span>
+                                                    <span
+                                                        class="text-xs bg-blue-900/40 text-blue-200 px-2 py-1 rounded">高雄左營</span>
+                                                </div>
+                                                <p class="text-sm text-stone-400 leading-relaxed mb-4">
+                                                    全台唯一海軍新兵訓練中心，著重基本儀態與游泳基本技能訓練，伙食評價相當不錯。
+                                                </p>
+                                                <div class="text-sm text-green-500 flex items-center gap-1">
+                                                    <i class="fa-solid fa-train"></i> 高鐵左營站 / 台鐵新左營站
                                                 </div>
                                             </div>
                                         </div>

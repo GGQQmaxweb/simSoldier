@@ -181,7 +181,7 @@ export function initChatGreeting() {
             if (today >= dischargeDate) {
                 greeting = `注意！${name}，你都退伍了還回來幹嘛？想重新簽志願役是不是？！`;
             } else if (today >= targetDate) {
-                greeting = `注意！${name}，你已經入營了！怎麼還有手機可以滑？長官在哪裡？！`;
+                greeting = `您好！${name}，這裡是 simSoldier 官方諮詢服務，請說明您的問題！`;
             } else {
                 const diffDays = Math.ceil((targetDate - today) / (1000 * 60 * 60 * 24));
                 greeting = `注意！${name}，距離你入營只剩 ${diffDays} 天！東西準備好了沒？有問題快問！`;
@@ -501,7 +501,7 @@ export async function renderCohortChart() {
     const chartEl = document.getElementById('cohort-chart');
     const legendEl = document.getElementById('cohort-legend-container');
     const titleEl = document.getElementById('cohort-title');
-    
+
     if (!chartEl || !legendEl || !titleEl) return;
 
     titleEl.textContent = `${data.year}人員分析`;
@@ -527,7 +527,7 @@ export async function renderCohortChart() {
     for (const [key, value] of Object.entries(data.data)) {
         const percentage = Math.round((value / data.total) * 100);
         const percentRaw = (value / data.total) * 100;
-        
+
         if (percentage > 0) {
             conicParts.push(`${colorHex[key]} ${currentDegree}% ${currentDegree + percentRaw}%`);
             currentDegree += percentRaw;
