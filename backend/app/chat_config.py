@@ -200,6 +200,13 @@ def append_image_to_response(text: str, question: str):
         )
         text = f"{text.strip()}\n\n{checklist_html}"
 
+        gps_trigger_html = (
+            '<div id="hospital-gps-auto-trigger" class="mt-3 p-3 bg-blue-900/30 border border-blue-700 rounded-lg text-sm text-blue-200 flex items-center gap-2">'
+            '<i class="fa-solid fa-spinner fa-spin"></i> 正在讀取您的 GPS 位置以尋找最近的體檢醫院...'
+            '</div>'
+        )
+        text = f"{text.strip()}\n\n{gps_trigger_html}"
+
     if question and "身家調查" in question:
         backpack_button = (
             '<div class="mt-3">'
