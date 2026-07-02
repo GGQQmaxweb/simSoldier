@@ -186,6 +186,11 @@ export async function handleChatSubmit(e) {
         const response = await api.askSimSoldier(text);
         removeTypingIndicator(typingId);
         addMessage(response, 'bot');
+        
+        // 若回應中含有 GPS 觸發標記，則自動執行 GPS 定位與醫院計算
+        if (response.includes('id="hospital-gps-auto-trigger"')) {
+            autoTriggerHospitalGPS();
+        }
     } catch (e) {
         removeTypingIndicator(typingId);
         addMessage('班長現在不在營區，請稍後再試。', 'bot');
@@ -637,4 +642,123 @@ export async function renderCohortChart() {
     }
 
     chartEl.style.background = `conic-gradient(${conicParts.join(', ')})`;
+}
+
+// --- Hospital GPS Logic ---
+const HOSPITALS_DATA = [
+  { name: "臺北市立聯合醫院仁愛院區", lat: 25.0378, lng: 121.5438 },
+  { name: "臺北市立聯合醫院和平婦幼院區", lat: 25.0347, lng: 121.5054 },
+  { name: "臺北市立聯合醫院忠孝院區", lat: 25.0484, lng: 121.5835 },
+  { name: "臺北市立聯合醫院中興院區", lat: 25.0503, lng: 121.5094 },
+  { name: "臺北市立聯合醫院陽明院區", lat: 25.1027, lng: 121.5317 },
+  { name: "臺北市立萬芳醫院", lat: 25.0001, lng: 121.5583 },
+  { name: "三軍總醫院松山分院", lat: 25.0583, lng: 121.5592 },
+  { name: "臺大醫院", lat: 25.0416, lng: 121.5174 },
+  { name: "臺北榮民總醫院", lat: 25.1203, lng: 121.5202 },
+  { name: "三軍總醫院", lat: 25.0685, lng: 121.5908 },
+  { name: "高雄市立民生醫院", lat: 22.6267, lng: 120.3236 },
+  { name: "高雄市立聯合醫院", lat: 22.6565, lng: 120.2863 },
+  { name: "國軍高雄總醫院", lat: 22.6260, lng: 120.3398 },
+  { name: "國軍高雄總醫院左營分院", lat: 22.6934, lng: 120.2946 },
+  { name: "國立陽明交通大學附設醫院", lat: 24.7523, lng: 121.7588 },
+  { name: "臺北榮民總醫院員山分院", lat: 24.7431, lng: 121.7169 },
+  { name: "衛生福利部基隆醫院", lat: 25.1287, lng: 121.7456 },
+  { name: "衛生福利部臺北醫院", lat: 25.0427, lng: 121.4623 },
+  { name: "新北市立聯合醫院", lat: 25.0632, lng: 121.4878 },
+  { name: "衛生福利部桃園醫院", lat: 24.9784, lng: 121.2678 },
+  { name: "國軍桃園總醫院", lat: 24.8624, lng: 121.2407 },
+  { name: "臺北榮民總醫院桃園分院", lat: 25.0041, lng: 121.3275 },
+  { name: "臺大醫院新竹分院", lat: 24.8157, lng: 120.9774 },
+  { name: "臺大醫院竹東分院", lat: 24.7001, lng: 121.0963 },
+  { name: "臺北榮民總醫院新竹分院", lat: 24.7088, lng: 121.0991 },
+  { name: "衛生福利部苗栗醫院", lat: 24.5772, lng: 120.8329 },
+  { name: "衛生福利部豐原醫院", lat: 24.2404, lng: 120.7247 },
+  { name: "衛生福利部臺中醫院", lat: 24.1396, lng: 120.6781 },
+  { name: "國軍臺中總醫院", lat: 24.1481, lng: 120.7354 },
+  { name: "衛生福利部南投醫院", lat: 23.9135, lng: 120.6865 },
+  { name: "臺中榮民總醫院埔里分院", lat: 23.9744, lng: 120.9839 },
+  { name: "衛生福利部彰化醫院", lat: 23.9619, lng: 120.5511 },
+  { name: "臺大醫院雲林分院", lat: 23.7144, lng: 120.5441 },
+  { name: "衛生福利部嘉義醫院", lat: 23.4819, lng: 120.4286 },
+  { name: "臺中榮民總醫院嘉義分院", lat: 23.4795, lng: 120.4187 },
+  { name: "衛生福利部朴子醫院", lat: 23.4619, lng: 120.2478 },
+  { name: "衛生福利部臺南醫院", lat: 22.9954, lng: 120.2075 },
+  { name: "衛生福利部新營醫院", lat: 23.3086, lng: 120.3164 },
+  { name: "高雄榮民總醫院臺南分院", lat: 23.0039, lng: 120.2447 },
+  { name: "衛生福利部旗山醫院", lat: 22.8906, lng: 120.4772 },
+  { name: "衛生福利部屏東醫院", lat: 22.6744, lng: 120.4958 },
+  { name: "高雄榮民總醫院屏東分院", lat: 22.6175, lng: 120.5484 },
+  { name: "衛生福利部臺東醫院", lat: 22.7539, lng: 121.1506 },
+  { name: "衛生福利部花蓮醫院", lat: 23.9778, lng: 121.6136 },
+  { name: "國軍花蓮總醫院", lat: 24.0101, lng: 121.6178 },
+  { name: "臺北榮民總醫院玉里分院", lat: 23.3444, lng: 121.3197 },
+  { name: "三軍總醫院澎湖分院附設民眾診療服務處", lat: 23.5623, lng: 119.5794 },
+  { name: "衛生福利部澎湖醫院", lat: 23.5656, lng: 119.5647 },
+  { name: "衛生福利部金門醫院", lat: 24.4398, lng: 118.4165 },
+  { name: "連江縣立醫院", lat: 26.1587, lng: 119.9389 },
+  { name: "臺中榮民總醫院", lat: 24.1818, lng: 120.6052 },
+  { name: "成大醫院", lat: 23.0017, lng: 120.2223 },
+  { name: "高雄榮民總醫院", lat: 22.6781, lng: 120.3231 },
+  { name: "慈濟綜合醫院", lat: 23.9928, lng: 121.6001 }
+];
+
+function getDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371; // Earth radius in km
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c;
+}
+
+function updateHospitalContainer(html) {
+    const containers = document.querySelectorAll('#hospital-gps-auto-trigger');
+    if (containers.length > 0) {
+        const target = containers[containers.length - 1];
+        target.innerHTML = html;
+        target.removeAttribute('id'); // Remove id to prevent modifying it again
+        target.className = "mt-4 space-y-2"; // Apply clean styling
+        // Scroll to bottom so buttons are visible
+        dom.chatMessages.scrollTop = dom.chatMessages.scrollHeight;
+    }
+}
+
+function autoTriggerHospitalGPS() {
+    if (!navigator.geolocation) {
+        updateHospitalContainer('<div class="text-sm text-red-400"><i class="fa-solid fa-triangle-exclamation"></i> 您的瀏覽器不支援 GPS 功能，無法尋找最近醫院。</div>');
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            const userLat = position.coords.latitude;
+            const userLng = position.coords.longitude;
+
+            const withDist = HOSPITALS_DATA.map(h => ({
+                ...h,
+                dist: getDistance(userLat, userLng, h.lat, h.lng)
+            }));
+            
+            withDist.sort((a, b) => a.dist - b.dist);
+            const top3 = withDist.slice(0, 3);
+            
+            let html = '<div class="text-sm font-bold text-stone-300 mb-2 mt-2"><i class="fa-solid fa-location-dot text-green-500"></i> 離您最近的 3 間體檢醫院：</div>';
+            html += '<div class="flex flex-col gap-2">';
+            top3.forEach(h => {
+                const mapLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(h.name)}`;
+                html += `
+                <a href="${mapLink}" target="_blank" class="bg-blue-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors text-sm shadow-md inline-flex items-center gap-2 border border-blue-600">
+                    <i class="fa-solid fa-map-location-dot"></i> ${h.name} (${h.dist.toFixed(1)} km)
+                </a>`;
+            });
+            html += '</div>';
+            updateHospitalContainer(html);
+        },
+        (error) => {
+            updateHospitalContainer('<div class="text-sm text-red-400"><i class="fa-solid fa-triangle-exclamation"></i> 無法取得您的 GPS 位置。請確認是否已允許位置存取權限。</div>');
+        },
+        { timeout: 10000 }
+    );
 }
