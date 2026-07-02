@@ -18,7 +18,7 @@
     --c-green-600: #16a34a;
     --c-green-500: #22c55e;
     --c-green-400: #4ade80;
-    
+
 
     /* Semantic Colors */
     --bg-base: var(--c-stone-950);
@@ -183,4 +183,48 @@ body *:not(i) {
 /* --- Typography --- */
 .font-tech {
     font-family: 'Share Tech Mono', monospace;
+}
+
+/* --- Utilities --- */
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* --- Rhapsody Fullscreen Landscape Override --- */
+.fullscreen-rhapsody {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    margin: 0 !important;
+    z-index: 9999 !important;
+    border-radius: 0 !important;
+    max-width: none !important;
+    max-height: none !important;
+}
+
+/* --- Desktop Layout Overrides --- */
+@media (min-width: 768px) {
+    .rhapsody-desktop-format {
+        /* 可各自獨立調整的邊界距離設定 */
+        --rhapsody-gap-top: 50px;
+        --rhapsody-gap-bottom: 50px;
+        --rhapsody-gap-left: 150px;
+        --rhapsody-gap-right: 150px;
+
+        /* 寬度與高度：視窗大小減去左右/上下各自的邊界 */
+        width: calc(100vw - var(--rhapsody-gap-left) - var(--rhapsody-gap-right)) !important;
+        height: calc(100vh - var(--rhapsody-gap-top) - var(--rhapsody-gap-bottom)) !important;
+
+        /* 讓元素無視父容器限制，完美套用左邊的距離 (--rhapsody-gap-left) */
+        margin-left: calc(-50vw + 50% + var(--rhapsody-gap-left)) !important;
+        max-width: none !important;
+        overflow: hidden !important;
+    }
 }

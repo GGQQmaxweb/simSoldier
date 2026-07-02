@@ -416,38 +416,42 @@ function setupEventListeners() {
     console.log('🎮 Rhapsody fullscreen init:', { btnRhapsodyFullscreen, viewRhapsody });
 
     if (btnRhapsodyFullscreen && viewRhapsody) {
-        // Define the original style exactly as in HTML
-        const RHAPSODY_NORMAL_STYLE = 'width:calc(100% + 60rem); margin-left:-30rem; margin-right:-30rem; max-width:none;';
+        // The old inline style constant has been removed as we use css class now.
 
-        btnRhapsodyFullscreen.addEventListener('click', () => {
-            console.log('🎮 Fullscreen button clicked!', { isRhapsodyFullscreen });
-            isRhapsodyFullscreen = !isRhapsodyFullscreen;
+        btnRhapsodyFullscreen.addEventListener('click', async () => {
+            console.log('🎮 Fullscreen button clicked!');
+            
+            if (!document.fullscreenElement) {
+                // Enter fullscreen mode natively
+                try {
+                    await viewRhapsody.requestFullscreen();
+                } catch (err) {
+                    console.error(`Error attempting to enable fullscreen: ${err.message}`);
+                    // Fallback to css fullscreen if API fails
+                    viewRhapsody.classList.add('fullscreen-rhapsody');
+                    document.body.style.overflow = 'hidden';
+                }
+            } else {
+                // Exit fullscreen mode natively
+                if (document.exitFullscreen) {
+                    await document.exitFullscreen();
+                }
+            }
+        });
 
-            if (isRhapsodyFullscreen) {
-                // Enter fullscreen mode
-                viewRhapsody.style.position = 'fixed';
-                viewRhapsody.style.top = '0';
-                viewRhapsody.style.left = '0';
-                viewRhapsody.style.right = '0';
-                viewRhapsody.style.bottom = '0';
-                viewRhapsody.style.width = '100vw';
-                viewRhapsody.style.height = '100vh';
-                viewRhapsody.style.margin = '0';
-                viewRhapsody.style.marginLeft = '0';
-                viewRhapsody.style.marginRight = '0';
-                viewRhapsody.style.zIndex = '9999';
-                viewRhapsody.style.borderRadius = '0';
-                document.body.style.overflow = 'hidden';
+        // Listen for native fullscreen changes to update the button UI
+        document.addEventListener('fullscreenchange', () => {
+            if (document.fullscreenElement) {
                 btnRhapsodyFullscreen.innerHTML = '<i class="fa-solid fa-compress text-xl"></i>';
                 btnRhapsodyFullscreen.title = '退出全螢幕';
-                console.log('🎮 Entered fullscreen mode');
+                viewRhapsody.classList.add('fullscreen-rhapsody'); // Ensure CSS styles if needed
+                console.log('🎮 Entered native fullscreen');
             } else {
-                // Exit fullscreen mode - restore to 60rem layout using setAttribute
-                viewRhapsody.setAttribute('style', RHAPSODY_NORMAL_STYLE);
-                document.body.style.overflow = '';
                 btnRhapsodyFullscreen.innerHTML = '<i class="fa-solid fa-expand text-xl"></i>';
                 btnRhapsodyFullscreen.title = '切換全螢幕';
-                console.log('🎮 Exited fullscreen mode');
+                viewRhapsody.classList.remove('fullscreen-rhapsody');
+                document.body.style.overflow = '';
+                console.log('🎮 Exited native fullscreen');
             }
         });
     } else {

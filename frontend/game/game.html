@@ -340,10 +340,103 @@
             color: black;
             font-weight: bold;
         }
+
+        /* 旋轉提示層 */
+        #rotate-prompt {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            color: #fff;
+            z-index: 99999;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .rotate-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: rotateIcon 2s infinite ease-in-out;
+        }
+
+        @keyframes rotateIcon {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(90deg); }
+            100% { transform: rotate(90deg); }
+        }
+
+        /* 手機直立時顯示旋轉提示 */
+        @media screen and (orientation: portrait) and (max-width: 768px) {
+            #rotate-prompt {
+                display: flex;
+            }
+            #main-menu, #top-menu-container, #ui-layer, #history-layer, #options, #bg-layer, #center-character-layer {
+                display: none !important;
+            }
+        }
+
+        /* 針對橫向小螢幕 (如手機拿橫) 進行 RWD 縮放 */
+        @media screen and (max-height: 500px) and (orientation: landscape) {
+            .main-menu-title {
+                font-size: 2rem;
+                margin-bottom: 10px;
+            }
+            .menu-btn {
+                padding: 8px 20px;
+                font-size: 1rem;
+                margin-bottom: 10px;
+                width: 200px;
+            }
+            #ui-layer {
+                padding: 5px 2%;
+                gap: 10px;
+                grid-template-columns: 2fr 11fr 2fr;
+                border-top: 1px solid var(--accent-color);
+            }
+            #speaker-name {
+                font-size: 1.1rem;
+                margin-bottom: 2px;
+            }
+            #text-content {
+                font-size: 1rem;
+                line-height: 1.3;
+                min-height: 40px;
+            }
+            #character-img {
+                height: 50vh;
+                bottom: -10px;
+            }
+            #center-character-img {
+                height: 65vh;
+            }
+            .ctrl-btn {
+                padding: 4px;
+                font-size: 0.8rem;
+            }
+            #control-buttons {
+                margin-left: 5px;
+                gap: 5px;
+            }
+            .name-separator {
+                margin-bottom: 3px;
+            }
+        }
     </style>
 </head>
 
 <body>
+
+    <!-- 旋轉提示 (僅在手機直向時顯示) -->
+    <div id="rotate-prompt">
+        <div class="rotate-icon">📱</div>
+        <div style="font-size: 1.5rem; font-weight: bold;">請將手機轉90度</div>
+        <div style="font-size: 1rem; color: #aaa; margin-top: 10px;">以獲得最佳遊戲體驗</div>
+    </div>
 
     <!-- 主畫面 -->
     <div id="main-menu">

@@ -1250,8 +1250,7 @@
                     <!-- 開始 -->
                     <!-- TAB: RHAPSODY (Embedded Game) -->
                     <div id="view-rhapsody"
-                        class="view-section hidden h-[calc(100vh-160px)] md:h-[calc(100vh-100px)] w-full bg-stone-900 rounded-lg shadow-lg border border-stone-800 relative overflow-visible"
-                        style="width:calc(100% + 60rem); margin-left:-30rem; margin-right:-30rem; max-width:none;">
+                        class="view-section hidden w-full h-[calc(100vh-160px)] md:aspect-video max-h-[85vh] bg-stone-900 rounded-lg shadow-lg border border-stone-800 relative rhapsody-desktop-format mx-auto">
                         <iframe src="game/game.html" class="absolute inset-0 w-full h-full border-0"
                             title="大兵狂想曲遊戲"></iframe>
                         <!-- Fullscreen Toggle Button -->
@@ -1330,9 +1329,9 @@
                             </h3>
                             <p class="text-stone-400 mb-8">查詢各新訓中心的特色、交通與注意事項。</p>
 
-                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[600px]">
-                                <!-- Left Column: Camp List -->
-                                <div class="lg:col-span-1 space-y-4 overflow-y-auto pr-2 custom-scrollbar">
+                            <div class="flex flex-col lg:grid lg:grid-cols-3 gap-6 h-[800px] lg:h-[600px]">
+                                <!-- List Column -->
+                                <div class="h-72 lg:h-full lg:col-span-1 space-y-4 overflow-y-auto pr-2 custom-scrollbar shrink-0 border-b lg:border-b-0 border-stone-800 pb-2 lg:pb-0">
                                     <!-- Card: 成功嶺 -->
                                     <div
                                         class="bg-stone-800 rounded-lg overflow-hidden border border-stone-700 hover:border-green-500 transition-colors group">
@@ -1806,10 +1805,10 @@
                                     </div>
                                 </div>
 
-                                <!-- Right Column: OpenStreetMap -->
+                                <!-- Map Column -->
                                 <div
-                                    class="lg:col-span-2 bg-stone-800 rounded-lg overflow-hidden border border-stone-700 h-full sticky top-0 shadow-xl relative z-10">
-                                    <div id="map" class="w-full h-full z-0 relative"></div>
+                                    class="flex-1 lg:col-span-2 bg-stone-800 rounded-lg overflow-hidden border border-stone-700 h-full sticky top-0 shadow-xl relative z-10 min-h-[300px]">
+                                    <div id="map" class="absolute inset-0 w-full h-full z-0 lg:relative"></div>
                                 </div>
                             </div>
                         </div>
@@ -2004,34 +2003,42 @@
 
                 <!-- Mobile Navbar -->
                 <nav
-                    class="md:hidden fixed bottom-0 left-0 right-0 bg-stone-900 border-t border-stone-800 flex justify-around p-3 z-50 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.3)]">
-                    <button data-tab="home" class="nav-btn-mobile flex flex-col items-center gap-1 text-green-500">
+                    class="md:hidden fixed bottom-0 left-0 right-0 bg-stone-900 border-t border-stone-800 flex overflow-x-auto gap-4 p-3 z-50 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.3)] hide-scrollbar">
+                    <button data-tab="home" class="nav-btn-mobile shrink-0 flex flex-col items-center gap-1 text-green-500 w-12">
                         <i class="fa-solid fa-chart-line text-[20px]"></i>
                         <span class="text-[10px]">戰情</span>
                     </button>
-                    <button data-tab="training" class="nav-btn-mobile flex flex-col items-center gap-1 text-stone-500">
+                    <button data-tab="training" class="nav-btn-mobile shrink-0 flex flex-col items-center gap-1 text-stone-500 w-12">
                         <i class="fa-solid fa-dumbbell text-[20px]"></i>
                         <span class="text-[10px]">訓練</span>
                     </button>
-                    <button data-tab="inventory" class="nav-btn-mobile flex flex-col items-center gap-1 text-stone-500">
+                    <button data-tab="inventory" class="nav-btn-mobile shrink-0 flex flex-col items-center gap-1 text-stone-500 w-12">
                         <i class="fa-solid fa-briefcase text-[20px]"></i>
                         <span class="text-[10px]">背包</span>
                     </button>
-                    <button data-tab="chat" class="nav-btn-mobile flex flex-col items-center gap-1 text-stone-500">
+                    <button data-tab="chat" class="nav-btn-mobile shrink-0 flex flex-col items-center gap-1 text-stone-500 w-12">
                         <i class="fa-solid fa-comments text-[20px]"></i>
                         <span class="text-[10px]">教官</span>
                     </button>
-                    <button data-tab="docs" class="nav-btn-mobile flex flex-col items-center gap-1 text-stone-500">
+                    <button data-tab="docs" class="nav-btn-mobile shrink-0 flex flex-col items-center gap-1 text-stone-500 w-12">
                         <i class="fa-solid fa-bars text-[20px]"></i>
                         <span class="text-[10px]">行政</span>
                     </button>
-                    <button data-tab="quiz" class="nav-btn-mobile flex flex-col items-center gap-1 text-stone-500">
-                        <i class="fa-solid fa-graduation-cap text-[20px]"></i>
-                        <span class="text-[10px]">課堂</span>
+                    <button data-tab="locations" class="nav-btn-mobile shrink-0 flex flex-col items-center gap-1 text-stone-500 w-12">
+                        <i class="fa-solid fa-map-location-dot text-[20px]"></i>
+                        <span class="text-[10px]">地點</span>
                     </button>
-                    <button data-tab="delay" class="nav-btn-mobile flex flex-col items-center gap-1 text-stone-500">
+                    <button data-tab="delay" class="nav-btn-mobile shrink-0 flex flex-col items-center gap-1 text-stone-500 w-12">
                         <i class="fa-solid fa-calendar-minus text-[20px]"></i>
                         <span class="text-[10px]">延役</span>
+                    </button>
+                    <button data-tab="rhapsody" class="nav-btn-mobile shrink-0 flex flex-col items-center gap-1 text-stone-500 w-12">
+                        <i class="fa-solid fa-music text-[20px]"></i>
+                        <span class="text-[10px]">狂想</span>
+                    </button>
+                    <button data-tab="quiz" class="nav-btn-mobile shrink-0 flex flex-col items-center gap-1 text-stone-500 w-12">
+                        <i class="fa-solid fa-graduation-cap text-[20px]"></i>
+                        <span class="text-[10px]">課堂</span>
                     </button>
                 </nav>
 
