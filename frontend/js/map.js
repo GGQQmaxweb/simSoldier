@@ -1,18 +1,18 @@
 const mapLocations = {
-    "成功嶺 (104旅/302旅)": { lat: 24.118949, lng: 120.605335 },
-    "金六結 (153旅)": { lat: 24.743118, lng: 121.733519 },
-    "斗煥坪 (206旅)": { lat: 24.673898, lng: 120.941916 },
-    "關西營區 (206旅)": { lat: 24.801648, lng: 121.173256 },
-    "官田營區 (203旅)": { lat: 23.195035, lng: 120.316921 },
-    "中坑營區 (257旅)": { lat: 23.593635, lng: 120.485141 },
+    "成功嶺 (陸軍)": { lat: 24.118949, lng: 120.605335 },
+    "金六結 (陸軍)": { lat: 24.743118, lng: 121.733519 },
+    "斗煥坪 (陸軍)": { lat: 24.673898, lng: 120.941916 },
+    "關西營區 (陸軍)": { lat: 24.801648, lng: 121.173256 },
+    "官田營區 (陸軍)": { lat: 23.195035, lng: 120.316921 },
+    "中坑營區 (陸軍)": { lat: 23.593635, lng: 120.485141 },
+    "凌雲崗營區 (陸軍)": { lat: 24.86451, lng: 121.21054 },
+    "太平里營區 (陸軍)": { lat: 24.8966, lng: 121.1353 },
+    "龍華營區 (陸軍)": { lat: 24.9048, lng: 121.2858 },
+    "犁頭山營區 (陸軍)": { lat: 24.8197, lng: 121.0375 },
+    "成功嶺營區 (陸軍)": { lat: 24.1141, lng: 120.6133 },
+    "北埔營區 (陸軍)": { lat: 24.0242, lng: 121.6072 },
     "屏東龍泉 (海陸)": { lat: 22.656517, lng: 120.591038 },
-    "凌雲崗營區 (第6軍團步兵營)": { lat: 24.86451, lng: 121.21054 },
-    "太平里營區 (109旅)": { lat: 24.8966, lng: 121.1353 },
-    "龍華營區 (109旅)": { lat: 24.9048, lng: 121.2858 },
-    "犁頭山營區 (206旅)": { lat: 24.8197, lng: 121.0375 },
-    "成功嶺營區 (101旅)": { lat: 24.1141, lng: 120.6133 },
-    "北埔營區 (花防部步兵營)": { lat: 24.0242, lng: 121.6072 },
-    "左營營區 (海軍新訓中心)": { lat: 22.7056, lng: 120.2882 }
+    "左營營區 (海軍)": { lat: 22.7056, lng: 120.2882 }
 };
 
 let leafletMap = null;
@@ -29,14 +29,50 @@ function initMap() {
     // 加入 Markers
     Object.keys(mapLocations).forEach(key => {
         const loc = mapLocations[key];
+        // 擷取營區名稱 (例如 "金六結 (陸軍)" -> "金六結")
+        const destName = key.split(' (')[0];
+        const mapLink = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(destName)}`;
+
+        const popupContent = `
+            <div class="text-center p-1">
+                <b class="block mb-2 text-stone-800 text-lg">${key}</b>
+                <a href="${mapLink}" target="_blank" class="inline-block bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-1.5 px-3 rounded shadow transition-colors no-underline">
+                    <i class="fa-solid fa-location-arrow mr-1 text-white"> 規劃路線</i>
+                </a>
+            </div>
+        `;
+
         const marker = L.marker([loc.lat, loc.lng]).addTo(leafletMap)
-            .bindPopup(`<b>${key}</b>`);
+            .bindPopup(popupContent);
         markers[key] = marker;
     });
 
-    // 綁定左側清單的點擊事件
+    // 綁定左側清單的點擊事件，並動態加入導航按鈕
     const locationCards = document.querySelectorAll('#view-locations .group');
     locationCards.forEach(card => {
+        const titleElement = card.querySelector('h4');
+        if (titleElement) {
+            const title = titleElement.innerText.trim();
+            const destName = title.split(' (')[0];
+            const mapLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(destName)}`;
+
+            // 建立位置按鈕並插入到標題旁邊
+            const navBtn = document.createElement('a');
+            navBtn.href = mapLink;
+            navBtn.target = '_blank';
+            navBtn.className = 'ml-3 text-blue-400 hover:text-blue-300 text-sm transition-colors relative z-10';
+            navBtn.title = 'Google Maps 查詢位置';
+            navBtn.innerHTML = '<i class="fa-solid fa-map-location-dot"></i> 位置';
+
+            // 避免點擊位置按鈕時觸發卡片的展開/收合
+            navBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+
+            // 將按鈕加在 h4 的父元素(flex container) 內
+            titleElement.parentElement.appendChild(navBtn);
+        }
+
         card.addEventListener('click', () => {
             const title = card.querySelector('h4').innerText.trim();
             if (mapLocations[title]) {
@@ -102,4 +138,38 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     };
+
+    // 綁定軍種篩選下拉式選單事件
+    const branchFilter = document.getElementById('branch-filter');
+    if (branchFilter) {
+        branchFilter.addEventListener('change', (e) => {
+            const selectedBranch = e.target.value;
+            const locationCards = document.querySelectorAll('#view-locations .group');
+
+            locationCards.forEach(card => {
+                const titleElement = card.querySelector('h4');
+                if (!titleElement) return;
+
+                const title = titleElement.innerText.trim();
+
+                // 若為 "all" 顯示全部
+                if (selectedBranch === 'all') {
+                    card.style.display = '';
+                    return;
+                }
+
+                // 比對軍種文字，例如: 成功嶺 (陸軍) 包含 陸軍
+                if (title.includes(selectedBranch)) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // 篩選時可選擇性地關閉地圖上已開啟的標記
+            if (leafletMap) {
+                leafletMap.closePopup();
+            }
+        });
+    }
 });

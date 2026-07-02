@@ -211,19 +211,19 @@ body *:not(i) {
 
 /* --- Desktop Layout Overrides --- */
 @media (min-width: 768px) {
-    .rhapsody-desktop-format {
+    .expanded-desktop-format {
         /* 可各自獨立調整的邊界距離設定 */
-        --rhapsody-gap-top: 50px;
-        --rhapsody-gap-bottom: 50px;
-        --rhapsody-gap-left: 150px;
-        --rhapsody-gap-right: 150px;
+        --expanded-gap-top: 50px;
+        --expanded-gap-bottom: 150px;
+        --expanded-gap-left: 150px;
+        --expanded-gap-right: 150px;
 
         /* 寬度與高度：視窗大小減去左右/上下各自的邊界 */
-        width: calc(100vw - var(--rhapsody-gap-left) - var(--rhapsody-gap-right)) !important;
-        height: calc(100vh - var(--rhapsody-gap-top) - var(--rhapsody-gap-bottom)) !important;
+        width: calc(100vw - var(--expanded-gap-left) - var(--expanded-gap-right)) !important;
+        height: calc(100vh - var(--expanded-gap-top) - var(--expanded-gap-bottom)) !important;
 
-        /* 讓元素無視父容器限制，完美套用左邊的距離 (--rhapsody-gap-left) */
-        margin-left: calc(-50vw + 50% + var(--rhapsody-gap-left)) !important;
+        /* 讓元素無視父容器限制，完美套用左邊的距離 (--expanded-gap-left) */
+        margin-left: calc(-50vw + 50% + var(--expanded-gap-left)) !important;
         max-width: none !important;
         overflow: hidden !important;
     }
