@@ -8,7 +8,7 @@ import { state, INITIAL_BACKPACK } from './state.js';
 import { dom, switchTab } from './ui.js';
 import { determineServiceType, bmi } from './utils.js';
 import * as game from './game.js';
-import * as features from './features.js';
+import * as features from './features.js?v=4';
 import { training_ai } from './training_ai.js';
 import { initQuiz } from './quiz.js';
 import { initDelay } from './delay.js';

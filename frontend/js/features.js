@@ -186,7 +186,7 @@ export async function handleChatSubmit(e) {
         const response = await api.askSimSoldier(text);
         removeTypingIndicator(typingId);
         addMessage(response, 'bot');
-        
+
         // 若回應中含有 GPS 觸發標記，則自動執行 GPS 定位與醫院計算
         if (response.includes('id="hospital-gps-auto-trigger"')) {
             autoTriggerHospitalGPS();
@@ -360,26 +360,60 @@ export function updateDailyTaskProgress() {
 
 // --- Docs ---
 const unitsData = [
-    { name: "新北市政府民政局", phone: "02-29603456", fax: "02-29693894", addr: "新北市板橋區中山路1段161號11、14樓", url: "http://www.ca.ntpc.gov.tw/" },
-    { name: "臺北市政府兵役局", phone: "02-23654361", fax: "02-23673072", addr: "臺北市中正區羅斯福路四段92號9樓", url: "http://www.tcdms.taipei.gov.tw/" },
-    { name: "臺中市政府民政局", phone: "04-22289111", fax: "04-22202480", addr: "臺中市臺中港路2段89號6樓", url: "http://www.civil.taichung.gov.tw/" },
-    { name: "臺南市政府民政局", phone: "06-2991111", fax: "06-2982560", addr: "臺南市安平區永華路2段6號", url: "http://www.tainan.gov.tw/agr/default.asp" },
-    { name: "高雄市政府兵役局", phone: "07-3373582", fax: "07-3312241", addr: "高雄市苓雅區四維3路2號4樓", url: "http://mildp.kcg.gov.tw/index.php" }
-    // Truncated for brevity but can add more
+    {
+        category: "直轄市",
+        items: [
+            { name: "新北市政府民政局", phone: "02-29603456", fax: "02-29693894", addr: "新北市板橋區中山路1段161號11、14樓", url: "https://www.ca.ntpc.gov.tw/" },
+            { name: "臺北市政府兵役局", phone: "02-23654361~4", fax: "02-23673072", addr: "臺北市中正區羅斯福路四段92號9樓", url: "https://docms.gov.taipei/" },
+            { name: "桃園市政府民政局", phone: "03-3322101", fax: "03-3364817", addr: "桃園市桃園區縣府路1號6樓", url: "https://cab.tycg.gov.tw/" },
+            { name: "臺中市政府民政局", phone: "04-22289111", fax: "04-22202480", addr: "臺中市臺中港路2段89號6樓", url: "https://www.civil.taichung.gov.tw/" },
+            { name: "臺南市政府民政局", phone: "06-2991111", fax: "06-2982560", addr: "臺南市安平區永華路2段6號", url: "https://bca.tainan.gov.tw/" },
+            { name: "高雄市兵役處", phone: "07-3373582", fax: "07-3312241", addr: "高雄市苓雅區四維3路2號4樓", url: "https://mildp.kcg.gov.tw/" }
+        ]
+    },
+    {
+        category: "各縣政府（本島）",
+        items: [
+            { name: "宜蘭縣政府民政處", phone: "03-9251000 #3060", fax: "03-9252434", addr: "宜蘭縣宜蘭市縣政北路1號3樓", url: "https://civil.e-land.gov.tw/" },
+            { name: "新竹縣政府民政處", phone: "03-5518101#268", fax: "03-5513672", addr: "新竹縣竹北市光明六路10號", url: "https://civil.hsinchu.gov.tw/" },
+            { name: "苗栗縣政府民政處", phone: "037-322150", fax: "037-354593", addr: "苗栗縣苗栗市縣府路100號", url: "https://www.miaoli.gov.tw/civil_affairs/" },
+            { name: "彰化縣政府民政處", phone: "04-7222151 #0122", fax: "04-7293510", addr: "彰化縣彰化市中山路二段416號7樓", url: "https://civil.chcg.gov.tw/" },
+            { name: "南投縣政府民政處", phone: "049-2222106-9", fax: "049-2238404", addr: "南投縣南投市中興路660號", url: "https://www.nantou.gov.tw/big5/bureau/index.php?dptid=376480000au100000" },
+            { name: "雲林縣政府民政處", phone: "05-5322154", fax: "05-5352041", addr: "雲林縣斗六市雲林路二段515號", url: "https://civil.yunlin.gov.tw/" },
+            { name: "嘉義縣政府民政處", phone: "05-3620123 -460、461", fax: "05-3620399", addr: "嘉義縣太保市祥和新村祥和一路東段1號", url: "https://civil.cyhg.gov.tw/" },
+            { name: "屏東縣政府民政處", phone: "08-7324147", fax: "08-7331538", addr: "屏東縣屏東市自由路527號", url: "https://www.pthg.gov.tw/plancab/" },
+            { name: "臺東縣政府民政處", phone: "089-326141", fax: "089-340560", addr: "臺東縣臺東市中山路276號", url: "https://ttca.taitung.gov.tw/Default.aspx" },
+            { name: "花蓮縣政府民政處", phone: "03-8232047、8221894 #374、375", fax: "03-8230576", addr: "花蓮縣花蓮市府後路6號", url: "https://ca.hl.gov.tw/" }
+        ]
+    },
+    {
+        category: "各市政府及離島",
+        items: [
+            { name: "基隆市政府民政處", phone: "02-24201122 #2304~2311", fax: "02-24668739", addr: "基隆市中正區正信路205號2樓", url: "https://www.klcg.gov.tw/tw/civil" },
+            { name: "新竹市政府民政處", phone: "03-5216121 #314~319", fax: "03-5214703", addr: "新竹市中正路120號", url: "https://dep-civil.hccg.gov.tw/" },
+            { name: "嘉義市政府民政處", phone: "05-2254321", fax: "05-2259885", addr: "嘉義市中山路199號", url: "https://civil.chiayi.gov.tw/" },
+            { name: "澎湖縣政府民政處", phone: "06-9274400", fax: "06-9274701", addr: "澎湖縣馬公市治平路32號", url: "https://www.penghu.gov.tw/civil/" },
+            { name: "金門縣政府民政處", phone: "082-325753", fax: "082-322613", addr: "金門縣金城鎮民生路60號", url: "https://kccad.kinmen.gov.tw/" },
+            { name: "連江縣政府民政處", phone: "0836-22485", fax: "0836-22209", addr: "連江縣南竿鄉介壽村76號", url: "https://www.matsu.gov.tw/" }
+        ]
+    }
 ];
 
 function initDocsTable() {
     let tableHtml = '<div class="overflow-x-auto"><table class="w-full text-left text-xs text-stone-300 border-collapse min-w-[500px]">';
     tableHtml += '<thead><tr class="bg-stone-800 text-stone-400 border-b border-stone-700"><th class="p-2">單位</th><th class="p-2">電話</th><th class="p-2">傳真</th><th class="p-2">地址</th><th class="p-2">網址</th></tr></thead><tbody>';
 
-    unitsData.forEach(u => {
-        tableHtml += `<tr class="border-b border-stone-800 hover:bg-stone-800/50">
-            <td class="p-2 text-green-400 font-bold">${u.name}</td>
-            <td class="p-2">${u.phone}</td>
-            <td class="p-2 opacity-60 text-[10px] hidden md:table-cell">${u.fax}</td>
-            <td class="p-2">${u.addr}</td>
-            <td class="p-2"><a href="${u.url}" target="_blank" class="text-blue-400 hover:text-blue-300"><i class="fa-solid fa-link"></i></a></td>
-        </tr>`;
+    unitsData.forEach(group => {
+        tableHtml += `<tr class="bg-stone-900 border-b border-stone-700"><td colspan="5" class="p-2 text-stone-300 font-bold bg-stone-900/80"><i class="fa-solid fa-layer-group text-stone-500 mr-2"></i>${group.category}</td></tr>`;
+        group.items.forEach(u => {
+            tableHtml += `<tr class="border-b border-stone-800 hover:bg-stone-800/50">
+                <td class="p-2 text-green-400 font-bold pl-6 border-l-2 border-stone-700">${u.name}</td>
+                <td class="p-2">${u.phone}</td>
+                <td class="p-2 opacity-60 text-[10px] hidden md:table-cell">${u.fax}</td>
+                <td class="p-2">${u.addr}</td>
+                <td class="p-2">${u.url ? `<a href="${u.url}" target="_blank" class="text-blue-400 hover:text-blue-300"><i class="fa-solid fa-link"></i></a>` : ''}</td>
+            </tr>`;
+        });
     });
     tableHtml += '</tbody></table></div>';
     DOCS_DATA.units.content = tableHtml;
@@ -646,70 +680,70 @@ export async function renderCohortChart() {
 
 // --- Hospital GPS Logic ---
 const HOSPITALS_DATA = [
-  { name: "臺北市立聯合醫院仁愛院區", lat: 25.0378, lng: 121.5438 },
-  { name: "臺北市立聯合醫院和平婦幼院區", lat: 25.0347, lng: 121.5054 },
-  { name: "臺北市立聯合醫院忠孝院區", lat: 25.0484, lng: 121.5835 },
-  { name: "臺北市立聯合醫院中興院區", lat: 25.0503, lng: 121.5094 },
-  { name: "臺北市立聯合醫院陽明院區", lat: 25.1027, lng: 121.5317 },
-  { name: "臺北市立萬芳醫院", lat: 25.0001, lng: 121.5583 },
-  { name: "三軍總醫院松山分院", lat: 25.0583, lng: 121.5592 },
-  { name: "臺大醫院", lat: 25.0416, lng: 121.5174 },
-  { name: "臺北榮民總醫院", lat: 25.1203, lng: 121.5202 },
-  { name: "三軍總醫院", lat: 25.0685, lng: 121.5908 },
-  { name: "高雄市立民生醫院", lat: 22.6267, lng: 120.3236 },
-  { name: "高雄市立聯合醫院", lat: 22.6565, lng: 120.2863 },
-  { name: "國軍高雄總醫院", lat: 22.6260, lng: 120.3398 },
-  { name: "國軍高雄總醫院左營分院", lat: 22.6934, lng: 120.2946 },
-  { name: "國立陽明交通大學附設醫院", lat: 24.7523, lng: 121.7588 },
-  { name: "臺北榮民總醫院員山分院", lat: 24.7431, lng: 121.7169 },
-  { name: "衛生福利部基隆醫院", lat: 25.1287, lng: 121.7456 },
-  { name: "衛生福利部臺北醫院", lat: 25.0427, lng: 121.4623 },
-  { name: "新北市立聯合醫院", lat: 25.0632, lng: 121.4878 },
-  { name: "衛生福利部桃園醫院", lat: 24.9784, lng: 121.2678 },
-  { name: "國軍桃園總醫院", lat: 24.8624, lng: 121.2407 },
-  { name: "臺北榮民總醫院桃園分院", lat: 25.0041, lng: 121.3275 },
-  { name: "臺大醫院新竹分院", lat: 24.8157, lng: 120.9774 },
-  { name: "臺大醫院竹東分院", lat: 24.7001, lng: 121.0963 },
-  { name: "臺北榮民總醫院新竹分院", lat: 24.7088, lng: 121.0991 },
-  { name: "衛生福利部苗栗醫院", lat: 24.5772, lng: 120.8329 },
-  { name: "衛生福利部豐原醫院", lat: 24.2404, lng: 120.7247 },
-  { name: "衛生福利部臺中醫院", lat: 24.1396, lng: 120.6781 },
-  { name: "國軍臺中總醫院", lat: 24.1481, lng: 120.7354 },
-  { name: "衛生福利部南投醫院", lat: 23.9135, lng: 120.6865 },
-  { name: "臺中榮民總醫院埔里分院", lat: 23.9744, lng: 120.9839 },
-  { name: "衛生福利部彰化醫院", lat: 23.9619, lng: 120.5511 },
-  { name: "臺大醫院雲林分院", lat: 23.7144, lng: 120.5441 },
-  { name: "衛生福利部嘉義醫院", lat: 23.4819, lng: 120.4286 },
-  { name: "臺中榮民總醫院嘉義分院", lat: 23.4795, lng: 120.4187 },
-  { name: "衛生福利部朴子醫院", lat: 23.4619, lng: 120.2478 },
-  { name: "衛生福利部臺南醫院", lat: 22.9954, lng: 120.2075 },
-  { name: "衛生福利部新營醫院", lat: 23.3086, lng: 120.3164 },
-  { name: "高雄榮民總醫院臺南分院", lat: 23.0039, lng: 120.2447 },
-  { name: "衛生福利部旗山醫院", lat: 22.8906, lng: 120.4772 },
-  { name: "衛生福利部屏東醫院", lat: 22.6744, lng: 120.4958 },
-  { name: "高雄榮民總醫院屏東分院", lat: 22.6175, lng: 120.5484 },
-  { name: "衛生福利部臺東醫院", lat: 22.7539, lng: 121.1506 },
-  { name: "衛生福利部花蓮醫院", lat: 23.9778, lng: 121.6136 },
-  { name: "國軍花蓮總醫院", lat: 24.0101, lng: 121.6178 },
-  { name: "臺北榮民總醫院玉里分院", lat: 23.3444, lng: 121.3197 },
-  { name: "三軍總醫院澎湖分院附設民眾診療服務處", lat: 23.5623, lng: 119.5794 },
-  { name: "衛生福利部澎湖醫院", lat: 23.5656, lng: 119.5647 },
-  { name: "衛生福利部金門醫院", lat: 24.4398, lng: 118.4165 },
-  { name: "連江縣立醫院", lat: 26.1587, lng: 119.9389 },
-  { name: "臺中榮民總醫院", lat: 24.1818, lng: 120.6052 },
-  { name: "成大醫院", lat: 23.0017, lng: 120.2223 },
-  { name: "高雄榮民總醫院", lat: 22.6781, lng: 120.3231 },
-  { name: "慈濟綜合醫院", lat: 23.9928, lng: 121.6001 }
+    { name: "臺北市立聯合醫院仁愛院區", lat: 25.0378, lng: 121.5438 },
+    { name: "臺北市立聯合醫院和平婦幼院區", lat: 25.0347, lng: 121.5054 },
+    { name: "臺北市立聯合醫院忠孝院區", lat: 25.0484, lng: 121.5835 },
+    { name: "臺北市立聯合醫院中興院區", lat: 25.0503, lng: 121.5094 },
+    { name: "臺北市立聯合醫院陽明院區", lat: 25.1027, lng: 121.5317 },
+    { name: "臺北市立萬芳醫院", lat: 25.0001, lng: 121.5583 },
+    { name: "三軍總醫院松山分院", lat: 25.0583, lng: 121.5592 },
+    { name: "臺大醫院", lat: 25.0416, lng: 121.5174 },
+    { name: "臺北榮民總醫院", lat: 25.1203, lng: 121.5202 },
+    { name: "三軍總醫院", lat: 25.0685, lng: 121.5908 },
+    { name: "高雄市立民生醫院", lat: 22.6267, lng: 120.3236 },
+    { name: "高雄市立聯合醫院", lat: 22.6565, lng: 120.2863 },
+    { name: "國軍高雄總醫院", lat: 22.6260, lng: 120.3398 },
+    { name: "國軍高雄總醫院左營分院", lat: 22.6934, lng: 120.2946 },
+    { name: "國立陽明交通大學附設醫院", lat: 24.7523, lng: 121.7588 },
+    { name: "臺北榮民總醫院員山分院", lat: 24.7431, lng: 121.7169 },
+    { name: "衛生福利部基隆醫院", lat: 25.1287, lng: 121.7456 },
+    { name: "衛生福利部臺北醫院", lat: 25.0427, lng: 121.4623 },
+    { name: "新北市立聯合醫院", lat: 25.0632, lng: 121.4878 },
+    { name: "衛生福利部桃園醫院", lat: 24.9784, lng: 121.2678 },
+    { name: "國軍桃園總醫院", lat: 24.8624, lng: 121.2407 },
+    { name: "臺北榮民總醫院桃園分院", lat: 25.0041, lng: 121.3275 },
+    { name: "臺大醫院新竹分院", lat: 24.8157, lng: 120.9774 },
+    { name: "臺大醫院竹東分院", lat: 24.7001, lng: 121.0963 },
+    { name: "臺北榮民總醫院新竹分院", lat: 24.7088, lng: 121.0991 },
+    { name: "衛生福利部苗栗醫院", lat: 24.5772, lng: 120.8329 },
+    { name: "衛生福利部豐原醫院", lat: 24.2404, lng: 120.7247 },
+    { name: "衛生福利部臺中醫院", lat: 24.1396, lng: 120.6781 },
+    { name: "國軍臺中總醫院", lat: 24.1481, lng: 120.7354 },
+    { name: "衛生福利部南投醫院", lat: 23.9135, lng: 120.6865 },
+    { name: "臺中榮民總醫院埔里分院", lat: 23.9744, lng: 120.9839 },
+    { name: "衛生福利部彰化醫院", lat: 23.9619, lng: 120.5511 },
+    { name: "臺大醫院雲林分院", lat: 23.7144, lng: 120.5441 },
+    { name: "衛生福利部嘉義醫院", lat: 23.4819, lng: 120.4286 },
+    { name: "臺中榮民總醫院嘉義分院", lat: 23.4795, lng: 120.4187 },
+    { name: "衛生福利部朴子醫院", lat: 23.4619, lng: 120.2478 },
+    { name: "衛生福利部臺南醫院", lat: 22.9954, lng: 120.2075 },
+    { name: "衛生福利部新營醫院", lat: 23.3086, lng: 120.3164 },
+    { name: "高雄榮民總醫院臺南分院", lat: 23.0039, lng: 120.2447 },
+    { name: "衛生福利部旗山醫院", lat: 22.8906, lng: 120.4772 },
+    { name: "衛生福利部屏東醫院", lat: 22.6744, lng: 120.4958 },
+    { name: "高雄榮民總醫院屏東分院", lat: 22.6175, lng: 120.5484 },
+    { name: "衛生福利部臺東醫院", lat: 22.7539, lng: 121.1506 },
+    { name: "衛生福利部花蓮醫院", lat: 23.9778, lng: 121.6136 },
+    { name: "國軍花蓮總醫院", lat: 24.0101, lng: 121.6178 },
+    { name: "臺北榮民總醫院玉里分院", lat: 23.3444, lng: 121.3197 },
+    { name: "三軍總醫院澎湖分院附設民眾診療服務處", lat: 23.5623, lng: 119.5794 },
+    { name: "衛生福利部澎湖醫院", lat: 23.5656, lng: 119.5647 },
+    { name: "衛生福利部金門醫院", lat: 24.4398, lng: 118.4165 },
+    { name: "連江縣立醫院", lat: 26.1587, lng: 119.9389 },
+    { name: "臺中榮民總醫院", lat: 24.1818, lng: 120.6052 },
+    { name: "成大醫院", lat: 23.0017, lng: 120.2223 },
+    { name: "高雄榮民總醫院", lat: 22.6781, lng: 120.3231 },
+    { name: "慈濟綜合醫院", lat: 23.9928, lng: 121.6001 }
 ];
 
 function getDistance(lat1, lon1, lat2, lon2) {
     const R = 6371; // Earth radius in km
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLon = (lon2 - lon1) * Math.PI / 180;
-    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-              Math.sin(dLon/2) * Math.sin(dLon/2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
 }
 
@@ -740,10 +774,10 @@ function autoTriggerHospitalGPS() {
                 ...h,
                 dist: getDistance(userLat, userLng, h.lat, h.lng)
             }));
-            
+
             withDist.sort((a, b) => a.dist - b.dist);
             const top3 = withDist.slice(0, 3);
-            
+
             let html = '<div class="text-sm font-bold text-stone-300 mb-2 mt-2"><i class="fa-solid fa-location-dot text-green-500"></i> 離您最近的 3 間體檢醫院：</div>';
             html += '<div class="flex flex-col gap-2">';
             top3.forEach(h => {
