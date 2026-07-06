@@ -219,6 +219,17 @@
         </div>
     </div>
 
+    <!-- Image Zoom Modal -->
+    <div id="modal-image-zoom" class="fixed inset-0 z-[70] bg-black/90 flex flex-col items-center justify-center p-4 backdrop-blur-sm hidden" onclick="this.classList.add('hidden')">
+        <div class="relative max-w-4xl w-full max-h-[90vh] flex flex-col items-center justify-center animate-fade-in" onclick="event.stopPropagation()">
+            <img id="zoom-modal-img" src="" class="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl border-2 border-green-900/50">
+            <h3 id="zoom-modal-title" class="text-white text-2xl font-bold mt-4 tracking-widest bg-stone-900/80 px-6 py-2 rounded-full border border-stone-700"></h3>
+            <button onclick="document.getElementById('modal-image-zoom').classList.add('hidden')" class="absolute top-0 right-0 md:-top-4 md:-right-4 w-12 h-12 bg-stone-900 rounded-full border border-stone-700 text-stone-400 hover:text-white hover:bg-red-900/50 transition-colors flex items-center justify-center shadow-lg z-10">
+                <i class="fa-solid fa-xmark text-2xl"></i>
+            </button>
+        </div>
+    </div>
+
     <!-- Timeline Detail Modal -->
     <div id="modal-timeline"
         class="fixed inset-0 z-[60] bg-black/90 flex items-center justify-center p-4 font-mono backdrop-blur-sm hidden">
@@ -321,6 +332,11 @@
                     class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-stone-400 hover:bg-stone-800 hover:text-stone-200">
                     <i class="fa-solid fa-graduation-cap text-[20px]"></i>
                     <span class="font-bold text-sm">天兵課堂</span>
+                </button>
+                <button data-tab="shooting"
+                    class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-stone-400 hover:bg-stone-800 hover:text-stone-200">
+                    <i class="fa-solid fa-crosshairs text-[20px]"></i>
+                    <span class="font-bold text-sm">射擊口訣</span>
                 </button>
             </nav>
 
@@ -2020,6 +2036,268 @@
                     </div>
                 </div>
 
+                <!-- TAB: SHOOTING -->
+                <div id="view-shooting" class="view-section hidden space-y-6">
+                    <div class="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden shadow-2xl">
+                        <!-- Header -->
+                        <div class="bg-green-900/50 p-6 border-b border-green-800/50 flex items-center justify-between">
+                            <div>
+                                <h2 class="text-2xl font-bold text-white flex items-center gap-3 tracking-widest">
+                                    <i class="fa-solid fa-crosshairs text-green-500"></i>
+                                    射擊八大口訣
+                                </h2>
+                                <p class="text-green-400 text-sm mt-1 font-mono">T91 戰鬥步槍 (T91 Assault Rifle)</p>
+                            </div>
+                        </div>
+
+                        <!-- Content: Grid of 8 cards -->
+                        <div class="p-6 md:p-8">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                <!-- 1. 托 -->
+                                <div onclick="zoomMnemonic(this)"
+                                    class="cursor-pointer bg-stone-800/40 rounded-2xl border border-stone-700 overflow-hidden hover:border-green-500 hover:shadow-[0_0_20px_rgba(34,197,94,0.2)] transition-all group flex flex-col h-full">
+                                    <div
+                                        class="bg-stone-900/80 h-56 flex items-center justify-center relative overflow-hidden border-b border-stone-700">
+                                        <div
+                                            class="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-green-500 via-stone-900 to-transparent">
+                                        </div>
+                                        <img src="docs/托.png" alt="托-示意圖"
+                                            class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500 z-10"
+                                            onerror="this.src='https://placehold.co/400x300/1c1917/22c55e?text=Step+1'">
+                                        <div
+                                            class="absolute -right-2 -bottom-4 text-8xl font-tech text-stone-800/60 font-bold z-20 select-none pointer-events-none mix-blend-overlay">
+                                            1</div>
+                                    </div>
+                                    <div class="p-5 flex flex-col flex-1">
+                                        <div
+                                            class="flex items-end justify-between mb-3 pb-2 border-b border-stone-700/50">
+                                            <h3 class="text-2xl font-bold text-white tracking-widest">托</h3>
+                                            <span
+                                                class="text-green-500 font-tech tracking-widest text-xs uppercase">Support</span>
+                                        </div>
+                                        <div class="space-y-2 flex-1">
+                                            <p class="text-stone-300 font-bold text-sm">動作：左手托住下護木</p>
+                                            <p class="text-stone-400 text-xs leading-relaxed text-justify">
+                                                左手自然伸展包覆護木，提供步槍穩定的支撐點。利用骨骼支撐而非過度用力握緊，避免肌肉疲勞導致槍口抖動。</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 2. 抵 -->
+                                <div onclick="zoomMnemonic(this)"
+                                    class="cursor-pointer bg-stone-800/40 rounded-2xl border border-stone-700 overflow-hidden hover:border-green-500 hover:shadow-[0_0_20px_rgba(34,197,94,0.2)] transition-all group flex flex-col h-full">
+                                    <div
+                                        class="bg-stone-900/80 h-56 flex items-center justify-center relative overflow-hidden border-b border-stone-700">
+                                        <div
+                                            class="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-green-500 via-stone-900 to-transparent">
+                                        </div>
+                                        <img src="docs/抵.png" alt="抵-示意圖"
+                                            class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500 z-10"
+                                            onerror="this.src='https://placehold.co/400x300/1c1917/22c55e?text=Step+2'">
+                                        <div
+                                            class="absolute -right-2 -bottom-4 text-8xl font-tech text-stone-800/60 font-bold z-20 select-none pointer-events-none mix-blend-overlay">
+                                            2</div>
+                                    </div>
+                                    <div class="p-5 flex flex-col flex-1">
+                                        <div
+                                            class="flex items-end justify-between mb-3 pb-2 border-b border-stone-700/50">
+                                            <h3 class="text-2xl font-bold text-white tracking-widest">抵</h3>
+                                            <span
+                                                class="text-green-500 font-tech tracking-widest text-xs uppercase">Press</span>
+                                        </div>
+                                        <div class="space-y-2 flex-1">
+                                            <p class="text-stone-300 font-bold text-sm">動作：槍托緊抵肩窩</p>
+                                            <p class="text-stone-400 text-xs leading-relaxed text-justify">
+                                                將槍托底部確實抵在鎖骨下方、胸肌外側的肩窩凹陷處，使槍身與身體緊密結合，以承受並分散射擊時的後座力。</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 3. 握 -->
+                                <div onclick="zoomMnemonic(this)"
+                                    class="cursor-pointer bg-stone-800/40 rounded-2xl border border-stone-700 overflow-hidden hover:border-green-500 hover:shadow-[0_0_20px_rgba(34,197,94,0.2)] transition-all group flex flex-col h-full">
+                                    <div
+                                        class="bg-stone-900/80 h-56 flex items-center justify-center relative overflow-hidden border-b border-stone-700">
+                                        <div
+                                            class="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-green-500 via-stone-900 to-transparent">
+                                        </div>
+                                        <img src="docs/握.png" alt="握-示意圖"
+                                            class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500 z-10"
+                                            onerror="this.src='https://placehold.co/400x300/1c1917/22c55e?text=Step+3'">
+                                        <div
+                                            class="absolute -right-2 -bottom-4 text-8xl font-tech text-stone-800/60 font-bold z-20 select-none pointer-events-none mix-blend-overlay">
+                                            3</div>
+                                    </div>
+                                    <div class="p-5 flex flex-col flex-1">
+                                        <div
+                                            class="flex items-end justify-between mb-3 pb-2 border-b border-stone-700/50">
+                                            <h3 class="text-2xl font-bold text-white tracking-widest">握</h3>
+                                            <span
+                                                class="text-green-500 font-tech tracking-widest text-xs uppercase">Grip</span>
+                                        </div>
+                                        <div class="space-y-2 flex-1">
+                                            <p class="text-stone-300 font-bold text-sm">動作：右手確實握把</p>
+                                            <p class="text-stone-400 text-xs leading-relaxed text-justify">
+                                                右手虎口貼緊握把，中、無名、小指確實扣握。食指在未達擊發前，必須平貼於護弓外側（嚴禁金手指）。</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 4. 貼 -->
+                                <div onclick="zoomMnemonic(this)"
+                                    class="cursor-pointer bg-stone-800/40 rounded-2xl border border-stone-700 overflow-hidden hover:border-green-500 hover:shadow-[0_0_20px_rgba(34,197,94,0.2)] transition-all group flex flex-col h-full">
+                                    <div
+                                        class="bg-stone-900/80 h-56 flex items-center justify-center relative overflow-hidden border-b border-stone-700">
+                                        <div
+                                            class="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-green-500 via-stone-900 to-transparent">
+                                        </div>
+                                        <img src="docs/貼.png" alt="貼-示意圖"
+                                            class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500 z-10"
+                                            onerror="this.src='https://placehold.co/400x300/1c1917/22c55e?text=Step+4'">
+                                        <div
+                                            class="absolute -right-2 -bottom-4 text-8xl font-tech text-stone-800/60 font-bold z-20 select-none pointer-events-none mix-blend-overlay">
+                                            4</div>
+                                    </div>
+                                    <div class="p-5 flex flex-col flex-1">
+                                        <div
+                                            class="flex items-end justify-between mb-3 pb-2 border-b border-stone-700/50">
+                                            <h3 class="text-2xl font-bold text-white tracking-widest">貼</h3>
+                                            <span
+                                                class="text-green-500 font-tech tracking-widest text-xs uppercase">Cheek</span>
+                                        </div>
+                                        <div class="space-y-2 flex-1">
+                                            <p class="text-stone-300 font-bold text-sm">動作：右臉頰靠槍托</p>
+                                            <p class="text-stone-400 text-xs leading-relaxed text-justify">
+                                                頸部微傾，將顴骨下方自然貼在槍托靠腮處。保持每次貼腮的位置與壓力一致，以建立穩定的瞄準視線。</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 5. 瞄 -->
+                                <div onclick="zoomMnemonic(this)"
+                                    class="cursor-pointer bg-stone-800/40 rounded-2xl border border-stone-700 overflow-hidden hover:border-green-500 hover:shadow-[0_0_20px_rgba(34,197,94,0.2)] transition-all group flex flex-col h-full">
+                                    <div
+                                        class="bg-stone-900/80 h-56 flex items-center justify-center relative overflow-hidden border-b border-stone-700">
+                                        <div
+                                            class="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-green-500 via-stone-900 to-transparent">
+                                        </div>
+                                        <img src="docs/瞄.png" alt="瞄-示意圖"
+                                            class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500 z-10"
+                                            onerror="this.src='https://placehold.co/400x300/1c1917/22c55e?text=Step+5'">
+                                        <div
+                                            class="absolute -right-2 -bottom-4 text-8xl font-tech text-stone-800/60 font-bold z-20 select-none pointer-events-none mix-blend-overlay">
+                                            5</div>
+                                    </div>
+                                    <div class="p-5 flex flex-col flex-1">
+                                        <div
+                                            class="flex items-end justify-between mb-3 pb-2 border-b border-stone-700/50">
+                                            <h3 class="text-2xl font-bold text-white tracking-widest">瞄</h3>
+                                            <span
+                                                class="text-green-500 font-tech tracking-widest text-xs uppercase">Aim</span>
+                                        </div>
+                                        <div class="space-y-2 flex-1">
+                                            <p class="text-stone-300 font-bold text-sm">動作：三點一線瞄準</p>
+                                            <p class="text-stone-400 text-xs leading-relaxed text-justify">
+                                                右眼透過覘孔，將準星尖端對準目標中心。視線焦點應落在「準星」上，確保準星清晰而目標微糊。</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 6. 停 -->
+                                <div onclick="zoomMnemonic(this)"
+                                    class="cursor-pointer bg-stone-800/40 rounded-2xl border border-stone-700 overflow-hidden hover:border-green-500 hover:shadow-[0_0_20px_rgba(34,197,94,0.2)] transition-all group flex flex-col h-full">
+                                    <div
+                                        class="bg-stone-900/80 h-56 flex items-center justify-center relative overflow-hidden border-b border-stone-700">
+                                        <div
+                                            class="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-green-500 via-stone-900 to-transparent">
+                                        </div>
+                                        <img src="docs/停.png" alt="停-示意圖"
+                                            class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500 z-10"
+                                            onerror="this.src='https://placehold.co/400x300/1c1917/22c55e?text=Step+6'">
+                                        <div
+                                            class="absolute -right-2 -bottom-4 text-8xl font-tech text-stone-800/60 font-bold z-20 select-none pointer-events-none mix-blend-overlay">
+                                            6</div>
+                                    </div>
+                                    <div class="p-5 flex flex-col flex-1">
+                                        <div
+                                            class="flex items-end justify-between mb-3 pb-2 border-b border-stone-700/50">
+                                            <h3 class="text-2xl font-bold text-white tracking-widest">停</h3>
+                                            <span
+                                                class="text-green-500 font-tech tracking-widest text-xs uppercase">Hold</span>
+                                        </div>
+                                        <div class="space-y-2 flex-1">
+                                            <p class="text-stone-300 font-bold text-sm">動作：暫停呼吸</p>
+                                            <p class="text-stone-400 text-xs leading-relaxed text-justify">自然吐氣至肺部剩餘 1/3
+                                                的靜止點後閉氣，避免胸部起伏影響槍身。約在 3-5 秒內完成擊發，超時應重新換氣。</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 7. 扣 -->
+                                <div onclick="zoomMnemonic(this)"
+                                    class="cursor-pointer bg-stone-800/40 rounded-2xl border border-stone-700 overflow-hidden hover:border-green-500 hover:shadow-[0_0_20px_rgba(34,197,94,0.2)] transition-all group flex flex-col h-full">
+                                    <div
+                                        class="bg-stone-900/80 h-56 flex items-center justify-center relative overflow-hidden border-b border-stone-700">
+                                        <div
+                                            class="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-green-500 via-stone-900 to-transparent">
+                                        </div>
+                                        <img src="docs/扣.png" alt="扣-示意圖"
+                                            class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500 z-10"
+                                            onerror="this.src='https://placehold.co/400x300/1c1917/22c55e?text=Step+7'">
+                                        <div
+                                            class="absolute -right-2 -bottom-4 text-8xl font-tech text-stone-800/60 font-bold z-20 select-none pointer-events-none mix-blend-overlay">
+                                            7</div>
+                                    </div>
+                                    <div class="p-5 flex flex-col flex-1">
+                                        <div
+                                            class="flex items-end justify-between mb-3 pb-2 border-b border-stone-700/50">
+                                            <h3 class="text-2xl font-bold text-white tracking-widest">扣</h3>
+                                            <span
+                                                class="text-green-500 font-tech tracking-widest text-xs uppercase">Squeeze</span>
+                                        </div>
+                                        <div class="space-y-2 flex-1">
+                                            <p class="text-stone-300 font-bold text-sm">動作：緩慢向後扣引</p>
+                                            <p class="text-stone-400 text-xs leading-relaxed text-justify">
+                                                用食指第一指肚接觸扳機，力量與槍管平行均勻向後施力。務必做到「不知不覺中擊發」，絕不可猛扣。</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 8. 報 -->
+                                <div onclick="zoomMnemonic(this)"
+                                    class="cursor-pointer bg-stone-800/40 rounded-2xl border border-stone-700 overflow-hidden hover:border-green-500 hover:shadow-[0_0_20px_rgba(34,197,94,0.2)] transition-all group flex flex-col h-full">
+                                    <div
+                                        class="bg-stone-900/80 h-56 flex items-center justify-center relative overflow-hidden border-b border-stone-700">
+                                        <div
+                                            class="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-green-500 via-stone-900 to-transparent">
+                                        </div>
+                                        <img src="docs/報.png" alt="報-示意圖"
+                                            class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500 z-10"
+                                            onerror="this.src='https://placehold.co/400x300/1c1917/22c55e?text=Step+8'">
+                                        <div
+                                            class="absolute -right-2 -bottom-4 text-8xl font-tech text-stone-800/60 font-bold z-20 select-none pointer-events-none mix-blend-overlay">
+                                            8</div>
+                                    </div>
+                                    <div class="p-5 flex flex-col flex-1">
+                                        <div
+                                            class="flex items-end justify-between mb-3 pb-2 border-b border-stone-700/50">
+                                            <h3 class="text-2xl font-bold text-white tracking-widest">報</h3>
+                                            <span
+                                                class="text-green-500 font-tech tracking-widest text-xs uppercase">Follow</span>
+                                        </div>
+                                        <div class="space-y-2 flex-1">
+                                            <p class="text-stone-300 font-bold text-sm">動作：保持姿勢觀察</p>
+                                            <p class="text-stone-400 text-xs leading-relaxed text-justify">
+                                                擊發後保持原有姿勢，手指保持扣壓，眼睛不離開瞄準線，確認彈著點與目標狀況後，才鬆開扳機重置。</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
 
                 <!-- Mobile Navbar -->
@@ -2070,6 +2348,11 @@
                         <i class="fa-solid fa-graduation-cap text-[20px]"></i>
                         <span class="text-[10px]">課堂</span>
                     </button>
+                    <button data-tab="shooting"
+                        class="nav-btn-mobile shrink-0 flex flex-col items-center gap-1 text-stone-500 w-12">
+                        <i class="fa-solid fa-crosshairs text-[20px]"></i>
+                        <span class="text-[10px]">射擊</span>
+                    </button>
                 </nav>
 
             </div>
@@ -2107,6 +2390,16 @@
 
         <!-- Custom JS -->
         <script>
+            // Zoom Mnemonic Image
+            function zoomMnemonic(element) {
+                const imgSrc = element.querySelector('img').src;
+                const title = element.querySelector('h3').innerText;
+                
+                document.getElementById('zoom-modal-img').src = imgSrc;
+                document.getElementById('zoom-modal-title').innerText = title;
+                document.getElementById('modal-image-zoom').classList.remove('hidden');
+            }
+
             // Toggle Location Details (Global Function for onclick)
             function toggleLocation(element) {
                 const card = element.parentElement;

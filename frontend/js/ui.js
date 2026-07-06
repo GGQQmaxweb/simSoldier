@@ -19,7 +19,8 @@ export const dom = {
         game: document.getElementById('view-game'),
         locations: document.getElementById('view-locations'),
         quiz: document.getElementById('view-quiz'),
-        delay: document.getElementById('view-delay')
+        delay: document.getElementById('view-delay'),
+        shooting: document.getElementById('view-shooting')
     },
 
     // --- Training ---
