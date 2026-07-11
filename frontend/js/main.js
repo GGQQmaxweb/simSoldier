@@ -12,6 +12,7 @@ import * as features from './features.js?v=4';
 import { training_ai } from './training_ai.js';
 import { initQuiz } from './quiz.js';
 import { initDelay } from './delay.js';
+import { initShootingGame } from './shooting.js';
 
 // --- Initialization ---
 
@@ -93,6 +94,13 @@ async function init() {
             console.log('Delay section initialized');
         } catch (e) {
             console.error('Delay init failed:', e);
+        }
+
+        try {
+            initShootingGame();
+            console.log('Shooting game initialized');
+        } catch (e) {
+            console.error('Shooting init failed:', e);
         }
 
         // Reveal UI after successful load
