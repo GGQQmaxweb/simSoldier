@@ -1,6 +1,8 @@
 from google import genai
 import chromadb
 import os
+import json
+from pathlib import Path
 import random
 from dotenv import load_dotenv
 from . import chat_config
@@ -21,6 +23,18 @@ chroma_client = chromadb.Client()
 collection = chroma_client.get_or_create_collection(name="my_knowledge_base")
 
 documents = chat_config.documents
+
+# Load JSON Index for Armed Forces Rights Act
+RESOURCES_DIR = Path(__file__).parent / "resources"
+JSON_PATH = RESOURCES_DIR / "軍人權益法條索引.json"
+rights_act_data = []
+if JSON_PATH.exists():
+    try:
+        with open(JSON_PATH, "r", encoding="utf-8") as f:
+            index_data = json.load(f)
+            rights_act_data = index_data.get("Armed_Forces_Rights_Act_RAG", [])
+    except Exception as e:
+        print(f"Failed to load JSON index: {e}")
 
 def format_user_info(user_info) -> str:
     if not user_info:
@@ -90,10 +104,22 @@ def ask_gemini(user_info, question: str):
         )
         
         # 3. Build context from search results
+        chroma_context = ""
         if results['documents']:
-             context = "\n".join(results['documents'][0])
-        else:
-             context = ""
+             chroma_context = "\n".join(results['documents'][0])
+             
+        # 3.5. JSON Keyword Matching
+        json_context_parts = []
+        lower_q = question.lower()
+        for item in rights_act_data:
+            keywords = item.get("Keywords", [])
+            if any(kw.lower() in lower_q for kw in keywords):
+                for faq in item.get("FAQ", []):
+                    json_context_parts.append(f"【軍人權益法規參考】\n問：{faq['Question']}\n答：{faq['Answer']}")
+        
+        context = chroma_context
+        if json_context_parts:
+             context = "\n\n".join(json_context_parts) + "\n\n" + chroma_context
         
         # 4. Ask Gemini with the context
         user_info_str = format_user_info(user_info)
