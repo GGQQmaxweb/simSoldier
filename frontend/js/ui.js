@@ -29,8 +29,7 @@ export const dom = {
     trainingContent: document.getElementById('training-content'),
 
     // --- Inventory ---
-    inventoryListRequired: document.getElementById('inventory-list-required'),
-    inventoryListOptional: document.getElementById('inventory-list-optional'),
+    inventoryCategoriesContainer: document.getElementById('inventory-categories-container'),
 
     // --- Chat ---
     chatInput: document.getElementById('chat-input'),

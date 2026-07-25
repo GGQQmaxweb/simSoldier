@@ -14,7 +14,8 @@ const EXERCISES = [
         targetReps: 3,
         viewHint: '💡 正面或側面朝向鏡頭，全身入鏡',
         rules: ['偵測到人體，全身入鏡', '下蹲至大腿約平行地面', '完全站直完成一次'],
-        type: 'squat'
+        type: 'squat',
+        guideImage: 'assets/images/training/squat_guide.png'
     },
     {
         key: 'pushups',
@@ -22,7 +23,8 @@ const EXERCISES = [
         targetReps: 3,
         viewHint: '💡 側面朝向鏡頭，手臂與身體完整入鏡',
         rules: ['偵測到人體，全身入鏡', '臂彎至胸接近地面', '完全撐起完成一次'],
-        type: 'pushup'
+        type: 'pushup',
+        guideImage: 'assets/images/training/push_up_guide.png'
     },
     {
         key: 'legraise',
@@ -30,7 +32,8 @@ const EXERCISES = [
         targetReps: 3,
         viewHint: '💡 側面平躺，雙腿伸直朝上抬，全身入鏡',
         rules: ['偵測到人體，全身入鏡', '雙腳伸直抬高至約90° (偵測中)', '穩住核心，慢慢放腳回原位計一次'],
-        type: 'legraise'
+        type: 'legraise',
+        guideImage: 'assets/images/training/leg_raise_guide.png'
     }
 ];
 
@@ -56,6 +59,8 @@ function initElements() {
     ui.rule2 = document.getElementById('rule-2');
     ui.rule3 = document.getElementById('rule-3');
     ui.viewHint = document.getElementById('training-view-hint');
+    ui.guideImage = document.getElementById('training-guide-image');
+    ui.zoomBtn = document.getElementById('btn-zoom-guide');
     return true;
 }
 
@@ -131,6 +136,9 @@ function loadExerciseUI(idx) {
     setRules(ex);
     updateFeedback('請準備...', 'text-yellow-400', 'bg-yellow-900/30');
     setSubmitLocked();
+    if (ui.guideImage && ex.guideImage) {
+        ui.guideImage.src = ex.guideImage;
+    }
 }
 
 function resetExerciseState() {
@@ -545,6 +553,21 @@ function bindEvents() {
         modalCloseBtn.addEventListener('click', () => {
             const modal = document.getElementById('training-complete-modal');
             if (modal) modal.classList.add('hidden');
+        });
+    }
+
+    // Zoom guide image modal
+    if (ui.zoomBtn) {
+        ui.zoomBtn.addEventListener('click', () => {
+            const ex = currentExercise();
+            const modal = document.getElementById('modal-image-zoom');
+            const img = document.getElementById('zoom-modal-img');
+            const title = document.getElementById('zoom-modal-title');
+            if (modal && img && title) {
+                img.src = ex.guideImage || '';
+                title.textContent = ex.name;
+                modal.classList.remove('hidden');
+            }
         });
     }
 }

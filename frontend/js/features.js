@@ -130,34 +130,108 @@ const DOCS_DATA = {
 
 // --- Inventory ---
 export function renderInventory() {
-    dom.inventoryListRequired.innerHTML = '';
-    dom.inventoryListOptional.innerHTML = '';
+    const container = dom.inventoryCategoriesContainer;
+    if (!container) return;
+    container.innerHTML = '';
+
+    // Category mapping
+    const categories = {
+        document: {
+            title: "一、 行政證件與資料 (必查)",
+            icon: "fa-file-signature",
+            iconColor: "text-red-400",
+            borderColor: "border-red-900/40"
+        },
+        financial_comm: {
+            title: "二、 財務與電子通訊",
+            icon: "fa-credit-card",
+            iconColor: "text-amber-400",
+            borderColor: "border-amber-900/40"
+        },
+        hygiene: {
+            title: "三、 盥洗與個人衛生用品",
+            icon: "fa-soap",
+            iconColor: "text-blue-400",
+            borderColor: "border-blue-900/40"
+        },
+        medical: {
+            title: "四、 醫療與防蚊防護",
+            icon: "fa-kit-medical",
+            iconColor: "text-emerald-400",
+            borderColor: "border-emerald-900/40"
+        },
+        essentials: {
+            title: "五、 實用生活小物 (口袋內務)",
+            icon: "fa-compass",
+            iconColor: "text-purple-400",
+            borderColor: "border-purple-900/40"
+        },
+        special: {
+            title: "六、 特定軍種與注意事項",
+            icon: "fa-circle-exclamation",
+            iconColor: "text-rose-400",
+            borderColor: "border-rose-900/40"
+        }
+    };
+
+    // Initialize HTML for all categories
+    const categoryDivs = {};
+    Object.keys(categories).forEach(catKey => {
+        const cat = categories[catKey];
+        const panel = document.createElement('div');
+        panel.className = `bg-stone-800/40 p-5 rounded-xl border ${cat.borderColor} flex flex-col h-full`;
+        panel.innerHTML = `
+            <div class="flex items-center gap-2 mb-4 pb-2 border-b border-stone-800">
+                <i class="fa-solid ${cat.icon} ${cat.iconColor} text-lg"></i>
+                <h4 class="font-bold text-white text-base">${cat.title}</h4>
+            </div>
+            <div class="space-y-3 flex-1" id="cat-list-${catKey}"></div>
+        `;
+        container.appendChild(panel);
+        categoryDivs[catKey] = panel.querySelector(`#cat-list-${catKey}`);
+    });
+
+    // Populate items
+    let acquiredCount = 0;
+    let totalCount = state.backpack.length;
 
     state.backpack.forEach(item => {
+        if (item.acquired) acquiredCount++;
+
+        const catKey = item.category || 'special';
+        const targetList = categoryDivs[catKey];
+        if (!targetList) return;
+
         const div = document.createElement('div');
-        div.className = `p-4 rounded-lg border cursor-pointer transition-all hover:bg-stone-700 flex justify-between items-center group ${item.acquired ? 'bg-green-900/20 border-green-700' : 'bg-stone-800 border-stone-700'}`;
+        div.className = `p-3 rounded-lg border cursor-pointer transition-all duration-200 hover:bg-stone-700/60 flex justify-between items-center group ${item.acquired ? 'bg-green-900/10 border-green-700/50' : 'bg-stone-900/60 border-stone-800'}`;
         div.onclick = () => toggleItem(item.id);
 
         div.innerHTML = `
-            <div class="flex items-center gap-3">
-                <div class="w-6 h-6 rounded-full border flex items-center justify-center transition-colors ${item.acquired ? 'bg-green-500 border-green-500' : 'border-stone-500'}">
-                    ${item.acquired ? '<i class="fa-solid fa-check text-white text-xs"></i>' : ''}
+            <div class="flex items-start gap-3 flex-1 min-w-0">
+                <div class="w-5 h-5 rounded-full border flex items-center justify-center shrink-0 mt-0.5 transition-colors ${item.acquired ? 'bg-green-500 border-green-500' : 'border-stone-600'}">
+                    ${item.acquired ? '<i class="fa-solid fa-check text-white text-[10px]"></i>' : ''}
                 </div>
-                <div>
-                    <div class="font-bold border-stone-200 ${item.acquired ? 'text-green-400 line-through decoration-green-500/50' : 'text-stone-200'}">${item.name}</div>
-                    ${item.note ? `<div class="text-xs text-stone-500">${item.note}</div>` : ''}
-                    ${item.link ? `<a href="${item.link}" target="_blank" onclick="event.stopPropagation()" class="mt-1.5 inline-flex items-center gap-1 text-xs text-amber-400 hover:text-amber-300 border border-amber-800/60 hover:border-amber-600 bg-amber-900/20 hover:bg-amber-900/40 px-2 py-0.5 rounded transition-colors"><i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> 前往役政署身家調查資訊</a>` : ''}
+                <div class="flex-1 min-w-0">
+                    <div class="font-bold text-sm leading-snug ${item.acquired ? 'text-green-400 line-through decoration-green-500/40' : 'text-stone-200'}">${item.name}</div>
+                    ${item.note ? `<div class="text-xs text-stone-500 mt-1 leading-relaxed text-justify">${item.note}</div>` : ''}
+                    ${item.link ? `<a href="${item.link}" target="_blank" onclick="event.stopPropagation()" class="mt-1.5 inline-flex items-center gap-1 text-[10px] text-amber-400 hover:text-amber-300 border border-amber-900/65 bg-amber-900/10 px-2 py-0.5 rounded transition-colors"><i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i> 說明連結</a>` : ''}
                 </div>
             </div>
-            ${item.required ? '<span class="text-xs bg-red-900/50 text-red-300 px-2 py-1 rounded">必備</span>' : ''}
+            ${item.required ? '<span class="text-[10px] bg-red-950/80 text-red-400 border border-red-900/55 px-1.5 py-0.5 rounded font-bold ml-2 shrink-0">必備</span>' : ''}
         `;
-
-        if (item.required) {
-            dom.inventoryListRequired.appendChild(div);
-        } else {
-            dom.inventoryListOptional.appendChild(div);
-        }
+        targetList.appendChild(div);
     });
+
+    // Update progress text
+    const progressEl = document.getElementById('inventory-progress-text');
+    if (progressEl) {
+        progressEl.textContent = `${acquiredCount} / ${totalCount} (${Math.round((acquiredCount / (totalCount || 1)) * 100)}%)`;
+        if (acquiredCount === totalCount && totalCount > 0) {
+            progressEl.className = 'text-green-400 font-bold animate-[pulse_1s_infinite]';
+        } else {
+            progressEl.className = 'text-green-400 font-bold';
+        }
+    }
 }
 
 function toggleItem(id) {
@@ -623,59 +697,6 @@ export function setupDateInputs() {
 export function startCountdownTimer() {
     setInterval(updateCountdown, 1000 * 60 * 60);
     setTimeout(updateCountdown, 100);
-}
-
-export async function renderCohortChart() {
-    const data = await api.getCohortStats();
-    if (!data) return;
-
-    const chartEl = document.getElementById('cohort-chart');
-    const legendEl = document.getElementById('cohort-legend-container');
-    const titleEl = document.getElementById('cohort-title');
-
-    if (!chartEl || !legendEl || !titleEl) return;
-
-    titleEl.textContent = `${data.year}人員分析`;
-
-    const colors = {
-        "大學專科": "bg-blue-500",
-        "高中職": "bg-emerald-500",
-        "國中": "bg-amber-500",
-        "其他": "bg-stone-500"
-    };
-
-    const colorHex = {
-        "大學專科": "#3b82f6",
-        "高中職": "#10b981",
-        "國中": "#f59e0b",
-        "其他": "#78716c"
-    };
-
-    let conicParts = [];
-    let currentDegree = 0;
-    legendEl.innerHTML = '';
-
-    for (const [key, value] of Object.entries(data.data)) {
-        const percentage = Math.round((value / data.total) * 100);
-        const percentRaw = (value / data.total) * 100;
-
-        if (percentage > 0) {
-            conicParts.push(`${colorHex[key]} ${currentDegree}% ${currentDegree + percentRaw}%`);
-            currentDegree += percentRaw;
-
-            legendEl.innerHTML += `
-                <div class="flex items-center justify-between text-sm">
-                    <div class="flex items-center gap-2">
-                        <span class="w-3 h-3 rounded-full ${colors[key]}"></span>
-                        <span class="text-stone-300">${key}</span>
-                    </div>
-                    <span class="font-tech text-stone-500">${percentage}%</span>
-                </div>
-            `;
-        }
-    }
-
-    chartEl.style.background = `conic-gradient(${conicParts.join(', ')})`;
 }
 
 // --- Hospital GPS Logic ---

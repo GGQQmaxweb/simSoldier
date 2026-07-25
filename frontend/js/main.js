@@ -71,7 +71,6 @@ async function init() {
         features.startCountdownTimer();
         features.setupDateInputs(); // Init Date Input Logic
         features.initChatGreeting(); // 根據兵役狀態與日期產生自適應的教官開場白
-        features.renderCohortChart(); // 讀取並渲染本梯次分析圖表
         setupEventListeners();
 
         // 啟動 AI 訓練模組與天兵課堂
@@ -428,7 +427,7 @@ function setupEventListeners() {
 
         btnRhapsodyFullscreen.addEventListener('click', async () => {
             console.log('🎮 Fullscreen button clicked!');
-            
+
             if (!document.fullscreenElement) {
                 // Enter fullscreen mode natively
                 try {
