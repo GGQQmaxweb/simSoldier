@@ -2436,17 +2436,17 @@
                                 </button>
                                 
                                 <!-- HUD -->
-                                <div id="shooting-hud" class="hidden absolute top-4 left-4 right-16 flex justify-between items-center z-20 pointer-events-none">
-                                    <div class="flex gap-2">
+                                <div id="shooting-hud" class="hidden absolute top-4 left-4 right-16 flex justify-between items-start z-20 pointer-events-none">
+                                    <div class="flex flex-col gap-2">
                                         <div class="bg-black/70 px-3 py-1.5 rounded border border-stone-600 text-white font-tech shadow-lg flex items-center gap-1.5">
                                             <i class="fa-solid fa-clock text-red-400 text-sm"></i> TIME: <span id="shooting-timer" class="text-red-400 text-xl ml-1 font-bold">30</span>s
                                         </div>
                                         <div class="bg-black/70 px-3 py-1.5 rounded border border-stone-600 text-white font-tech shadow-lg flex items-center gap-1.5">
-                                            <i class="fa-solid fa-bullseye text-yellow-400 text-sm"></i> ROUNDS: <span id="shooting-rounds" class="text-yellow-400 text-xl ml-1 font-bold">0/6</span>
+                                            <i class="fa-solid fa-trophy text-green-400 text-sm"></i> SCORE: <span id="shooting-score" class="text-green-400 text-xl ml-1 font-bold">0</span><span class="text-stone-400 text-xs">/60</span>
                                         </div>
                                     </div>
                                     <div class="bg-black/70 px-3 py-1.5 rounded border border-stone-600 text-white font-tech shadow-lg flex items-center gap-1.5">
-                                        <i class="fa-solid fa-trophy text-green-400 text-sm"></i> SCORE: <span id="shooting-score" class="text-green-400 text-xl ml-1 font-bold">0</span><span class="text-stone-400 text-xs">/60</span>
+                                        <i class="fa-solid fa-bullseye text-yellow-400 text-sm"></i> ROUNDS: <span id="shooting-rounds" class="text-yellow-400 text-xl ml-1 font-bold">0/6</span>
                                     </div>
                                 </div>
 
@@ -2632,63 +2632,63 @@
                             </button>
                         </div>
                     </div>
-                <!-- Mobile Navbar -->
-                <nav
-                    class="md:hidden fixed bottom-0 left-0 right-0 bg-stone-900 border-t border-stone-800 flex overflow-x-auto gap-4 p-3 z-50 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.3)] hide-scrollbar">
-                    <button data-tab="home"
-                        class="nav-btn-mobile shrink-0 flex flex-col items-center gap-1 text-green-500 w-12">
-                        <i class="fa-solid fa-chart-line text-[20px]"></i>
-                        <span class="text-[10px]">戰情</span>
-                    </button>
-                    <button data-tab="training"
-                        class="nav-btn-mobile shrink-0 flex flex-col items-center gap-1 text-stone-500 w-12">
-                        <i class="fa-solid fa-dumbbell text-[20px]"></i>
-                        <span class="text-[10px]">訓練</span>
-                    </button>
-                    <button data-tab="inventory"
-                        class="nav-btn-mobile shrink-0 flex flex-col items-center gap-1 text-stone-500 w-12">
-                        <i class="fa-solid fa-briefcase text-[20px]"></i>
-                        <span class="text-[10px]">背包</span>
-                    </button>
-                    <button data-tab="chat"
-                        class="nav-btn-mobile shrink-0 flex flex-col items-center gap-1 text-stone-500 w-12">
-                        <i class="fa-solid fa-comments text-[20px]"></i>
-                        <span class="text-[10px]">教官</span>
-                    </button>
-                    <button data-tab="docs"
-                        class="nav-btn-mobile shrink-0 flex flex-col items-center gap-1 text-stone-500 w-12">
-                        <i class="fa-solid fa-bars text-[20px]"></i>
-                        <span class="text-[10px]">行政</span>
-                    </button>
-                    <button data-tab="locations"
-                        class="nav-btn-mobile shrink-0 flex flex-col items-center gap-1 text-stone-500 w-12">
-                        <i class="fa-solid fa-map-location-dot text-[20px]"></i>
-                        <span class="text-[10px]">地點</span>
-                    </button>
-                    <button data-tab="delay"
-                        class="nav-btn-mobile shrink-0 flex flex-col items-center gap-1 text-stone-500 w-12">
-                        <i class="fa-solid fa-calendar-minus text-[20px]"></i>
-                        <span class="text-[10px]">延役</span>
-                    </button>
-                    <button data-tab="rhapsody"
-                        class="nav-btn-mobile shrink-0 flex flex-col items-center gap-1 text-stone-500 w-12">
-                        <i class="fa-solid fa-music text-[20px]"></i>
-                        <span class="text-[10px]">狂想</span>
-                    </button>
-                    <button data-tab="quiz"
-                        class="nav-btn-mobile shrink-0 flex flex-col items-center gap-1 text-stone-500 w-12">
-                        <i class="fa-solid fa-graduation-cap text-[20px]"></i>
-                        <span class="text-[10px]">課堂</span>
-                    </button>
-                    <button data-tab="shooting"
-                        class="nav-btn-mobile shrink-0 flex flex-col items-center gap-1 text-stone-500 w-12">
-                        <i class="fa-solid fa-crosshairs text-[20px]"></i>
-                        <span class="text-[10px]">射擊</span>
-                    </button>
-                </nav>
-
             </div>
         </div>
+
+        <!-- Mobile Navbar -->
+        <nav
+            class="md:hidden fixed bottom-0 left-0 right-0 bg-stone-900 border-t border-stone-800 flex overflow-x-auto gap-4 p-3 z-50 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.3)] hide-scrollbar">
+            <button data-tab="home"
+                class="nav-btn-mobile shrink-0 flex flex-col items-center gap-1 text-green-500 w-12">
+                <i class="fa-solid fa-chart-line text-[20px]"></i>
+                <span class="text-[10px]">戰情</span>
+            </button>
+            <button data-tab="training"
+                class="nav-btn-mobile shrink-0 flex flex-col items-center gap-1 text-stone-500 w-12">
+                <i class="fa-solid fa-dumbbell text-[20px]"></i>
+                <span class="text-[10px]">訓練</span>
+            </button>
+            <button data-tab="inventory"
+                class="nav-btn-mobile shrink-0 flex flex-col items-center gap-1 text-stone-500 w-12">
+                <i class="fa-solid fa-briefcase text-[20px]"></i>
+                <span class="text-[10px]">背包</span>
+            </button>
+            <button data-tab="chat"
+                class="nav-btn-mobile shrink-0 flex flex-col items-center gap-1 text-stone-500 w-12">
+                <i class="fa-solid fa-comments text-[20px]"></i>
+                <span class="text-[10px]">教官</span>
+            </button>
+            <button data-tab="docs"
+                class="nav-btn-mobile shrink-0 flex flex-col items-center gap-1 text-stone-500 w-12">
+                <i class="fa-solid fa-bars text-[20px]"></i>
+                <span class="text-[10px]">行政</span>
+            </button>
+            <button data-tab="locations"
+                class="nav-btn-mobile shrink-0 flex flex-col items-center gap-1 text-stone-500 w-12">
+                <i class="fa-solid fa-map-location-dot text-[20px]"></i>
+                <span class="text-[10px]">地點</span>
+            </button>
+            <button data-tab="delay"
+                class="nav-btn-mobile shrink-0 flex flex-col items-center gap-1 text-stone-500 w-12">
+                <i class="fa-solid fa-calendar-minus text-[20px]"></i>
+                <span class="text-[10px]">延役</span>
+            </button>
+            <button data-tab="rhapsody"
+                class="nav-btn-mobile shrink-0 flex flex-col items-center gap-1 text-stone-500 w-12">
+                <i class="fa-solid fa-music text-[20px]"></i>
+                <span class="text-[10px]">狂想</span>
+            </button>
+            <button data-tab="quiz"
+                class="nav-btn-mobile shrink-0 flex flex-col items-center gap-1 text-stone-500 w-12">
+                <i class="fa-solid fa-graduation-cap text-[20px]"></i>
+                <span class="text-[10px]">課堂</span>
+            </button>
+            <button data-tab="shooting"
+                class="nav-btn-mobile shrink-0 flex flex-col items-center gap-1 text-stone-500 w-12">
+                <i class="fa-solid fa-crosshairs text-[20px]"></i>
+                <span class="text-[10px]">射擊</span>
+            </button>
+        </nav>
 
         <!-- Docs Modal -->
         <div id="modal-docs"
