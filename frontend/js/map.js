@@ -47,7 +47,7 @@ function initMap() {
         markers[key] = marker;
     });
 
-    // 綁定左側清單的點擊事件，並動態加入導航按鈕
+    // 綁定左側清單的點擊事件，並動態加入位置按鈕
     const locationCards = document.querySelectorAll('#view-locations .group');
     locationCards.forEach(card => {
         const titleElement = card.querySelector('h4');
