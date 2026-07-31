@@ -260,15 +260,46 @@
                 if (btn) {
                     const title = btn.getAttribute('data-title');
                     const content = btn.getAttribute('data-content');
-                    timelineModalTitle.textContent = title;
-                    timelineModalContent.textContent = content;
-                    modalTimeline.classList.remove('hidden');
+                    if (title && content) {
+                        timelineModalTitle.textContent = title;
+                        timelineModalContent.textContent = content;
+                        modalTimeline.classList.remove('hidden');
+                    }
                 }
             });
 
             if (btnCloseTimeline) {
                 btnCloseTimeline.addEventListener('click', () => {
                     modalTimeline.classList.add('hidden');
+                });
+            }
+
+            // Notice Horizontal Panel Controls
+            const noticePanel = document.getElementById('notice-horizontal-panel');
+            const btnCloseNotice = document.getElementById('btn-close-notice-panel');
+            const btnToggleNotice = document.getElementById('btn-toggle-notice-panel');
+
+            if (btnCloseNotice && noticePanel) {
+                btnCloseNotice.addEventListener('click', () => {
+                    noticePanel.classList.add('hidden');
+                    if (btnToggleNotice) btnToggleNotice.classList.remove('hidden');
+                });
+            }
+
+            if (btnToggleNotice && noticePanel) {
+                btnToggleNotice.addEventListener('click', () => {
+                    noticePanel.classList.remove('hidden');
+                    btnToggleNotice.classList.add('hidden');
+                });
+            }
+
+            const noticeScrollContainer = document.querySelector('#notice-horizontal-panel .overflow-x-auto');
+            if (noticeScrollContainer) {
+                noticeScrollContainer.addEventListener('wheel', (e) => {
+                    if (e.deltaY !== 0) {
+                        e.preventDefault();
+                        noticeScrollContainer.scrollLeft += e.deltaY;
+                    }
                 });
             }
         });
@@ -289,7 +320,7 @@
 
             <nav id="sidebar-nav" class="flex-1 p-4 space-y-2 overflow-y-auto">
                 <button data-tab="home"
-                    class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all bg-green-900/30 text-green-400 border border-green-800/50">
+                    class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all bg-green-900/30 text-green-400">
                     <i class="fa-solid fa-chart-line text-[20px]"></i>
                     <span class="font-bold text-sm">戰情儀表板</span>
                 </button>
@@ -443,7 +474,7 @@
                         <!-- Top Row: Giant Countdown & Calendar -->
                         <div class="grid grid-cols-1">
                             <div
-                                class="bg-stone-900 p-6 rounded-lg shadow-lg border border-stone-800 relative overflow-hidden group">
+                                class="bg-stone-900 p-6 rounded-lg shadow-lg relative overflow-hidden group">
                                 <div
                                     class="absolute top-0 left-0 w-2 h-full bg-stone-800 group-hover:bg-green-600 transition-colors duration-500">
                                 </div>
@@ -566,97 +597,267 @@
 
                         <!-- Timeline Section -->
                         <div
-                            class="bg-stone-900 p-6 rounded-lg shadow-lg border border-stone-800 flex flex-col justify-center">
-                            <h3 class="font-bold text-white mb-8 flex items-center gap-2 text-xl">
-                                <i class="fa-solid fa-timeline text-green-500"></i>
-                                <span>徵兵處理流程</span>
-                            </h3>
+                            class="bg-stone-900 p-6 rounded-lg shadow-lg flex flex-col justify-center">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="font-bold text-white flex items-center gap-2 text-xl">
+                                    <i class="fa-solid fa-timeline text-green-500"></i>
+                                    <span>徵兵處理流程</span>
+                                </h3>
+                                <button id="btn-toggle-notice-panel" class="hidden text-xs bg-stone-800 hover:bg-stone-700 text-yellow-500 hover:text-yellow-400 border border-yellow-600/40 px-3 py-1.5 rounded-full transition-all flex items-center gap-1.5 shadow-sm focus:outline-none">
+                                    <i class="fa-solid fa-file-contract"></i>
+                                    <span>顯示注意事項</span>
+                                </button>
+                            </div>
 
-                            <div class="flex flex-col md:flex-row w-full gap-2 md:gap-6">
-                                <!-- Timeline part (Left) -->
+                            <!-- Timeline part (Full Width) -->
+                            <div
+                                class="relative flex flex-col md:flex-row justify-between items-start md:items-start w-full md:px-12 py-2">
+                                <!-- horizontal line (desktop) -->
                                 <div
-                                    class="relative flex flex-col md:flex-row justify-between items-start md:items-start w-full md:w-3/4 md:px-8 h-full">
-                                    <!-- horizontal line (desktop) -->
-                                    <div
-                                        class="hidden md:block absolute left-16 right-16 top-3 h-1 bg-stone-700 rounded">
-                                    </div>
-                                    <!-- vertical line (mobile fallback) -->
-                                    <div
-                                        class="md:hidden absolute left-[1.65rem] top-4 bottom-10 w-1 bg-stone-700 rounded">
-                                    </div>
-
-                                    <!-- 兵籍調查 -->
-                                    <div
-                                        class="relative flex flex-row md:flex-col items-center group w-full md:w-1/3 mb-8 md:mb-0">
-                                        <div
-                                            class="w-6 h-6 shrink-0 rounded-full bg-stone-500 border-4 border-stone-900 group-hover:bg-green-500 transition-colors md:mb-4 mr-4 md:mr-0 z-10 relative">
-                                        </div>
-                                        <button class="timeline-btn text-left md:text-center focus:outline-none w-full"
-                                            data-title="兵籍調查"
-                                            data-content="役男在接獲戶籍地鄉(鎮、巿、區)公所通知辦理兵籍調查時，除可至「徵兵及齡男子兵籍調查線上申報系統」進行網路申報，亦可親自、委託代理人前往指定地點、臨櫃、傳真或郵寄的方式完成兵籍調查。">
-                                            <h4
-                                                class="text-lg font-bold text-stone-200 group-hover:text-green-400 transition-colors whitespace-nowrap">
-                                                兵籍調查</h4>
-                                            <p
-                                                class="text-sm text-stone-500 mt-1 group-hover:text-stone-300 transition-colors">
-                                                點擊查看詳細說明</p>
-                                        </button>
-                                    </div>
-
-                                    <!-- 役男徵兵體檢作業 -->
-                                    <div
-                                        class="relative flex flex-row md:flex-col items-center group w-full md:w-1/3 mb-8 md:mb-0">
-                                        <div
-                                            class="w-6 h-6 shrink-0 rounded-full bg-stone-500 border-4 border-stone-900 group-hover:bg-green-500 transition-colors md:mb-4 mr-4 md:mr-0 z-10 relative">
-                                        </div>
-                                        <button class="timeline-btn text-left md:text-center focus:outline-none w-full"
-                                            data-title="役男徵兵體檢作業"
-                                            data-content="應依指定時間、地點、攜帶徵兵檢查通知書、國民身分證及照片等前往報到接受體格檢查。&#10;&#10;應受檢查役男，如在外謀生或就學，不能返回戶籍地受檢，得使用線上預約系統申請跨縣市代辦體檢，或臨櫃向寄居地直轄市、縣（市）政府申請代檢。">
-                                            <h4
-                                                class="text-lg font-bold text-stone-200 group-hover:text-green-400 transition-colors whitespace-nowrap">
-                                                徵兵體檢作業</h4>
-                                            <p
-                                                class="text-sm text-stone-500 mt-1 group-hover:text-stone-300 transition-colors">
-                                                點擊查看詳細說明</p>
-                                        </button>
-                                    </div>
-
-                                    <!-- 抽籤 -->
-                                    <div
-                                        class="relative flex flex-row md:flex-col items-center group w-full md:w-1/3 mb-8 md:mb-0">
-                                        <div
-                                            class="w-6 h-6 shrink-0 rounded-full bg-stone-500 border-4 border-stone-900 group-hover:bg-green-500 transition-colors md:mb-4 mr-4 md:mr-0 z-10 relative">
-                                        </div>
-                                        <button class="timeline-btn text-left md:text-center focus:outline-none w-full"
-                                            data-title="抽籤"
-                                            data-content="役男如經徵兵檢查後，判定為常備兵役體位，或是替代役體位者，應辦理抽籤，凡參加抽籤役男親自到場抽籤。&#10;&#10;本人確因故不能到場時，可委託有行為能力之家屬代抽，事後不得提出異議。">
-                                            <h4
-                                                class="text-lg font-bold text-stone-200 group-hover:text-green-400 transition-colors whitespace-nowrap">
-                                                抽籤</h4>
-                                            <p
-                                                class="text-sm text-stone-500 mt-1 group-hover:text-stone-300 transition-colors">
-                                                點擊查看詳細說明</p>
-                                        </button>
-                                    </div>
+                                    class="hidden md:block absolute left-24 right-24 top-5 h-1 bg-stone-700 rounded">
+                                </div>
+                                <!-- vertical line (mobile fallback) -->
+                                <div
+                                    class="md:hidden absolute left-[1.65rem] top-4 bottom-10 w-1 bg-stone-700 rounded">
                                 </div>
 
-                                <!-- 注意事項 (Right, not in timeline) -->
+                                <!-- 兵籍調查 -->
                                 <div
-                                    class="flex flex-col items-center justify-start md:justify-center w-full md:w-1/4 md:border-l md:border-stone-700 md:pl-6 pt-6 md:pt-0 border-t border-stone-700 md:border-t-0">
-                                    <button class="timeline-btn text-center focus:outline-none w-full group py-2"
-                                        data-title="注意事項"
-                                        data-content="1. 凡應徵役男接到徵集令時，應在徵集令（第一聯）回執上記入收到日期並簽章或按指模。&#10;2. 如徵集令由徵兵處理通報人代收其應辦手續按前項規定辦理，並應儘速通報應徵役男，依照規定時間地點前往報到入營。&#10;3. 接到徵集令後，應妥為做入營準備，如公務上之交代或私事之處理，凡合於常備役體位服替代役役男延期徵訓事故表所定各項延期徵訓事故原因者，得由本人或戶長填具申請書，報由區公所核轉市政府核辦。&#10;4. 報到時應攜帶徵集令、國民身分證、私章、戶口名簿影本、郵局存摺正面影本、最高學歷畢業證書、特殊專長及國家考試及格證書與技術師（士）證照等資料，並隨身穿著季節便服一套。&#10;5. 務希準時到達集合地點集合，逾時應自行入營報到，乘座車輛船隻須遵守交通秩序並接受領隊人員之指導。&#10;6. 輸入入營之車輛船隻，有一定容量、送行家屬及親友不得隨同搭乘。&#10;7. 逾期不到應徵役男，依妨害兵役治罪條例移送法院。&#10;8. 應徵人員如係機關學校，公私營事業機構，及人民團體（含公司）等之職工，請於接到徵集令三天內到原服務單位辦理保留底缺。&#10;9. 入營當天如遇重大災害（颱風、地震、水災等）致影響交通或有重大安全顧慮時，請密切注意各傳播媒體之報導，如宣布所屬縣市公務機關停止上班時，原訂入營日期取消，更動後之入營日期另候通知或逕向戶籍所在地區公所兵役單位洽詢。&#10;10. 請於入營前完成向郵局辦理開戶手續，以利入伍後薪餉發放。&#10;11. 凡應徵入營役男，可憑徵集令影本，向原投保單位辦理全民健保轉出手續（轉出日期為入營日期），原健保卡不必繳回，可繼續使用，並隨徵集令附「替代役役男參加全民健康保險須知」分送替代役役男；另為辦理軍訓課程折算役期作業，高級中等學校畢業者，檢據畢（結）業證書；高級中等學校未畢（肄）業及大專以上畢業者，應先向就讀學校查詢申請手續，辦理全民國防教育軍事訓練課程成績單證明並將相關證明文件（影本一份抽存）於入營後繳交。&#10;12. 役男身高、體重不符合服役標準者，得向直轄市、縣（市）政府或鄉（鎮、市、區）公所役政單位提出，俾於入營前專案予以重新測量或洽送醫院鑑定改判體位。">
-                                        <div
-                                            class="w-10 h-10 md:w-12 md:h-12 mx-auto rounded-full bg-stone-800 border-2 border-yellow-600 flex items-center justify-center group-hover:bg-yellow-600 transition-colors mb-2 md:mb-3 shadow-lg">
-                                            <i
-                                                class="fa-solid fa-file-contract text-yellow-500 group-hover:text-stone-900 text-lg md:text-xl"></i>
-                                        </div>
+                                    class="relative flex flex-row md:flex-col items-center group w-full md:w-1/3 mb-8 md:mb-0">
+                                    <div
+                                        class="w-6 h-6 shrink-0 rounded-full bg-stone-500 border-4 border-stone-900 group-hover:bg-green-500 transition-colors md:mb-4 mr-4 md:mr-0 z-10 relative">
+                                    </div>
+                                    <button class="timeline-btn text-left md:text-center focus:outline-none w-full"
+                                        data-title="兵籍調查"
+                                        data-content="役男在接獲戶籍地鄉(鎮、巿、區)公所通知辦理兵籍調查時，除可至「徵兵及齡男子兵籍調查線上申報系統」進行網路申報，亦可親自、委託代理人前往指定地點、臨櫃、傳真或郵寄的方式完成兵籍調查。">
                                         <h4
-                                            class="text-lg font-bold text-yellow-500 group-hover:text-yellow-400 transition-colors whitespace-nowrap">
-                                            注意事項</h4>
+                                            class="text-lg font-bold text-stone-200 group-hover:text-green-400 transition-colors whitespace-nowrap">
+                                            兵籍調查</h4>
                                         <p
                                             class="text-sm text-stone-500 mt-1 group-hover:text-stone-300 transition-colors">
-                                            點擊查看細則</p>
+                                            點擊查看詳細說明</p>
+                                    </button>
+                                </div>
+
+                                <!-- 役男徵兵體檢作業 -->
+                                <div
+                                    class="relative flex flex-row md:flex-col items-center group w-full md:w-1/3 mb-8 md:mb-0">
+                                    <div
+                                        class="w-6 h-6 shrink-0 rounded-full bg-stone-500 border-4 border-stone-900 group-hover:bg-green-500 transition-colors md:mb-4 mr-4 md:mr-0 z-10 relative">
+                                    </div>
+                                    <button class="timeline-btn text-left md:text-center focus:outline-none w-full"
+                                        data-title="役男徵兵體檢作業"
+                                        data-content="應依指定時間、地點、攜帶徵兵檢查通知書、國民身分證及照片等前往報到接受體格檢查。&#10;&#10;應受檢查役男，如在外謀生或就學，不能返回戶籍地受檢，得使用線上預約系統申請跨縣市代辦體檢，或臨櫃向寄居地直轄市、縣（市）政府申請代檢。">
+                                        <h4
+                                            class="text-lg font-bold text-stone-200 group-hover:text-green-400 transition-colors whitespace-nowrap">
+                                            徵兵體檢作業</h4>
+                                        <p
+                                            class="text-sm text-stone-500 mt-1 group-hover:text-stone-300 transition-colors">
+                                            點擊查看詳細說明</p>
+                                    </button>
+                                </div>
+
+                                <!-- 抽籤 -->
+                                <div
+                                    class="relative flex flex-row md:flex-col items-center group w-full md:w-1/3 mb-8 md:mb-0">
+                                    <div
+                                        class="w-6 h-6 shrink-0 rounded-full bg-stone-500 border-4 border-stone-900 group-hover:bg-green-500 transition-colors md:mb-4 mr-4 md:mr-0 z-10 relative">
+                                    </div>
+                                    <button class="timeline-btn text-left md:text-center focus:outline-none w-full"
+                                        data-title="抽籤"
+                                        data-content="役男如經徵兵檢查後，判定為常備兵役體位，或是替代役體位者，應辦理抽籤，凡參加抽籤役男親自到場抽籤。&#10;&#10;本人確因故不能到場時，可委託有行為能力之家屬代抽，事後不得提出異議。">
+                                        <h4
+                                            class="text-lg font-bold text-stone-200 group-hover:text-green-400 transition-colors whitespace-nowrap">
+                                            抽籤</h4>
+                                        <p
+                                            class="text-sm text-stone-500 mt-1 group-hover:text-stone-300 transition-colors">
+                                            點擊查看詳細說明</p>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- 注意事項 (Horizontal Panel) -->
+                            <div id="notice-horizontal-panel" class="mt-6 pt-5 border-t border-stone-800 w-full transition-all duration-300">
+                                <div class="flex items-center justify-between mb-4 px-1">
+                                    <div class="flex items-center gap-2.5">
+                                        <div class="w-8 h-8 rounded-full bg-yellow-950/80 border border-yellow-600/50 flex items-center justify-center shadow">
+                                            <i class="fa-solid fa-file-contract text-yellow-500 text-sm"></i>
+                                        </div>
+                                        <h4 class="text-base font-bold text-yellow-500">注意事項</h4>
+                                        <span class="text-xs text-stone-400 bg-stone-800/90 px-2.5 py-0.5 rounded-full border border-stone-700/60 hidden sm:inline-block">共 12 條說明 • 左右滾動瀏覽</span>
+                                    </div>
+                                    <button id="btn-close-notice-panel" class="text-stone-400 hover:text-white bg-stone-800 hover:bg-stone-700 p-1.5 rounded-full transition-colors focus:outline-none flex items-center justify-center" title="關閉注意事項">
+                                        <i class="fa-solid fa-xmark text-sm w-4 h-4 flex items-center justify-center"></i>
+                                    </button>
+                                </div>
+
+                                <div class="flex gap-4 overflow-x-auto pb-4 pt-1 px-1 custom-scrollbar scroll-smooth">
+                                    <!-- Card 1 -->
+                                    <button class="timeline-btn text-left focus:outline-none cursor-pointer bg-stone-800/70 hover:bg-stone-800 border border-stone-700/60 hover:border-yellow-500/50 rounded-xl p-4 min-w-[280px] max-w-[320px] shrink-0 shadow-md transition-all flex flex-col justify-between group"
+                                        data-title="注意事項 - 01. 徵集令簽收"
+                                        data-content="凡應徵役男接到徵集令時，應在徵集令（第一聯）回執上記入收到日期並簽章或按指模。">
+                                        <div>
+                                            <div class="flex items-center justify-between mb-2">
+                                                <span class="w-6 h-6 rounded-full bg-yellow-500/20 text-yellow-400 text-xs font-bold flex items-center justify-center border border-yellow-500/30">01</span>
+                                                <span class="text-xs font-semibold text-stone-400 group-hover:text-yellow-400 transition-colors">徵集令簽收</span>
+                                            </div>
+                                            <p class="text-sm text-stone-300 leading-relaxed line-clamp-3">凡應徵役男接到徵集令時，應在徵集令（第一聯）回執上記入收到日期並簽章或按指模。</p>
+                                        </div>
+                                        <span class="text-xs text-yellow-500/80 mt-3 block group-hover:text-yellow-400">點擊查看詳情 <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
+                                    </button>
+
+                                    <!-- Card 2 -->
+                                    <button class="timeline-btn text-left focus:outline-none cursor-pointer bg-stone-800/70 hover:bg-stone-800 border border-stone-700/60 hover:border-yellow-500/50 rounded-xl p-4 min-w-[280px] max-w-[320px] shrink-0 shadow-md transition-all flex flex-col justify-between group"
+                                        data-title="注意事項 - 02. 代收通報"
+                                        data-content="如徵集令由徵兵處理通報人代收其應辦手續按前項規定辦理，並應儘速通報應徵役男，依照規定時間地點前往報到入營。">
+                                        <div>
+                                            <div class="flex items-center justify-between mb-2">
+                                                <span class="w-6 h-6 rounded-full bg-yellow-500/20 text-yellow-400 text-xs font-bold flex items-center justify-center border border-yellow-500/30">02</span>
+                                                <span class="text-xs font-semibold text-stone-400 group-hover:text-yellow-400 transition-colors">代收通報</span>
+                                            </div>
+                                            <p class="text-sm text-stone-300 leading-relaxed line-clamp-3">如徵集令由徵兵處理通報人代收其應辦手續按前項規定辦理，並應儘速通報應徵役男，依照規定時間地點前往報到入營。</p>
+                                        </div>
+                                        <span class="text-xs text-yellow-500/80 mt-3 block group-hover:text-yellow-400">點擊查看詳情 <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
+                                    </button>
+
+                                    <!-- Card 3 -->
+                                    <button class="timeline-btn text-left focus:outline-none cursor-pointer bg-stone-800/70 hover:bg-stone-800 border border-stone-700/60 hover:border-yellow-500/50 rounded-xl p-4 min-w-[280px] max-w-[320px] shrink-0 shadow-md transition-all flex flex-col justify-between group"
+                                        data-title="注意事項 - 03. 延期徵訓申請"
+                                        data-content="接到徵集令後，應妥為做入營準備，如公務上之交代或私事之處理，凡合於常備役體位服替代役役男延期徵訓事故表所定各項延期徵訓事故原因者，得由本人或戶長填具申請書，報由區公所核轉市政府核辦。">
+                                        <div>
+                                            <div class="flex items-center justify-between mb-2">
+                                                <span class="w-6 h-6 rounded-full bg-yellow-500/20 text-yellow-400 text-xs font-bold flex items-center justify-center border border-yellow-500/30">03</span>
+                                                <span class="text-xs font-semibold text-stone-400 group-hover:text-yellow-400 transition-colors">延期徵訓申請</span>
+                                            </div>
+                                            <p class="text-sm text-stone-300 leading-relaxed line-clamp-3">接到徵集令後，應妥為做入營準備，如合於延期徵訓事故原因者，得由本人或戶長填具申請書核辦。</p>
+                                        </div>
+                                        <span class="text-xs text-yellow-500/80 mt-3 block group-hover:text-yellow-400">點擊查看詳情 <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
+                                    </button>
+
+                                    <!-- Card 4 -->
+                                    <button class="timeline-btn text-left focus:outline-none cursor-pointer bg-stone-800/70 hover:bg-stone-800 border border-stone-700/60 hover:border-yellow-500/50 rounded-xl p-4 min-w-[280px] max-w-[320px] shrink-0 shadow-md transition-all flex flex-col justify-between group"
+                                        data-title="注意事項 - 04. 報到應備文件"
+                                        data-content="報到時應攜帶徵集令、國民身分證、私章、戶口名簿影本、郵局存摺正面影本、最高學歷畢業證書、特殊專長及國家考試及格證書與技術師（士）證照等資料，並隨身穿著季節便服一套。">
+                                        <div>
+                                            <div class="flex items-center justify-between mb-2">
+                                                <span class="w-6 h-6 rounded-full bg-yellow-500/20 text-yellow-400 text-xs font-bold flex items-center justify-center border border-yellow-500/30">04</span>
+                                                <span class="text-xs font-semibold text-stone-400 group-hover:text-yellow-400 transition-colors">報到應備文件</span>
+                                            </div>
+                                            <p class="text-sm text-stone-300 leading-relaxed line-clamp-3">報到時應攜帶徵集令、身分證、印章、戶口名簿影本、郵局存摺影本及畢業證書證照等資料。</p>
+                                        </div>
+                                        <span class="text-xs text-yellow-500/80 mt-3 block group-hover:text-yellow-400">點擊查看詳情 <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
+                                    </button>
+
+                                    <!-- Card 5 -->
+                                    <button class="timeline-btn text-left focus:outline-none cursor-pointer bg-stone-800/70 hover:bg-stone-800 border border-stone-700/60 hover:border-yellow-500/50 rounded-xl p-4 min-w-[280px] max-w-[320px] shrink-0 shadow-md transition-all flex flex-col justify-between group"
+                                        data-title="注意事項 - 05. 準時集合規範"
+                                        data-content="務希準時到達集合地點集合，逾時應自行入營報到，乘座車輛船隻須遵守交通秩序並接受領隊人員之指導。">
+                                        <div>
+                                            <div class="flex items-center justify-between mb-2">
+                                                <span class="w-6 h-6 rounded-full bg-yellow-500/20 text-yellow-400 text-xs font-bold flex items-center justify-center border border-yellow-500/30">05</span>
+                                                <span class="text-xs font-semibold text-stone-400 group-hover:text-yellow-400 transition-colors">準時集合規範</span>
+                                            </div>
+                                            <p class="text-sm text-stone-300 leading-relaxed line-clamp-3">務希準時到達集合地點集合，逾時應自行入營報到，乘坐交通工具須遵守秩序並接受指導。</p>
+                                        </div>
+                                        <span class="text-xs text-yellow-500/80 mt-3 block group-hover:text-yellow-400">點擊查看詳情 <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
+                                    </button>
+
+                                    <!-- Card 6 -->
+                                    <button class="timeline-btn text-left focus:outline-none cursor-pointer bg-stone-800/70 hover:bg-stone-800 border border-stone-700/60 hover:border-yellow-500/50 rounded-xl p-4 min-w-[280px] max-w-[320px] shrink-0 shadow-md transition-all flex flex-col justify-between group"
+                                        data-title="注意事項 - 06. 親友搭乘限制"
+                                        data-content="輸入入營之車輛船隻，有一定容量、送行家屬及親友不得隨同搭乘。">
+                                        <div>
+                                            <div class="flex items-center justify-between mb-2">
+                                                <span class="w-6 h-6 rounded-full bg-yellow-500/20 text-yellow-400 text-xs font-bold flex items-center justify-center border border-yellow-500/30">06</span>
+                                                <span class="text-xs font-semibold text-stone-400 group-hover:text-yellow-400 transition-colors">親友搭乘限制</span>
+                                            </div>
+                                            <p class="text-sm text-stone-300 leading-relaxed line-clamp-3">輸送入營之車輛船隻有容量限制，送行家屬及親友不得隨同搭乘。</p>
+                                        </div>
+                                        <span class="text-xs text-yellow-500/80 mt-3 block group-hover:text-yellow-400">點擊查看詳情 <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
+                                    </button>
+
+                                    <!-- Card 7 -->
+                                    <button class="timeline-btn text-left focus:outline-none cursor-pointer bg-stone-800/70 hover:bg-stone-800 border border-stone-700/60 hover:border-yellow-500/50 rounded-xl p-4 min-w-[280px] max-w-[320px] shrink-0 shadow-md transition-all flex flex-col justify-between group"
+                                        data-title="注意事項 - 07. 妨害兵役處罰"
+                                        data-content="逾期不到應徵役男，依妨害兵役治罪條例移送法院。">
+                                        <div>
+                                            <div class="flex items-center justify-between mb-2">
+                                                <span class="w-6 h-6 rounded-full bg-yellow-500/20 text-yellow-400 text-xs font-bold flex items-center justify-center border border-yellow-500/30">07</span>
+                                                <span class="text-xs font-semibold text-stone-400 group-hover:text-yellow-400 transition-colors">妨害兵役處罰</span>
+                                            </div>
+                                            <p class="text-sm text-stone-300 leading-relaxed line-clamp-3">無故逾期不到應徵役男，將依妨害兵役治罪條例移送法院依法辦理。</p>
+                                        </div>
+                                        <span class="text-xs text-yellow-500/80 mt-3 block group-hover:text-yellow-400">點擊查看詳情 <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
+                                    </button>
+
+                                    <!-- Card 8 -->
+                                    <button class="timeline-btn text-left focus:outline-none cursor-pointer bg-stone-800/70 hover:bg-stone-800 border border-stone-700/60 hover:border-yellow-500/50 rounded-xl p-4 min-w-[280px] max-w-[320px] shrink-0 shadow-md transition-all flex flex-col justify-between group"
+                                        data-title="注意事項 - 08. 保留職缺申請"
+                                        data-content="應徵人員如係機關學校，公私營事業機構，及人民團體（含公司）等之職工，請於接到徵集令三天內到原服務單位辦理保留底缺。">
+                                        <div>
+                                            <div class="flex items-center justify-between mb-2">
+                                                <span class="w-6 h-6 rounded-full bg-yellow-500/20 text-yellow-400 text-xs font-bold flex items-center justify-center border border-yellow-500/30">08</span>
+                                                <span class="text-xs font-semibold text-stone-400 group-hover:text-yellow-400 transition-colors">保留職缺申請</span>
+                                            </div>
+                                            <p class="text-sm text-stone-300 leading-relaxed line-clamp-3">應徵人員如係各機構、學校或公司職工，請於接到徵集令三天內至原單位辦理保留底缺。</p>
+                                        </div>
+                                        <span class="text-xs text-yellow-500/80 mt-3 block group-hover:text-yellow-400">點擊查看詳情 <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
+                                    </button>
+
+                                    <!-- Card 9 -->
+                                    <button class="timeline-btn text-left focus:outline-none cursor-pointer bg-stone-800/70 hover:bg-stone-800 border border-stone-700/60 hover:border-yellow-500/50 rounded-xl p-4 min-w-[280px] max-w-[320px] shrink-0 shadow-md transition-all flex flex-col justify-between group"
+                                        data-title="注意事項 - 09. 災害防救應變"
+                                        data-content="入營當天如遇重大災害（颱風、地震、水災等）致影響交通或有重大安全顧慮時，請密切注意各傳播媒體之報導，如宣布所屬縣市公務機關停止上班時，原訂入營日期取消，更動後之入營日期另候通知或逕向戶籍所在地區公所兵役單位洽詢。">
+                                        <div>
+                                            <div class="flex items-center justify-between mb-2">
+                                                <span class="w-6 h-6 rounded-full bg-yellow-500/20 text-yellow-400 text-xs font-bold flex items-center justify-center border border-yellow-500/30">09</span>
+                                                <span class="text-xs font-semibold text-stone-400 group-hover:text-yellow-400 transition-colors">災害防救應變</span>
+                                            </div>
+                                            <p class="text-sm text-stone-300 leading-relaxed line-clamp-3">入營當天如遇重大天災致縣市停止上班時，原訂入營日期取消，更動日期另行通知。</p>
+                                        </div>
+                                        <span class="text-xs text-yellow-500/80 mt-3 block group-hover:text-yellow-400">點擊查看詳情 <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
+                                    </button>
+
+                                    <!-- Card 10 -->
+                                    <button class="timeline-btn text-left focus:outline-none cursor-pointer bg-stone-800/70 hover:bg-stone-800 border border-stone-700/60 hover:border-yellow-500/50 rounded-xl p-4 min-w-[280px] max-w-[320px] shrink-0 shadow-md transition-all flex flex-col justify-between group"
+                                        data-title="注意事項 - 10. 郵局開戶發薪"
+                                        data-content="請於入營前完成向郵局辦理開戶手續，以利入伍後薪餉發放。">
+                                        <div>
+                                            <div class="flex items-center justify-between mb-2">
+                                                <span class="w-6 h-6 rounded-full bg-yellow-500/20 text-yellow-400 text-xs font-bold flex items-center justify-center border border-yellow-500/30">10</span>
+                                                <span class="text-xs font-semibold text-stone-400 group-hover:text-yellow-400 transition-colors">郵局開戶發薪</span>
+                                            </div>
+                                            <p class="text-sm text-stone-300 leading-relaxed line-clamp-3">請於入營前完成向郵局辦理開戶手續，以利入伍後順利辦理薪餉撥存發放。</p>
+                                        </div>
+                                        <span class="text-xs text-yellow-500/80 mt-3 block group-hover:text-yellow-400">點擊查看詳情 <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
+                                    </button>
+
+                                    <!-- Card 11 -->
+                                    <button class="timeline-btn text-left focus:outline-none cursor-pointer bg-stone-800/70 hover:bg-stone-800 border border-stone-700/60 hover:border-yellow-500/50 rounded-xl p-4 min-w-[280px] max-w-[320px] shrink-0 shadow-md transition-all flex flex-col justify-between group"
+                                        data-title="注意事項 - 11. 健保與折抵役期"
+                                        data-content="凡應徵入營役男，可憑徵集令影本，向原投保單位辦理全民健保轉出手續（轉出日期為入營日期），原健保卡不必繳回，可繼續使用，並隨徵集令附「替代役役男參加全民健康保險須知」分送替代役役男；另為辦理軍訓課程折算役期作業，高級中等學校畢業者，檢據畢（結）業證書；高級中等學校未畢（肄）業及大專以上畢業者，應先向就讀學校查詢申請手續，辦理全民國防教育軍事訓練課程成績單證明並將相關證明文件（影本一份抽存）於入營後繳交。">
+                                        <div>
+                                            <div class="flex items-center justify-between mb-2">
+                                                <span class="w-6 h-6 rounded-full bg-yellow-500/20 text-yellow-400 text-xs font-bold flex items-center justify-center border border-yellow-500/30">11</span>
+                                                <span class="text-xs font-semibold text-stone-400 group-hover:text-yellow-400 transition-colors">健保與折抵役期</span>
+                                            </div>
+                                            <p class="text-sm text-stone-300 leading-relaxed line-clamp-3">請憑徵集令辦理健保轉出，並備妥畢業證書或軍事訓練課程成績單辦理役期折算。</p>
+                                        </div>
+                                        <span class="text-xs text-yellow-500/80 mt-3 block group-hover:text-yellow-400">點擊查看詳情 <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
+                                    </button>
+
+                                    <!-- Card 12 -->
+                                    <button class="timeline-btn text-left focus:outline-none cursor-pointer bg-stone-800/70 hover:bg-stone-800 border border-stone-700/60 hover:border-yellow-500/50 rounded-xl p-4 min-w-[280px] max-w-[320px] shrink-0 shadow-md transition-all flex flex-col justify-between group"
+                                        data-title="注意事項 - 12. 體位重測申請"
+                                        data-content="役男身高、體重不符合服役標準者，得向直轄市、縣（市）政府或鄉（鎮、市、區）公所役政單位提出，俾於入營前專案予以重新測量或洽送醫院鑑定改判體位。">
+                                        <div>
+                                            <div class="flex items-center justify-between mb-2">
+                                                <span class="w-6 h-6 rounded-full bg-yellow-500/20 text-yellow-400 text-xs font-bold flex items-center justify-center border border-yellow-500/30">12</span>
+                                                <span class="text-xs font-semibold text-stone-400 group-hover:text-yellow-400 transition-colors">體位重測申請</span>
+                                            </div>
+                                            <p class="text-sm text-stone-300 leading-relaxed line-clamp-3">身高體重不符標準者，得向役政單位提出申請，於入營前重新測量或複檢改判。</p>
+                                        </div>
+                                        <span class="text-xs text-yellow-500/80 mt-3 block group-hover:text-yellow-400">點擊查看詳情 <i class="fa-solid fa-arrow-right text-[10px]"></i></span>
                                     </button>
                                 </div>
                             </div>
@@ -737,9 +938,6 @@
                                         </h3>
                                     </div>
 
-                                    <!-- Widget: Cohort Analysis (MOVED TO RIGHT COLUMN) -->
-                                    <!-- Removed from here -->
-
                                     <div id="tasks-list" class="space-y-3">
                                         <div
                                             class="flex items-center gap-4 p-4 bg-stone-800 rounded-lg border border-stone-700 hover:bg-stone-750 transition-colors">
@@ -761,9 +959,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- Entertainment Links -->
-
                             </div>
                         </div>
 
@@ -785,104 +980,6 @@
                                         class="bg-white/10 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-full w-fit flex items-center gap-1 group-hover:bg-white/20 transition-colors">
                                         <i class="fa-solid fa-gamepad text-[14px]"></i> START GAME
                                     </div>
-                                </div>
-                            </div>
-
-                            <!-- Widget: Military Branch Culture Table -->
-                            <div class="bg-stone-900 p-6 rounded-lg shadow-lg border border-stone-800">
-                                <h3 class="font-bold text-white mb-6 flex items-center gap-2 text-lg">
-                                    <i class="fa-solid fa-shield-halved text-[20px] text-blue-500"></i>
-                                    <span>國軍軍種文化與特性分析</span>
-                                </h3>
-                                <div class="overflow-x-auto">
-                                    <table class="w-full text-left border-collapse text-stone-300">
-                                        <thead>
-                                            <tr class="border-b border-stone-800 text-stone-400 text-sm">
-                                                <th class="py-3 px-4 font-semibold w-28 whitespace-nowrap">軍種</th>
-                                                <th class="py-3 px-4 font-semibold w-28 whitespace-nowrap">精神標語</th>
-                                                <th class="py-3 px-4 font-semibold whitespace-nowrap">管理風格與組織特性</th>
-                                                <th class="py-3 px-4 font-semibold whitespace-nowrap">文化核心</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="divide-y divide-stone-800/50 text-sm">
-                                            <tr class="hover:bg-stone-800/30 transition-colors">
-                                                <td class="py-4 px-4 font-bold text-white whitespace-nowrap">
-                                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-green-900/30 text-green-400 border border-green-800/40">
-                                                        <i class="fa-solid fa-person-military-pointing"></i> 陸軍
-                                                    </span>
-                                                </td>
-                                                <td class="py-4 px-4 whitespace-nowrap">
-                                                    <span class="text-orange-400 font-bold">「忠誠」</span>
-                                                </td>
-                                                <td class="py-4 px-4 leading-relaxed text-stone-300">
-                                                    陸軍是國軍中規模最大、歷史最深的軍種。高度強調標準作業程序（SOP）、流程與權威結構。
-                                                </td>
-                                                <td class="py-4 px-4 leading-relaxed text-stone-300">
-                                                    透過嚴格的內務檢查與整齊劃一的隊伍，消融個人主義，藉此構建堅不可摧的集體防禦意志。
-                                                </td>
-                                            </tr>
-                                            <tr class="hover:bg-stone-800/30 transition-colors">
-                                                <td class="py-4 px-4 font-bold text-white whitespace-nowrap">
-                                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-sky-900/30 text-sky-400 border border-sky-800/40">
-                                                        <i class="fa-solid fa-ship"></i> 海軍
-                                                    </span>
-                                                </td>
-                                                <td class="py-4 px-4 whitespace-nowrap">
-                                                    <span class="text-orange-400 font-bold">「忠義」</span>
-                                                </td>
-                                                <td class="py-4 px-4 leading-relaxed text-stone-300">
-                                                    相較於陸軍的剛猛，海軍被視為「紳士軍隊」。由於海軍常需執行敦睦遠航等任務，接待友邦政要並宣揚國威，使得海軍官兵具備較高的禮儀素養與國際化視野。
-                                                </td>
-                                                <td class="py-4 px-4 leading-relaxed text-stone-300">
-                                                    相較於陸軍的嚴格階級服從，海軍內部的溝通往往更為扁平、直接，且強調基於技術信任的專業分工，而非僅依靠軍事階級來壓制。
-                                                </td>
-                                            </tr>
-                                            <tr class="hover:bg-stone-800/30 transition-colors">
-                                                <td class="py-4 px-4 font-bold text-white whitespace-nowrap">
-                                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-indigo-900/30 text-indigo-400 border border-indigo-800/40">
-                                                        <i class="fa-solid fa-plane"></i> 空軍
-                                                    </span>
-                                                </td>
-                                                <td class="py-4 px-4 whitespace-nowrap">
-                                                    <span class="text-orange-400 font-bold">「忠勇」</span>
-                                                </td>
-                                                <td class="py-4 px-4 leading-relaxed text-stone-300">
-                                                    空軍是一個高度依賴尖端科技與裝備性能的軍種，組織內部展現出強烈的「專業型官僚」與「技術精英主義」特徵。
-                                                </td>
-                                                <td class="py-4 px-4 leading-relaxed text-stone-300">
-                                                    空軍擁有濃厚的「英雄崇拜」色彩，飛行員不僅是作戰核心，更是組織內的最高榮譽象徵，鼓勵官兵追求個人卓越與精準操作。由於飛航管制與飛機維修需要極高的科學準確性，空軍的管理往往比陸軍更具彈性。
-                                                </td>
-                                            </tr>
-                                            <tr class="hover:bg-stone-800/30 transition-colors">
-                                                <td class="py-4 px-4 font-bold text-white whitespace-nowrap">
-                                                    <span class="block text-xs text-stone-500 mb-1">其他特色軍種</span>
-                                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-red-900/30 text-red-400 border border-red-800/40">
-                                                        <i class="fa-solid fa-anchor"></i> 海軍陸戰隊
-                                                    </span>
-                                                </td>
-                                                <td class="py-4 px-4 whitespace-nowrap">
-                                                    <span class="text-orange-400 font-bold">「永遠忠誠」</span>
-                                                </td>
-                                                <td class="py-4 px-4 leading-relaxed text-stone-300" colspan="2">
-                                                    被公認為文化凝聚力最強的單位，強調「不怕苦、不怕難、不怕死」的三不怕精神。透過極度嚴苛的入伍儀式（如天堂路）建立起近乎宗教性的集體認同與終身榮譽感。
-                                                </td>
-                                            </tr>
-                                            <tr class="hover:bg-stone-800/30 transition-colors">
-                                                <td class="py-4 px-4 font-bold text-white whitespace-nowrap">
-                                                    <span class="block text-xs text-stone-500 mb-1">其他特色軍種</span>
-                                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-zinc-700/30 text-zinc-300 border border-zinc-600/40">
-                                                        <i class="fa-solid fa-user-shield"></i> 憲兵
-                                                    </span>
-                                                </td>
-                                                <td class="py-4 px-4 whitespace-nowrap">
-                                                    <span class="text-orange-400 font-bold">「忠貞」</span>
-                                                </td>
-                                                <td class="py-4 px-4 leading-relaxed text-stone-300" colspan="2">
-                                                    作為「軍中警察」與三軍標竿，憲兵的管理核心在於「法治」與「表率」。講究賞罰分明。
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -1111,15 +1208,15 @@
                             </div>
 
                             <div
-                                class="bg-stone-900 p-6 rounded-lg shadow-lg border border-stone-800 hover:border-green-500/50 transition-colors">
-                                <div class="text-3xl text-green-500 mb-4"><i class="fa-solid fa-scale-balanced"></i>
+                                class="bg-stone-900 p-6 rounded-lg shadow-lg border border-stone-800 hover:border-blue-500/50 transition-colors">
+                                <div class="text-3xl text-blue-500 mb-4"><i class="fa-solid fa-shield-halved"></i>
                                 </div>
-                                <h3 class="font-bold text-white text-lg mb-2">軍人權益懶人包</h3>
-                                <p class="text-stone-400 text-sm mb-4">薪資、保險、申訴管道 (1985) 等重要權益。</p>
+                                <h3 class="font-bold text-white text-lg mb-2">國軍軍種文化與特性分析</h3>
+                                <p class="text-stone-400 text-sm mb-4">陸軍、海軍、空軍、海軍陸戰隊及憲兵之管理風格與文化特性。</p>
                                 <button
-                                    class="btn-doc text-green-400 text-xs flex items-center gap-1 hover:text-white transition-colors"
-                                    data-doc="rights">
-                                    了解權益 <i class="fa-solid fa-arrow-right"></i>
+                                    class="btn-doc text-blue-400 text-xs flex items-center gap-1 hover:text-white transition-colors"
+                                    data-doc="culture">
+                                    查看分析 <i class="fa-solid fa-arrow-right"></i>
                                 </button>
                             </div>
 

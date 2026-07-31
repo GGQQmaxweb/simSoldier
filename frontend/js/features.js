@@ -30,10 +30,103 @@ const DOCS_DATA = {
         content: "若您有兵單遺失、徵集日期查詢、抵免役期辦理等問題，請直接聯繫戶籍地公所兵役科。<br><br>詳細電話與地址請點擊下方連結至內政部役政司網站查詢。",
         link: "https://dca.moi.gov.tw/chaspx/news.aspx?web=225"
     },
-    rights: {
-        title: "軍人權益懶人包",
-        content: "包含薪資福利、喪葬補助、軍保醫療、以及申訴管道 (1985) 之完整說明。<br><br>當兵不是坐牢，保障自身權益是您的義務。若遇不當管教或權益受損，請利用申訴管道。",
-        link: "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=F0030049"
+    culture: {
+        title: "國軍軍種文化與特性分析",
+        content: `
+<p class="text-stone-400 text-sm mb-4">深入剖析中華民國國軍主要軍種與特種部隊之組織文化、精神標語、管理風格與核心價值。</p>
+
+<div class="overflow-x-auto rounded-lg border border-stone-700">
+    <table class="w-full text-left border-collapse text-stone-300">
+        <thead>
+            <tr class="bg-stone-800 border-b border-stone-700 text-stone-300 text-sm">
+                <th class="py-3 px-4 font-semibold w-28 whitespace-nowrap">軍種</th>
+                <th class="py-3 px-4 font-semibold w-28 whitespace-nowrap">精神標語</th>
+                <th class="py-3 px-4 font-semibold whitespace-nowrap">管理風格與組織特性</th>
+                <th class="py-3 px-4 font-semibold whitespace-nowrap">文化核心</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-stone-800/80 text-sm bg-stone-900/60">
+            <tr class="hover:bg-stone-800/40 transition-colors">
+                <td class="py-4 px-4 font-bold text-white whitespace-nowrap">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-green-900/30 text-green-400 border border-green-800/40">
+                        <i class="fa-solid fa-person-military-pointing"></i> 陸軍
+                    </span>
+                </td>
+                <td class="py-4 px-4 whitespace-nowrap">
+                    <span class="text-orange-400 font-bold">「忠誠」</span>
+                </td>
+                <td class="py-4 px-4 leading-relaxed text-stone-300">
+                    陸軍是國軍中規模最大、歷史最深的軍種。高度強調標準作業程序（SOP）、流程與權威結構。
+                </td>
+                <td class="py-4 px-4 leading-relaxed text-stone-300">
+                    透過嚴格的內務檢查與整齊劃一的隊伍，消融個人主義，藉此構建堅不可摧的集體防禦意志。
+                </td>
+            </tr>
+            <tr class="hover:bg-stone-800/40 transition-colors">
+                <td class="py-4 px-4 font-bold text-white whitespace-nowrap">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-sky-900/30 text-sky-400 border border-sky-800/40">
+                        <i class="fa-solid fa-ship"></i> 海軍
+                    </span>
+                </td>
+                <td class="py-4 px-4 whitespace-nowrap">
+                    <span class="text-orange-400 font-bold">「忠義」</span>
+                </td>
+                <td class="py-4 px-4 leading-relaxed text-stone-300">
+                    相較於陸軍的剛猛，海軍被視為「紳士軍隊」。由於海軍常需執行敦睦遠航等任務，接待友邦政要並宣揚國威，使得海軍官兵具備較高的禮儀素養與國際化視野。
+                </td>
+                <td class="py-4 px-4 leading-relaxed text-stone-300">
+                    相較於陸軍的嚴格階級服從，海軍內部的溝通往往更為扁平、直接，且強調基於技術信任的專業分工，而非僅依靠軍事階級來壓制。
+                </td>
+            </tr>
+            <tr class="hover:bg-stone-800/40 transition-colors">
+                <td class="py-4 px-4 font-bold text-white whitespace-nowrap">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-indigo-900/30 text-indigo-400 border border-indigo-800/40">
+                        <i class="fa-solid fa-plane"></i> 空軍
+                    </span>
+                </td>
+                <td class="py-4 px-4 whitespace-nowrap">
+                    <span class="text-orange-400 font-bold">「忠勇」</span>
+                </td>
+                <td class="py-4 px-4 leading-relaxed text-stone-300">
+                    空軍是一個高度依賴尖端科技與裝備性能的軍種，組織內部展現出強烈的「專業型官僚」與「技術精英主義」特徵。
+                </td>
+                <td class="py-4 px-4 leading-relaxed text-stone-300">
+                    空軍擁有濃厚的「英雄崇拜」色彩，飛行員不僅是作戰核心，更是組織內的最高榮譽象徵，鼓勵官兵追求個人卓越與精準操作。由於飛航管制與飛機維修需要極高的科學準確性，空軍的管理往往比陸軍更具彈性。
+                </td>
+            </tr>
+            <tr class="hover:bg-stone-800/40 transition-colors">
+                <td class="py-4 px-4 font-bold text-white whitespace-nowrap">
+                    <span class="block text-xs text-stone-500 mb-1">其他特色軍種</span>
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-red-900/30 text-red-400 border border-red-800/40">
+                        <i class="fa-solid fa-anchor"></i> 海軍陸戰隊
+                    </span>
+                </td>
+                <td class="py-4 px-4 whitespace-nowrap">
+                    <span class="text-orange-400 font-bold">「永遠忠誠」</span>
+                </td>
+                <td class="py-4 px-4 leading-relaxed text-stone-300" colspan="2">
+                    被公認為文化凝聚力最強的單位，強調「不怕苦、不怕難、不怕死」的三不怕精神。透過極度嚴苛的入伍儀式（如天堂路）建立起近乎宗教性的集體認同與終身榮譽感。
+                </td>
+            </tr>
+            <tr class="hover:bg-stone-800/40 transition-colors">
+                <td class="py-4 px-4 font-bold text-white whitespace-nowrap">
+                    <span class="block text-xs text-stone-500 mb-1">其他特色軍種</span>
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-zinc-700/30 text-zinc-300 border border-zinc-600/40">
+                        <i class="fa-solid fa-user-shield"></i> 憲兵
+                    </span>
+                </td>
+                <td class="py-4 px-4 whitespace-nowrap">
+                    <span class="text-orange-400 font-bold">「忠貞」</span>
+                </td>
+                <td class="py-4 px-4 leading-relaxed text-stone-300" colspan="2">
+                    作為「軍中警察」與三軍標竿，憲兵的管理核心在於「法治」與「表率」。講究賞罰分明。
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+        `,
+        link: null
     },
     shengjia: {
         title: "身家調查說明",
