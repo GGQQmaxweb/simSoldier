@@ -104,9 +104,11 @@ def ask_gemini(user_info, question: str):
         )
         
         # 3. Build context from search results
-        chroma_context = ""
+        chroma_context_parts = []
         if results['documents']:
-             chroma_context = "\n".join(results['documents'][0])
+             for doc in results['documents'][0]:
+                 chroma_context_parts.append(f"【來源：chat_config.py 內部知識庫】\n{doc}")
+        chroma_context = "\n\n".join(chroma_context_parts)
              
         # 3.5. JSON Keyword Matching
         json_context_parts = []
@@ -115,7 +117,7 @@ def ask_gemini(user_info, question: str):
             keywords = item.get("Keywords", [])
             if any(kw.lower() in lower_q for kw in keywords):
                 for faq in item.get("FAQ", []):
-                    json_context_parts.append(f"【軍人權益法規參考】\n問：{faq['Question']}\n答：{faq['Answer']}")
+                    json_context_parts.append(f"【來源：軍人權益法條索引.json (關鍵字：{', '.join(keywords)})】\n問：{faq['Question']}\n答：{faq['Answer']}")
         
         context = chroma_context
         if json_context_parts:

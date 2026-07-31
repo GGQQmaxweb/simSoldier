@@ -1,6 +1,6 @@
 export function initDelay() {
     const delayHTML = `
-        <div class="bg-stone-900 rounded-lg shadow-lg border border-stone-800 p-8 max-w-4xl mx-auto space-y-8 overflow-y-auto max-h-full">
+        <div class="bg-stone-900 rounded-lg shadow-lg border border-stone-800 p-8 flex flex-col h-full space-y-8 overflow-y-auto">
             <div class="text-center border-b border-stone-700 pb-6">
                 <i class="fa-solid fa-calendar-minus text-5xl text-blue-500 mb-4 drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]"></i>
                 <h2 class="text-3xl font-bold text-white tracking-widest mb-2">延緩入營申請須知</h2>
