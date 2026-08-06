@@ -10,7 +10,7 @@ import { determineServiceType, bmi } from './utils.js';
 import * as game from './game.js';
 import * as features from './features.js?v=4';
 import { training_ai } from './training_ai.js';
-import { initQuiz } from './quiz.js';
+import { initQuiz } from './quiz.js?v=105';
 import { initDelay } from './delay.js';
 import { initShootingGame } from './shooting.js';
 
