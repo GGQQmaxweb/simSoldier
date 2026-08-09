@@ -67,26 +67,26 @@ export function initQuiz() {
     // Unit Menu Navigation
     const btnUnit1 = document.getElementById('btn-quiz-unit-1');
     if (btnUnit1) btnUnit1.onclick = () => {
-        if(qDom.modulesMenu) qDom.modulesMenu.classList.add('hidden');
-        if(qDom.lobby) qDom.lobby.classList.remove('hidden');
+        if (qDom.modulesMenu) qDom.modulesMenu.classList.add('hidden');
+        if (qDom.lobby) qDom.lobby.classList.remove('hidden');
     };
 
     const btnUnit2 = document.getElementById('btn-quiz-unit-2');
     if (btnUnit2) btnUnit2.onclick = () => {
-        if(qDom.modulesMenu) qDom.modulesMenu.classList.add('hidden');
-        if(qDom.module2Area) qDom.module2Area.classList.remove('hidden');
+        if (qDom.modulesMenu) qDom.modulesMenu.classList.add('hidden');
+        if (qDom.module2Area) qDom.module2Area.classList.remove('hidden');
     };
 
     const btnBack1 = document.getElementById('btn-back-to-modules-1');
     if (btnBack1) btnBack1.onclick = () => {
-        if(qDom.lobby) qDom.lobby.classList.add('hidden');
-        if(qDom.modulesMenu) qDom.modulesMenu.classList.remove('hidden');
+        if (qDom.lobby) qDom.lobby.classList.add('hidden');
+        if (qDom.modulesMenu) qDom.modulesMenu.classList.remove('hidden');
     };
 
     const btnBack2 = document.getElementById('btn-back-to-modules-2');
     if (btnBack2) btnBack2.onclick = () => {
-        if(qDom.module2Area) qDom.module2Area.classList.add('hidden');
-        if(qDom.modulesMenu) qDom.modulesMenu.classList.remove('hidden');
+        if (qDom.module2Area) qDom.module2Area.classList.add('hidden');
+        if (qDom.modulesMenu) qDom.modulesMenu.classList.remove('hidden');
     };
 
     const btnStart = document.getElementById('btn-start-quiz');
@@ -122,14 +122,14 @@ export function initQuiz() {
             const rankSpan = card.querySelector('span');
             const rankImg = card.querySelector('img');
             if (!rankSpan || !rankImg) return;
-            
+
             const rankName = rankSpan.textContent.trim();
             const imgSrc = rankImg.src;
-            
+
             if (title) title.textContent = rankName;
             if (img) img.src = imgSrc;
             if (desc) desc.textContent = rankDescriptions[rankName] || '詳細介紹即將推出...';
-            
+
             if (modal) modal.classList.remove('hidden');
         };
     });
@@ -158,6 +158,12 @@ export function initQuiz() {
 
     const btnQuitRank = document.getElementById('btn-quit-rank-match');
     if (btnQuitRank) btnQuitRank.onclick = exitRankMatchQuiz;
+
+    const btnRealStart = document.getElementById('btn-real-start-rank-match');
+    if (btnRealStart) btnRealStart.onclick = startRankMatchQuizGameplay;
+
+    const btnBackLobby = document.getElementById('btn-back-to-module2-from-lobby');
+    if (btnBackLobby) btnBackLobby.onclick = backToModule2FromLobby;
 }
 
 async function startQuiz() {
@@ -166,14 +172,14 @@ async function startQuiz() {
         currentIndex = 0;
         score = 0;
         if (qDom.score) qDom.score.textContent = '0';
-        
+
         if (qDom.lobby) qDom.lobby.classList.add('hidden');
         if (qDom.resultArea) qDom.resultArea.classList.add('hidden');
         if (qDom.playArea) qDom.playArea.classList.remove('hidden');
-        
+
         if (qDom.questionText) qDom.questionText.textContent = '正在裝填題目...';
         quizData = await api.getRandomQuiz(5);
-        
+
         if (!quizData || quizData.length === 0) {
             throw new Error('找不到題目');
         }
@@ -189,16 +195,16 @@ function loadQuestion() {
     const qDom = getQuizDom();
     const q = quizData[currentIndex];
     canAnswer = true;
-    
+
     if (qDom.progress) qDom.progress.textContent = `${currentIndex + 1}/${quizData.length}`;
     if (qDom.questionText) qDom.questionText.textContent = q.question;
-    
+
     const options = document.querySelectorAll('.quiz-option');
     options.forEach(btn => {
         const optKey = btn.dataset.option;
         const textSpan = btn.querySelector('.option-text');
         if (textSpan) textSpan.textContent = q.options[optKey] || '---';
-        
+
         btn.classList.remove('border-green-500', 'border-red-500', 'bg-green-900/20', 'bg-red-900/20', 'opacity-50');
         btn.disabled = false;
     });
@@ -213,7 +219,7 @@ function resetTimer() {
     if (timer) clearInterval(timer);
     timeLeft = 10;
     updateTimerUI();
-    
+
     timer = setInterval(() => {
         timeLeft -= 0.1;
         if (timeLeft <= 0) {
@@ -250,8 +256,8 @@ function selectOption(choice) {
 
     if (qDom.feedbackOverlay && qDom.feedbackIcon) {
         qDom.feedbackOverlay.classList.remove('hidden');
-        qDom.feedbackIcon.innerHTML = isCorrect 
-            ? '<i class="fa-solid fa-check text-green-500"></i>' 
+        qDom.feedbackIcon.innerHTML = isCorrect
+            ? '<i class="fa-solid fa-check text-green-500"></i>'
             : '<i class="fa-solid fa-xmark text-red-500"></i>';
         qDom.feedbackIcon.className = "text-8xl animate-bounce-in opacity-100 transition-all duration-300";
 
@@ -301,16 +307,16 @@ function showResults() {
     const qDom = getQuizDom();
     if (qDom.playArea) qDom.playArea.classList.add('hidden');
     if (qDom.resultArea) qDom.resultArea.classList.remove('hidden');
-    
+
     if (qDom.finalScore) qDom.finalScore.textContent = score;
-    
+
     let rank = "新兵戰士";
     let color = "text-stone-400";
-    
+
     if (score >= 600) { rank = "精實模範生"; color = "text-green-400"; }
     else if (score >= 400) { rank = "及格邊緣人"; color = "text-yellow-400"; }
     else { rank = "純種大天兵"; color = "text-red-400"; }
-    
+
     if (qDom.rankText) {
         qDom.rankText.textContent = `等級：${rank}`;
         qDom.rankText.className = `text-xl font-bold mb-8 tracking-wider ${color}`;
@@ -348,6 +354,7 @@ function getMatchDom() {
         btnNext: document.getElementById('btn-next-rank-match'),
         finalScore: document.getElementById('rank-match-final-score'),
         finalRankText: document.getElementById('rank-match-rank-text'),
+        lobby: document.getElementById('rank-match-lobby'),
     };
 }
 
@@ -360,19 +367,34 @@ let matchQuizState = {
 };
 
 export function startRankMatchQuiz() {
-    const allRanksList = Object.keys(rankDescriptions);
-    
-    matchQuizState.allRanksShuffled = [...allRanksList].sort(() => Math.random() - 0.5);
-    matchQuizState.currentRoundIndex = 0;
-    matchQuizState.score = 0;
-    
     const mDom = getMatchDom();
     const module2 = document.getElementById('quiz-module-2-area');
     if (module2) module2.classList.add('hidden');
     if (mDom.resultArea) mDom.resultArea.classList.add('hidden');
+    if (mDom.area) mDom.area.classList.add('hidden');
+    if (mDom.lobby) mDom.lobby.classList.remove('hidden');
+}
+
+function startRankMatchQuizGameplay() {
+    const allRanksList = Object.keys(rankDescriptions);
+
+    matchQuizState.allRanksShuffled = [...allRanksList].sort(() => Math.random() - 0.5);
+    matchQuizState.currentRoundIndex = 0;
+    matchQuizState.score = 0;
+
+    const mDom = getMatchDom();
+    if (mDom.lobby) mDom.lobby.classList.add('hidden');
+    if (mDom.resultArea) mDom.resultArea.classList.add('hidden');
     if (mDom.area) mDom.area.classList.remove('hidden');
-    
+
     loadRankMatchRound();
+}
+
+function backToModule2FromLobby() {
+    const mDom = getMatchDom();
+    if (mDom.lobby) mDom.lobby.classList.add('hidden');
+    const module2 = document.getElementById('quiz-module-2-area');
+    if (module2) module2.classList.remove('hidden');
 }
 
 function loadRankMatchRound() {
@@ -380,15 +402,15 @@ function loadRankMatchRound() {
     const startIndex = matchQuizState.currentRoundIndex * 5;
     matchQuizState.currentRoundData = matchQuizState.allRanksShuffled.slice(startIndex, startIndex + 5);
     matchQuizState.userAnswers = [null, null, null, null, null];
-    
+
     if (mDom.roundText) mDom.roundText.textContent = `第 ${matchQuizState.currentRoundIndex + 1} 輪`;
-    
+
     if (mDom.btnGrade) {
         mDom.btnGrade.classList.remove('hidden');
         mDom.btnGrade.disabled = true;
     }
     if (mDom.btnNext) mDom.btnNext.classList.add('hidden');
-    
+
     renderMatchSlots();
     renderMatchPool();
 }
@@ -397,20 +419,26 @@ function renderMatchSlots() {
     const mDom = getMatchDom();
     if (!mDom.slotsContainer) return;
     mDom.slotsContainer.innerHTML = '';
-    
+
     matchQuizState.currentRoundData.forEach((rank, index) => {
         const slotDiv = document.createElement('div');
-        slotDiv.className = 'flex flex-col items-center bg-stone-900 rounded-xl border-2 border-stone-700 p-2 shadow-lg';
-        
+        slotDiv.className = 'flex flex-col items-center bg-stone-900 rounded-xl border-2 border-stone-700 p-2 pt-6 shadow-lg relative';
+
+        const qNum = matchQuizState.currentRoundIndex * 5 + index + 1;
+        const badge = document.createElement('span');
+        badge.className = 'absolute top-1.5 left-1.5 bg-stone-950 text-blue-400 border border-stone-700 text-[10px] sm:text-xs font-semibold px-1.5 py-0.5 rounded-md';
+        badge.textContent = `第 ${qNum} 題`;
+        slotDiv.appendChild(badge);
+
         const img = document.createElement('img');
         img.src = `docs/軍階/${rank}.png`;
         img.alt = rank;
         img.className = "w-full h-20 sm:h-24 md:h-32 object-contain mb-2 sm:mb-3 drop-shadow-md";
-        
+
         const dropZone = document.createElement('div');
         dropZone.dataset.index = index;
         dropZone.onclick = () => onMatchSlotClick(index);
-        
+
         if (matchQuizState.userAnswers[index]) {
             dropZone.className = 'w-full min-h-[40px] h-auto border-2 border-blue-500 bg-blue-900/30 text-blue-300 font-bold rounded-lg flex items-center justify-center cursor-pointer shadow-inner text-xs sm:text-sm py-1 px-1.5 leading-tight text-center';
             dropZone.textContent = matchQuizState.userAnswers[index];
@@ -418,7 +446,7 @@ function renderMatchSlots() {
             dropZone.className = 'w-full min-h-[40px] h-auto border-2 border-dashed border-stone-600 rounded-lg flex items-center justify-center cursor-pointer transition-colors hover:bg-stone-800 text-stone-500 text-xs py-1 px-1.5 text-center';
             dropZone.textContent = '點擊放入';
         }
-        
+
         slotDiv.appendChild(img);
         slotDiv.appendChild(dropZone);
         mDom.slotsContainer.appendChild(slotDiv);
@@ -429,13 +457,13 @@ function renderMatchPool() {
     const mDom = getMatchDom();
     if (!mDom.poolContainer) return;
     mDom.poolContainer.innerHTML = '';
-    
+
     const usedAnswers = matchQuizState.userAnswers.filter(a => a !== null);
     const availableOptions = matchQuizState.currentRoundData.filter(r => !usedAnswers.includes(r));
-    
+
     // Sort stably so they don't jump around randomly
     const poolOptions = [...availableOptions].sort((a, b) => a.localeCompare(b, 'zh-Hant'));
-    
+
     poolOptions.forEach(opt => {
         const btn = document.createElement('button');
         btn.className = 'bg-stone-800 hover:bg-stone-700 text-stone-300 border border-stone-600 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg font-bold shadow-md transition-all active:scale-95 text-xs sm:text-sm md:text-base cursor-pointer';
@@ -443,7 +471,7 @@ function renderMatchPool() {
         btn.onclick = () => onMatchPoolClick(opt);
         mDom.poolContainer.appendChild(btn);
     });
-    
+
     const allFilled = matchQuizState.userAnswers.every(a => a !== null);
     if (mDom.btnGrade) mDom.btnGrade.disabled = !allFilled;
 }
@@ -468,14 +496,14 @@ function onMatchSlotClick(index) {
 function gradeRankMatchRound() {
     const mDom = getMatchDom();
     let roundCorrect = 0;
-    
+
     if (!mDom.slotsContainer) return;
     const slots = mDom.slotsContainer.children;
-    
+
     matchQuizState.currentRoundData.forEach((correctRank, index) => {
         const dropZone = slots[index].lastElementChild;
         const userAnswer = matchQuizState.userAnswers[index];
-        
+
         if (userAnswer === correctRank) {
             roundCorrect++;
             dropZone.className = 'w-full min-h-[40px] h-auto border-2 border-green-500 bg-green-900/40 text-green-400 font-bold rounded-lg flex items-center justify-center cursor-default text-xs sm:text-sm py-1 px-1.5 leading-tight text-center';
@@ -487,9 +515,9 @@ function gradeRankMatchRound() {
             dropZone.onclick = null;
         }
     });
-    
+
     matchQuizState.score += (roundCorrect * 5);
-    
+
     if (mDom.btnGrade) mDom.btnGrade.classList.add('hidden');
     if (mDom.btnNext) mDom.btnNext.classList.remove('hidden');
     if (mDom.poolContainer) {
@@ -499,7 +527,7 @@ function gradeRankMatchRound() {
 
 function nextRankMatchRound() {
     matchQuizState.currentRoundIndex++;
-    
+
     if (matchQuizState.currentRoundIndex >= 4) {
         showRankMatchResult();
     } else {
@@ -511,22 +539,22 @@ function showRankMatchResult() {
     const mDom = getMatchDom();
     if (mDom.area) mDom.area.classList.add('hidden');
     if (mDom.resultArea) mDom.resultArea.classList.remove('hidden');
-    
+
     if (mDom.finalScore) mDom.finalScore.textContent = matchQuizState.score;
-    
+
     let rank = "菜鳥新兵";
     let color = "text-stone-400";
-    
+
     if (matchQuizState.score === 100) { rank = "軍階辨識大師"; color = "text-green-400"; }
     else if (matchQuizState.score >= 80) { rank = "優秀鑑識官"; color = "text-blue-400"; }
     else if (matchQuizState.score >= 60) { rank = "勉強及格"; color = "text-yellow-400"; }
     else { rank = "超級大天兵"; color = "text-red-400"; }
-    
+
     if (mDom.finalRankText) {
         mDom.finalRankText.textContent = `等級：${rank}`;
         mDom.finalRankText.className = `text-2xl font-bold mb-8 tracking-wider ${color}`;
     }
-    
+
     if (matchQuizState.score >= 80 && window.confetti) {
         window.confetti({
             particleCount: 100,
@@ -538,6 +566,7 @@ function showRankMatchResult() {
 
 function exitRankMatchQuiz() {
     const mDom = getMatchDom();
+    if (mDom.lobby) mDom.lobby.classList.add('hidden');
     if (mDom.area) mDom.area.classList.add('hidden');
     if (mDom.resultArea) mDom.resultArea.classList.add('hidden');
     const module2 = document.getElementById('quiz-module-2-area');
