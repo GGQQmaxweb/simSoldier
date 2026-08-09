@@ -5,7 +5,7 @@
 
 import { api } from './api.js';
 import { state, INITIAL_BACKPACK } from './state.js';
-import { dom, switchTab } from './ui.js';
+import { dom, switchTab, renderSidebarNav, openScenarioModal, closeScenarioModal, SCENARIO_CONFIG } from './ui.js';
 import { determineServiceType, bmi } from './utils.js';
 import * as game from './game.js';
 import * as features from './features.js?v=4';
@@ -102,6 +102,16 @@ async function init() {
             console.error('Shooting init failed:', e);
         }
 
+        // Scenario Triage & Dynamic Sidebar Navigation Initialization
+        const savedScenario = localStorage.getItem('simSoldier_userScenario');
+        if (savedScenario && SCENARIO_CONFIG[savedScenario]) {
+            state.userScenario = savedScenario;
+            renderSidebarNav(savedScenario);
+        } else {
+            renderSidebarNav('preparing');
+            openScenarioModal(false);
+        }
+
         // Reveal UI after successful load
         document.body.classList.remove('opacity-0');
 
@@ -177,6 +187,88 @@ function setupEventListeners() {
     document.querySelectorAll('.nav-btn-mobile').forEach(btn => {
         btn.addEventListener('click', () => switchTab(btn.dataset.tab));
     });
+
+    // --- Scenario Triage Logic ---
+    let pendingScenario = state.userScenario || 'preparing';
+
+    const handleSelectCard = (scenarioKey) => {
+        const config = SCENARIO_CONFIG[scenarioKey];
+        if (!config) return;
+        pendingScenario = scenarioKey;
+
+        // Highlight selected card
+        document.querySelectorAll('.scenario-card').forEach(card => {
+            if (card.dataset.scenario === scenarioKey) {
+                card.classList.add('ring-2', 'ring-emerald-500', 'bg-stone-800/90');
+                card.classList.remove('border-stone-800', 'bg-stone-950/80');
+            } else {
+                card.classList.remove('ring-2', 'ring-emerald-500', 'bg-stone-800/90');
+                card.classList.add('border-stone-800', 'bg-stone-950/80');
+            }
+        });
+
+        // Show guidance preview panel
+        if (dom.scenarioGuidancePanel) {
+            dom.scenarioGuidancePanel.classList.remove('hidden');
+            if (dom.guidanceTitle) dom.guidanceTitle.textContent = config.guidanceTitle;
+            if (dom.guidanceDesc) dom.guidanceDesc.textContent = config.guidanceDesc;
+            if (dom.guidanceTextContent) {
+                dom.guidanceTextContent.innerHTML = `
+                    <p class="font-bold text-white mb-1">💡 個人客製化引導說明：</p>
+                    <p class="leading-relaxed text-stone-300">${config.guidanceText}</p>
+                `;
+            }
+            if (dom.guidanceIconBox) {
+                dom.guidanceIconBox.innerHTML = `<i class="fa-solid ${config.icon}"></i>`;
+            }
+        }
+    };
+
+    // Card click event
+    document.querySelectorAll('.scenario-card').forEach(card => {
+        card.addEventListener('click', () => {
+            handleSelectCard(card.dataset.scenario);
+        });
+    });
+
+    // Confirm Scenario Button
+    if (dom.btnConfirmScenario) {
+        dom.btnConfirmScenario.addEventListener('click', () => {
+            state.userScenario = pendingScenario;
+            localStorage.setItem('simSoldier_userScenario', pendingScenario);
+            renderSidebarNav(pendingScenario);
+
+            // Switch to default tab for scenario
+            const defaultTab = SCENARIO_CONFIG[pendingScenario]?.defaultTab || 'home';
+            switchTab(defaultTab);
+
+            closeScenarioModal();
+        });
+    }
+
+    // Reselect Scenario Button
+    if (dom.btnReselectScenario) {
+        dom.btnReselectScenario.addEventListener('click', () => {
+            if (dom.scenarioGuidancePanel) dom.scenarioGuidancePanel.classList.add('hidden');
+            document.querySelectorAll('.scenario-card').forEach(card => {
+                card.classList.remove('ring-2', 'ring-emerald-500', 'bg-stone-800/90');
+                card.classList.add('border-stone-800', 'bg-stone-950/80');
+            });
+        });
+    }
+
+    // Close Modal Button
+    if (dom.btnCloseScenarioModal) {
+        dom.btnCloseScenarioModal.addEventListener('click', closeScenarioModal);
+    }
+
+    // Scenario Switch Triggers
+    if (dom.btnSidebarSwitchScenario) {
+        dom.btnSidebarSwitchScenario.addEventListener('click', () => openScenarioModal(true));
+    }
+    if (dom.btnHeaderScenarioSwitch) {
+        dom.btnHeaderScenarioSwitch.addEventListener('click', () => openScenarioModal(true));
+    }
 
     // Onboarding Modal
     dom.inputRole.addEventListener('change', (e) => {

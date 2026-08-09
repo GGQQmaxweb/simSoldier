@@ -43,7 +43,146 @@
     <!-- logic moved to js/main.js -->
 </head>
 
-<body class="bg-stone-950 text-stone-200 overflow-hidden opacity-0 transition-opacity duration-500">
+    <!-- Scenario Selection Modal (情境分流與客製引導機制) -->
+    <div id="modal-scenario-select"
+        class="fixed inset-0 z-[60] bg-black/90 flex items-center justify-center p-4 font-mono backdrop-blur-md hidden transition-all duration-300">
+        <div
+            class="max-w-3xl w-full bg-stone-900 rounded-xl border border-stone-700 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-stone-950 via-green-950 to-stone-950 p-5 text-center border-b border-stone-800 relative">
+                <button id="btn-close-scenario-modal" class="absolute right-4 top-4 text-stone-400 hover:text-white transition-colors hidden" title="關閉">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-900/40 border border-green-700/50 text-green-400 text-xs font-bold tracking-widest uppercase mb-2">
+                    <i class="fa-solid fa-compass animate-spin-slow"></i> SimSoldier Triage System
+                </div>
+                <h2 class="text-2xl font-bold text-white tracking-wide">請選擇您的服役情境身分</h2>
+                <p class="text-xs text-stone-400 mt-1">客製化專屬軍務導覽、核心功能優先排程與貼心指引</p>
+            </div>
+
+            <!-- Body Content -->
+            <div class="p-6 overflow-y-auto space-y-6 flex-1 custom-scrollbar">
+                <!-- Cards Container -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="scenario-cards-container">
+                    
+                    <!-- Card 1: 準備入營 -->
+                    <div data-scenario="preparing"
+                        class="scenario-card cursor-pointer group bg-stone-950/80 hover:bg-stone-800/80 border-2 border-stone-800 hover:border-emerald-500 rounded-xl p-5 transition-all duration-300 relative flex flex-col justify-between shadow-lg">
+                        <div class="absolute -top-3 left-4 px-2.5 py-0.5 rounded bg-emerald-950 border border-emerald-700 text-emerald-400 text-[10px] font-bold">
+                            即將入伍
+                        </div>
+                        <div>
+                            <div class="w-12 h-12 rounded-lg bg-emerald-900/30 border border-emerald-700/40 flex items-center justify-center text-emerald-400 text-2xl mb-4 group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-white group-hover:text-emerald-400 transition-colors flex items-center gap-2">
+                                準備入營
+                            </h3>
+                            <p class="text-xs text-stone-400 mt-2 leading-relaxed">
+                                適用於收到徵集令或即將入伍之役男。提前盤點背包必備物品、準備折抵文件與查閱新訓地點。
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-stone-800/80 space-y-1.5">
+                            <div class="text-[10px] font-bold text-stone-500 uppercase tracking-wider">優先推薦功能：</div>
+                            <div class="flex flex-wrap gap-1">
+                                <span class="text-[11px] px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-300 border border-emerald-800/50">💼 入伍背包</span>
+                                <span class="text-[11px] px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-300 border border-emerald-800/50">📄 行政中心</span>
+                                <span class="text-[11px] px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-300 border border-emerald-800/50">🗺️ 新訓地點</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: 正在入營 -->
+                    <div data-scenario="enlisted"
+                        class="scenario-card cursor-pointer group bg-stone-950/80 hover:bg-stone-800/80 border-2 border-stone-800 hover:border-amber-500 rounded-xl p-5 transition-all duration-300 relative flex flex-col justify-between shadow-lg">
+                        <div class="absolute -top-3 left-4 px-2.5 py-0.5 rounded bg-amber-950 border border-amber-700 text-amber-400 text-[10px] font-bold">
+                            現役在營
+                        </div>
+                        <div>
+                            <div class="w-12 h-12 rounded-lg bg-amber-900/30 border border-amber-700/40 flex items-center justify-center text-amber-400 text-2xl mb-4 group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-person-military-rifle"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-white group-hover:text-amber-400 transition-colors flex items-center gap-2">
+                                正在入營
+                            </h3>
+                            <p class="text-xs text-stone-400 mt-2 leading-relaxed">
+                                適用於已在營受訓或服役軍人。掌握每日課表進度、AI 教官諮詢、單兵射擊口訣與戰情儀表板。
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-stone-800/80 space-y-1.5">
+                            <div class="text-[10px] font-bold text-stone-500 uppercase tracking-wider">優先推薦功能：</div>
+                            <div class="flex flex-wrap gap-1">
+                                <span class="text-[11px] px-2 py-0.5 rounded bg-amber-950/60 text-amber-300 border border-amber-800/50">📊 戰情儀表板</span>
+                                <span class="text-[11px] px-2 py-0.5 rounded bg-amber-950/60 text-amber-300 border border-amber-800/50">🏋️ 今日課表</span>
+                                <span class="text-[11px] px-2 py-0.5 rounded bg-amber-950/60 text-amber-300 border border-amber-800/50">💬 教官聊天室</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: 延緩入營 -->
+                    <div data-scenario="deferred"
+                        class="scenario-card cursor-pointer group bg-stone-950/80 hover:bg-stone-800/80 border-2 border-stone-800 hover:border-cyan-500 rounded-xl p-5 transition-all duration-300 relative flex flex-col justify-between shadow-lg">
+                        <div class="absolute -top-3 left-4 px-2.5 py-0.5 rounded bg-cyan-950 border border-cyan-700 text-cyan-400 text-[10px] font-bold">
+                            延役複檢
+                        </div>
+                        <div>
+                            <div class="w-12 h-12 rounded-lg bg-cyan-900/30 border border-cyan-700/40 flex items-center justify-center text-cyan-400 text-2xl mb-4 group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-hourglass-half"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-white group-hover:text-cyan-400 transition-colors flex items-center gap-2">
+                                延緩入營
+                            </h3>
+                            <p class="text-xs text-stone-400 mt-2 leading-relaxed">
+                                適用於申請在學延役、因事/因病延期徵集或體位複檢者。試算延役條件、規範查詢與行政諮詢。
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-stone-800/80 space-y-1.5">
+                            <div class="text-[10px] font-bold text-stone-500 uppercase tracking-wider">優先推薦功能：</div>
+                            <div class="flex flex-wrap gap-1">
+                                <span class="text-[11px] px-2 py-0.5 rounded bg-cyan-950/60 text-cyan-300 border border-cyan-800/50">⏳ 延役專區</span>
+                                <span class="text-[11px] px-2 py-0.5 rounded bg-cyan-950/60 text-cyan-300 border border-cyan-800/50">📑 行政中心</span>
+                                <span class="text-[11px] px-2 py-0.5 rounded bg-cyan-950/60 text-cyan-300 border border-cyan-800/50">💬 教官聊天室</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Guidance & Confirmation Panel (Selected Preview) -->
+                <div id="scenario-guidance-panel" class="hidden bg-stone-950 border border-stone-800 rounded-xl p-5 space-y-4 animate-fade-in">
+                    <div class="flex items-start justify-between">
+                        <div class="flex items-center gap-3">
+                            <div id="guidance-icon-box" class="w-10 h-10 rounded-lg bg-green-900/30 border border-green-700/50 flex items-center justify-center text-green-400 text-xl shrink-0">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <div>
+                                <h4 id="guidance-title" class="text-base font-bold text-white">🛡️ 準備入營客製指南</h4>
+                                <p id="guidance-desc" class="text-xs text-stone-400 mt-0.5">專屬導覽與導覽列重新排程說明</p>
+                            </div>
+                        </div>
+                        <button id="btn-reselect-scenario" class="text-xs text-stone-400 hover:text-white underline">
+                            重新選擇情境
+                        </button>
+                    </div>
+
+                    <div class="bg-stone-900/80 border border-stone-800 rounded-lg p-3 text-xs text-stone-300 leading-relaxed" id="guidance-text-content">
+                        <!-- Dynamic Guidance Text -->
+                    </div>
+
+                    <div class="flex items-center justify-between pt-2 flex-wrap gap-3">
+                        <div class="text-xs text-stone-400 flex items-center gap-1.5">
+                            <i class="fa-solid fa-circle-info text-green-500"></i>
+                            <span>進入系統後可隨時於側邊欄點擊按鈕切換情境身分</span>
+                        </div>
+                        <button id="btn-confirm-scenario"
+                            class="bg-green-700 hover:bg-green-600 text-white font-bold px-6 py-2.5 rounded-lg text-sm transition-all shadow-lg hover:shadow-green-900/30 flex items-center gap-2">
+                            <span>確認選取並進入系統</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Onboarding Modal -->
     <div id="modal-onboarding"
@@ -325,57 +464,23 @@
                 <p class="text-xs text-stone-500 mt-1">入伍生存手冊 </p>
             </div>
 
-            <nav id="sidebar-nav" class="flex-1 p-4 space-y-2 overflow-y-auto">
-                <button data-tab="home"
-                    class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all bg-green-900/30 text-green-400">
-                    <i class="fa-solid fa-chart-line text-[20px]"></i>
-                    <span class="font-bold text-sm">戰情儀表板</span>
+            <!-- Scenario Identity Switcher Badge -->
+            <div class="px-5 py-3 border-b border-stone-800/80 bg-stone-900/40 flex items-center justify-between">
+                <div class="min-w-0">
+                    <span class="block text-[10px] font-mono text-stone-400 uppercase tracking-wider">當前服役情境</span>
+                    <div id="sidebar-scenario-tag" class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 mt-0.5 truncate">
+                        <i class="fa-solid fa-shield-halved"></i> <span>準備入營</span>
+                    </div>
+                </div>
+                <button id="btn-sidebar-switch-scenario"
+                    class="text-[11px] bg-stone-800 hover:bg-stone-700 text-stone-300 px-2.5 py-1 rounded border border-stone-700 transition-all flex items-center gap-1 shrink-0"
+                    title="切換情境身分">
+                    <i class="fa-solid fa-arrows-rotate text-[10px] text-green-400"></i> 切換
                 </button>
-                <button data-tab="training"
-                    class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-stone-400 hover:bg-stone-800 hover:text-stone-200">
-                    <i class="fa-solid fa-dumbbell text-[20px]"></i>
-                    <span class="font-bold text-sm">今日課表</span>
-                </button>
-                <button data-tab="inventory"
-                    class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-stone-400 hover:bg-stone-800 hover:text-stone-200">
-                    <i class="fa-solid fa-briefcase text-[20px]"></i>
-                    <span class="font-bold text-sm">入伍背包</span>
-                </button>
-                <button data-tab="chat"
-                    class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-stone-400 hover:bg-stone-800 hover:text-stone-200">
-                    <i class="fa-solid fa-comments text-[20px]"></i>
-                    <span class="font-bold text-sm">教官聊天室</span>
-                </button>
-                <button data-tab="docs"
-                    class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-stone-400 hover:bg-stone-800 hover:text-stone-200">
-                    <i class="fa-solid fa-bars text-[20px]"></i>
-                    <span class="font-bold text-sm">行政中心</span>
-                </button>
-                <button data-tab="locations"
-                    class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-stone-400 hover:bg-stone-800 hover:text-stone-200">
-                    <i class="fa-solid fa-map-location-dot text-[20px]"></i>
-                    <span class="font-bold text-sm">新訓地點</span>
-                </button>
-                <button data-tab="delay"
-                    class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-stone-400 hover:bg-stone-800 hover:text-stone-200">
-                    <i class="fa-solid fa-calendar-minus text-[20px]"></i>
-                    <span class="font-bold text-sm">延役專區</span>
-                </button>
-                <button data-tab="rhapsody"
-                    class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-stone-400 hover:bg-stone-800 hover:text-stone-200">
-                    <i class="fa-solid fa-music text-[20px]"></i>
-                    <span class="font-bold text-sm">大兵狂想曲</span>
-                </button>
-                <button data-tab="quiz"
-                    class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-stone-400 hover:bg-stone-800 hover:text-stone-200">
-                    <i class="fa-solid fa-graduation-cap text-[20px]"></i>
-                    <span class="font-bold text-sm">天兵課堂</span>
-                </button>
-                <button data-tab="shooting"
-                    class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-stone-400 hover:bg-stone-800 hover:text-stone-200">
-                    <i class="fa-solid fa-crosshairs text-[20px]"></i>
-                    <span class="font-bold text-sm">射擊口訣</span>
-                </button>
+            </div>
+
+            <nav id="sidebar-nav" class="flex-1 p-4 space-y-4 overflow-y-auto custom-scrollbar">
+                <!-- Dynamically constructed into 3 styled visual blocks by renderSidebarNav() -->
             </nav>
 
             <div class="p-4 border-t border-stone-800 bg-stone-900/50">
@@ -457,6 +562,11 @@
                     </div>
 
                     <div id="header-user-tools" class="hidden flex gap-2">
+                        <button id="btn-header-scenario-switch"
+                            class="text-xs bg-stone-800 hover:bg-stone-700 border border-green-800/60 text-green-400 px-3 py-1.5 rounded flex items-center gap-1.5 transition-colors">
+                            <i class="fa-solid fa-arrows-rotate text-[11px]"></i>
+                            <span id="header-scenario-text" class="font-bold">情境: 準備入營</span>
+                        </button>
                         <button id="btn-edit-profile"
                             class="text-xs bg-stone-800 hover:bg-stone-700 border border-stone-600 px-3 py-1.5 rounded flex items-center gap-1 transition-colors text-stone-300">
                             <i class="fa-solid fa-pen-to-square text-[12px]"></i> <span

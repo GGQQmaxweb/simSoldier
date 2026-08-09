@@ -8,6 +8,7 @@ export const state = {
     userData: null,
     serviceStatus: null,
     activeTab: 'home',
+    userScenario: 'preparing', // 'preparing' | 'enlisted' | 'deferred'
     backpack: [],
     game: {
         isPlaying: false,
