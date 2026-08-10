@@ -19,11 +19,14 @@ export const api = {
      * 內部 Fetch 封裝 (包含 Timeout 處理)
      */
     async _fetch(url, options = {}, timeout = 15000) {
+        // 使用相對路徑，讓 Nginx 反向代理負責將 /api/ 轉發給後端
+        const apiUrl = url.replace('http://localhost:8000', '');
+        
         const controller = new AbortController();
         const id = setTimeout(() => controller.abort(), timeout);
 
         try {
-            const response = await fetch(url, {
+            const response = await fetch(apiUrl, {
                 ...options,
                 signal: controller.signal
             });
