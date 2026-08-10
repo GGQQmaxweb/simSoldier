@@ -1,10 +1,177 @@
 /**
  * SIMSOLDIER API CLIENT
  * 負責所有資料存取 (已串接 FastAPI 後端)
+ *
+ * APK / Debug 模式說明：
+ *   當無法連線至後端時，會彈出設定對話框讓使用者輸入後端 URL。
+ *   URL 會儲存在 localStorage 的 'simSoldier_apiBase' key 中。
+ *   預設值為 '' (空字串) — 代表使用相對路徑，適用於 Nginx 反向代理。
+ *   APK build 請輸入完整 URL，例如: https://your-server.com
  */
 
 const DB_KEY = 'simSoldier_users';
 const SESSION_KEY = 'simSoldier_token';
+const API_BASE_KEY = 'simSoldier_apiBase';
+
+// ──────────────────────────────────────────────────────────────
+// Base URL Management
+// ──────────────────────────────────────────────────────────────
+
+/**
+ * 取得目前設定的後端 Base URL
+ * 空字串 = 使用相對路徑 (Nginx 反向代理模式)
+ */
+function getApiBase() {
+    return localStorage.getItem(API_BASE_KEY) || '';
+}
+
+/**
+ * 儲存後端 Base URL
+ * @param {string} url - 完整 URL，例如 https://your-server.com，或留空使用相對路徑
+ */
+function setApiBase(url) {
+    const trimmed = (url || '').replace(/\/$/, ''); // 移除結尾斜線
+    localStorage.setItem(API_BASE_KEY, trimmed);
+}
+
+/**
+ * 將 API 路徑轉換成完整 URL
+ * @param {string} url - 原始 URL，例如 http://localhost:8000/api/login
+ * @returns {string} - 處理後的 URL
+ */
+function resolveUrl(url) {
+    const base = getApiBase();
+    // 先將原始 localhost 路徑萃取出 pathname
+    let path = url;
+    try {
+        const parsed = new URL(url);
+        path = parsed.pathname + parsed.search;
+    } catch (_) {
+        // url 已經是相對路徑，直接使用
+    }
+    return base ? `${base}${path}` : path;
+}
+
+// ──────────────────────────────────────────────────────────────
+// Backend URL Dialog UI
+// ──────────────────────────────────────────────────────────────
+
+let _dialogPromise = null;
+
+/**
+ * 彈出後端 URL 設定對話框
+ * @returns {Promise<string>} - 使用者輸入的 URL (已儲存)
+ */
+function showApiConfigDialog(errorMessage = '') {
+    // 避免重複建立
+    if (_dialogPromise) return _dialogPromise;
+
+    _dialogPromise = new Promise((resolve) => {
+        // 建立 Overlay
+        const overlay = document.createElement('div');
+        overlay.id = 'api-config-overlay';
+        overlay.style.cssText = `
+            position: fixed; inset: 0; z-index: 99999;
+            background: rgba(0,0,0,0.75); backdrop-filter: blur(6px);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        `;
+
+        const card = document.createElement('div');
+        card.style.cssText = `
+            background: #1a1a2e; border: 1px solid #e94560;
+            border-radius: 12px; padding: 32px; width: min(420px, 90vw);
+            box-shadow: 0 0 40px rgba(233,69,96,0.3); color: #eee;
+        `;
+
+        const icon = document.createElement('div');
+        icon.textContent = '⚠️';
+        icon.style.cssText = 'font-size: 2.5rem; text-align: center; margin-bottom: 12px;';
+
+        const title = document.createElement('h2');
+        title.textContent = '無法連線至後端';
+        title.style.cssText = 'color: #e94560; margin: 0 0 8px; text-align: center; font-size: 1.25rem;';
+
+        const subtitle = document.createElement('p');
+        subtitle.style.cssText = 'margin: 0 0 16px; color: #aaa; font-size: 0.875rem; text-align: center;';
+        subtitle.textContent = errorMessage || '請輸入後端 API 伺服器的完整 URL';
+
+        const hint = document.createElement('p');
+        hint.style.cssText = 'margin: 0 0 16px; color: #666; font-size: 0.75rem; text-align: center;';
+        hint.textContent = '範例：https://your-server.com 或 http://192.168.1.100:8000';
+
+        const currentBase = getApiBase();
+        const input = document.createElement('input');
+        input.type = 'url';
+        input.placeholder = 'https://your-api-server.com';
+        input.value = currentBase;
+        input.style.cssText = `
+            width: 100%; box-sizing: border-box; padding: 10px 14px;
+            border-radius: 8px; border: 1px solid #444; background: #0f0f1a;
+            color: #eee; font-size: 1rem; margin-bottom: 8px; outline: none;
+        `;
+        input.addEventListener('focus', () => { input.style.borderColor = '#e94560'; });
+        input.addEventListener('blur', () => { input.style.borderColor = '#444'; });
+
+        const saveBtn = document.createElement('button');
+        saveBtn.textContent = '儲存並重試';
+        saveBtn.style.cssText = `
+            width: 100%; padding: 12px; margin-top: 8px;
+            background: #e94560; border: none; border-radius: 8px;
+            color: white; font-size: 1rem; cursor: pointer; font-weight: 600;
+            transition: background 0.2s;
+        `;
+        saveBtn.addEventListener('mouseenter', () => { saveBtn.style.background = '#c73652'; });
+        saveBtn.addEventListener('mouseleave', () => { saveBtn.style.background = '#e94560'; });
+
+        const skipBtn = document.createElement('button');
+        skipBtn.textContent = '離線模式 (僅本機)';
+        skipBtn.style.cssText = `
+            width: 100%; padding: 10px; margin-top: 8px;
+            background: transparent; border: 1px solid #444; border-radius: 8px;
+            color: #aaa; font-size: 0.875rem; cursor: pointer;
+            transition: border-color 0.2s, color 0.2s;
+        `;
+        skipBtn.addEventListener('mouseenter', () => {
+            skipBtn.style.borderColor = '#888';
+            skipBtn.style.color = '#eee';
+        });
+        skipBtn.addEventListener('mouseleave', () => {
+            skipBtn.style.borderColor = '#444';
+            skipBtn.style.color = '#aaa';
+        });
+
+        const doSave = () => {
+            const val = input.value.trim();
+            setApiBase(val);
+            document.body.removeChild(overlay);
+            _dialogPromise = null;
+            resolve(val);
+        };
+
+        const doSkip = () => {
+            document.body.removeChild(overlay);
+            _dialogPromise = null;
+            resolve(getApiBase());
+        };
+
+        saveBtn.addEventListener('click', doSave);
+        skipBtn.addEventListener('click', doSkip);
+        input.addEventListener('keydown', (e) => { if (e.key === 'Enter') doSave(); });
+
+        card.append(icon, title, subtitle, hint, input, saveBtn, skipBtn);
+        overlay.appendChild(card);
+        document.body.appendChild(overlay);
+        input.focus();
+        input.select();
+    });
+
+    return _dialogPromise;
+}
+
+// ──────────────────────────────────────────────────────────────
+// Local Storage Helpers
+// ──────────────────────────────────────────────────────────────
 
 function getLocalUsers() {
     return JSON.parse(localStorage.getItem(DB_KEY) || '{}');
@@ -14,19 +181,26 @@ function saveLocalUsers(users) {
     localStorage.setItem(DB_KEY, JSON.stringify(users));
 }
 
+// ──────────────────────────────────────────────────────────────
+// API Object
+// ──────────────────────────────────────────────────────────────
+
 export const api = {
     /**
-     * 內部 Fetch 封裝 (包含 Timeout 處理)
+     * 內部 Fetch 封裝 (包含 Timeout 處理 + 連線失敗 Dialog)
+     * @param {string} url - 原始 URL (localhost:8000 會被替換)
+     * @param {object} options - fetch options
+     * @param {number} timeout - ms
+     * @param {boolean} _retried - 內部使用，避免無限重試
      */
-    async _fetch(url, options = {}, timeout = 15000) {
-        // 使用相對路徑，讓 Nginx 反向代理負責將 /api/ 轉發給後端
-        const apiUrl = url.replace('http://localhost:8000', '');
-        
+    async _fetch(url, options = {}, timeout = 15000, _retried = false) {
+        const resolvedUrl = resolveUrl(url);
+
         const controller = new AbortController();
         const id = setTimeout(() => controller.abort(), timeout);
 
         try {
-            const response = await fetch(apiUrl, {
+            const response = await fetch(resolvedUrl, {
                 ...options,
                 signal: controller.signal
             });
@@ -34,9 +208,24 @@ export const api = {
             return response;
         } catch (error) {
             clearTimeout(id);
+
+            // 逾時
             if (error.name === 'AbortError') {
+                if (!_retried) {
+                    await showApiConfigDialog('連線逾時，請確認後端 URL 是否正確');
+                    return this._fetch(url, options, timeout, true);
+                }
                 throw new Error('伺服器連線逾時，請檢查網路或後端狀態');
             }
+
+            // 網路錯誤 (APK 環境常見：後端地址未設定)
+            if (!_retried) {
+                await showApiConfigDialog(
+                    `無法連線 (${error.message})\n請輸入正確的後端伺服器 URL`
+                );
+                return this._fetch(url, options, timeout, true);
+            }
+
             throw error;
         }
     },
@@ -46,13 +235,28 @@ export const api = {
     },
 
     /**
+     * 手動開啟後端 URL 設定對話框
+     * 可從設定頁面呼叫
+     */
+    openApiConfig() {
+        _dialogPromise = null; // 強制重新開啟
+        return showApiConfigDialog('手動設定後端 API URL');
+    },
+
+    /**
+     * 取得目前的後端 Base URL
+     */
+    getApiBaseUrl() {
+        return getApiBase() || '(相對路徑 — Nginx 模式)';
+    },
+
+    /**
      * 登入
      * @param {string} username 
      * @param {string} password 
      */
     async login(username, password) {
         try {
-            // FastAPI OAuth2PasswordRequestForm expects form data
             const formData = new FormData();
             formData.append('username', username);
             formData.append('password', password);
@@ -68,9 +272,7 @@ export const api = {
             }
 
             const data = await res.json();
-            // 存儲 JWT Token
             localStorage.setItem(SESSION_KEY, data.access_token);
-            // 同時記錄用戶名供 UI 顯示
             localStorage.setItem('simSoldier_username', username);
 
             return { success: true, username };
