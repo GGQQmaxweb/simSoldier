@@ -182,19 +182,19 @@ export const SCENARIO_CONFIG = {
         colorClass: 'text-emerald-400',
         badgeBg: 'bg-emerald-950/80 text-emerald-300 border-emerald-800',
         guidanceTitle: '🛡️ 準備入營客製指南',
-        guidanceDesc: '系統已為您優先排程「入伍背包裝備清單」、「行政折抵與證件」與「新訓地點」！',
-        guidanceText: '您好！即將踏入軍旅生涯，本系統已為您優先排程側邊欄。建議您第一步進入【入伍背包】確認必帶物品，並於【行政中心】查閱軍訓成績單折抵退伍日事宜！',
-        defaultTab: 'inventory',
+        guidanceDesc: '系統已為您優先排程「戰情儀表板」、「入伍背包裝備清單」、「行政折抵與證件」與「新訓地點」！',
+        guidanceText: '您好！即將踏入軍旅生涯，本系統已為您優先排程側邊欄。建議您第一步進入【戰情儀表板】查看總覽，或進入【入伍背包】確認必帶物品，並於【行政中心】查閱軍訓成績單折抵退伍日事宜！',
+        defaultTab: 'home',
         blocks: [
             {
                 title: '核心推薦',
                 badge: '必備準備',
-                tabs: ['inventory', 'docs', 'locations']
+                tabs: ['home', 'inventory', 'docs', 'locations']
             },
             {
                 title: '戰情與學習',
                 badge: '觀念建立',
-                tabs: ['home', 'quiz', 'chat']
+                tabs: ['quiz', 'chat']
             },
             {
                 title: '操演與其他',
