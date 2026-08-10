@@ -55,6 +55,25 @@ jobs:
         run: |
           npx cap add android
 
+      - name: Fix Kotlin stdlib duplicate classes
+        # kotlin-stdlib >= 1.8 bundles jdk7/jdk8 classes, but old transitive
+        # deps still pull in the separate jdk7/jdk8 artifacts, causing duplicates.
+        # Force all three variants to the same version across every subproject.
+        run: |
+          cat >> android/build.gradle << 'GRADLE_EOF'
+
+          // ── Kotlin stdlib dedup fix ──────────────────────────────────────
+          subprojects {
+              configurations.all {
+                  resolutionStrategy {
+                      force "org.jetbrains.kotlin:kotlin-stdlib:1.9.24"
+                      force "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.24"
+                      force "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.24"
+                  }
+              }
+          }
+          GRADLE_EOF
+
       - name: Sync Web Assets to Android
         run: |
           npx cap sync android
