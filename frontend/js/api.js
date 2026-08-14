@@ -56,10 +56,44 @@ function resolveUrl(url) {
 // Backend URL Dialog UI
 // ──────────────────────────────────────────────────────────────
 
+/** Expected welcome message from the SimSoldier backend root endpoint */
+const BACKEND_WELCOME = 'Welcome to SimSoldier Backend';
+
 let _dialogPromise = null;
 
 /**
+ * 驗證指定 URL 是否為 SimSoldier 後端
+ * 嘗試 GET {base}/ ，檢查回傳 JSON 是否包含正確的 welcome message
+ * @param {string} baseUrl - 要驗證的 Base URL
+ * @returns {Promise<{ok: boolean, detail: string}>}
+ */
+async function verifyBackend(baseUrl) {
+    const testUrl = baseUrl ? `${baseUrl.replace(/\/$/, '')}/` : '/';
+    try {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 8000);
+        const res = await fetch(testUrl, { signal: controller.signal });
+        clearTimeout(timer);
+
+        if (!res.ok) {
+            return { ok: false, detail: `伺服器回傳 HTTP ${res.status}` };
+        }
+        const data = await res.json();
+        if (data && data.message === BACKEND_WELCOME) {
+            return { ok: true, detail: '✅ 已驗證為 SimSoldier 後端' };
+        }
+        return { ok: false, detail: '⛔ 此伺服器不是 SimSoldier 後端' };
+    } catch (err) {
+        if (err.name === 'AbortError') {
+            return { ok: false, detail: '⏱ 連線逾時，請確認 URL 或網路狀態' };
+        }
+        return { ok: false, detail: `❌ 無法連線 (${err.message})` };
+    }
+}
+
+/**
  * 彈出後端 URL 設定對話框
+ * 儲存前會先驗證 URL 是否指向真正的 SimSoldier 後端
  * @returns {Promise<string>} - 使用者輸入的 URL (已儲存)
  */
 function showApiConfigDialog(errorMessage = '') {
@@ -113,16 +147,42 @@ function showApiConfigDialog(errorMessage = '') {
         input.addEventListener('focus', () => { input.style.borderColor = '#e94560'; });
         input.addEventListener('blur', () => { input.style.borderColor = '#444'; });
 
+        // Status indicator — shows verification result inline
+        const status = document.createElement('p');
+        status.style.cssText = `
+            margin: 0 0 8px; padding: 8px 12px; border-radius: 6px;
+            font-size: 0.8rem; text-align: center; display: none;
+            transition: all 0.3s;
+        `;
+
+        const setStatus = (text, type) => {
+            status.textContent = text;
+            status.style.display = 'block';
+            if (type === 'success') {
+                status.style.background = 'rgba(46, 213, 115, 0.15)';
+                status.style.color = '#2ed573';
+                status.style.border = '1px solid rgba(46, 213, 115, 0.3)';
+            } else if (type === 'error') {
+                status.style.background = 'rgba(233, 69, 96, 0.15)';
+                status.style.color = '#e94560';
+                status.style.border = '1px solid rgba(233, 69, 96, 0.3)';
+            } else {
+                status.style.background = 'rgba(255, 255, 255, 0.05)';
+                status.style.color = '#aaa';
+                status.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+            }
+        };
+
         const saveBtn = document.createElement('button');
-        saveBtn.textContent = '儲存並重試';
+        saveBtn.textContent = '驗證並儲存';
         saveBtn.style.cssText = `
             width: 100%; padding: 12px; margin-top: 8px;
             background: #e94560; border: none; border-radius: 8px;
             color: white; font-size: 1rem; cursor: pointer; font-weight: 600;
             transition: background 0.2s;
         `;
-        saveBtn.addEventListener('mouseenter', () => { saveBtn.style.background = '#c73652'; });
-        saveBtn.addEventListener('mouseleave', () => { saveBtn.style.background = '#e94560'; });
+        saveBtn.addEventListener('mouseenter', () => { if (!saveBtn.disabled) saveBtn.style.background = '#c73652'; });
+        saveBtn.addEventListener('mouseleave', () => { if (!saveBtn.disabled) saveBtn.style.background = '#e94560'; });
 
         const skipBtn = document.createElement('button');
         skipBtn.textContent = '離線模式 (僅本機)';
@@ -141,12 +201,38 @@ function showApiConfigDialog(errorMessage = '') {
             skipBtn.style.color = '#aaa';
         });
 
-        const doSave = () => {
+        const doSave = async () => {
             const val = input.value.trim();
-            setApiBase(val);
-            document.body.removeChild(overlay);
-            _dialogPromise = null;
-            resolve(val);
+
+            // Disable button while verifying
+            saveBtn.disabled = true;
+            saveBtn.textContent = '驗證中...';
+            saveBtn.style.background = '#555';
+            saveBtn.style.cursor = 'wait';
+            input.disabled = true;
+
+            setStatus('正在連線並驗證後端...', 'loading');
+
+            const result = await verifyBackend(val);
+
+            if (result.ok) {
+                setStatus(result.detail, 'success');
+                setApiBase(val);
+                // Brief pause to show success before closing
+                await new Promise(r => setTimeout(r, 600));
+                document.body.removeChild(overlay);
+                _dialogPromise = null;
+                resolve(val);
+            } else {
+                setStatus(result.detail, 'error');
+                // Re-enable inputs so user can try again
+                saveBtn.disabled = false;
+                saveBtn.textContent = '驗證並儲存';
+                saveBtn.style.background = '#e94560';
+                saveBtn.style.cursor = 'pointer';
+                input.disabled = false;
+                input.focus();
+            }
         };
 
         const doSkip = () => {
@@ -159,7 +245,7 @@ function showApiConfigDialog(errorMessage = '') {
         skipBtn.addEventListener('click', doSkip);
         input.addEventListener('keydown', (e) => { if (e.key === 'Enter') doSave(); });
 
-        card.append(icon, title, subtitle, hint, input, saveBtn, skipBtn);
+        card.append(icon, title, subtitle, hint, input, status, saveBtn, skipBtn);
         overlay.appendChild(card);
         document.body.appendChild(overlay);
         input.focus();
