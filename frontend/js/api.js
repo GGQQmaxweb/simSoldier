@@ -268,6 +268,46 @@ function saveLocalUsers(users) {
 }
 
 // ──────────────────────────────────────────────────────────────
+// Capacitor / APK Detection
+// ──────────────────────────────────────────────────────────────
+
+/**
+ * 偵測是否在 Capacitor (APK) 環境中執行
+ * Capacitor 會使用 https://localhost 或 capacitor:// scheme
+ */
+function isCapacitorApp() {
+    // Capacitor native bridge exists
+    if (window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()) {
+        return true;
+    }
+    // Fallback: check if running from capacitor:// or https://localhost (Capacitor's androidScheme)
+    const origin = window.location.origin || '';
+    if (origin.startsWith('capacitor://') || origin === 'https://localhost') {
+        return true;
+    }
+    return false;
+}
+
+/**
+ * 確保後端 URL 已設定 — APK 首次啟動時自動彈出
+ * 在 Capacitor 環境中，如果沒有設定 Base URL，就立即提示使用者設定
+ */
+async function ensureBackendConfigured() {
+    if (isCapacitorApp() && !getApiBase()) {
+        await showApiConfigDialog('首次使用 APK，請設定後端伺服器 URL');
+    }
+}
+
+// 頁面載入時自動檢查 (Capacitor APK 專用)
+if (typeof document !== 'undefined') {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', ensureBackendConfigured);
+    } else {
+        ensureBackendConfigured();
+    }
+}
+
+// ──────────────────────────────────────────────────────────────
 // API Object
 // ──────────────────────────────────────────────────────────────
 
@@ -280,6 +320,11 @@ export const api = {
      * @param {boolean} _retried - 內部使用，避免無限重試
      */
     async _fetch(url, options = {}, timeout = 15000, _retried = false) {
+        // APK 環境下，若尚未設定後端 URL，先提示使用者
+        if (isCapacitorApp() && !getApiBase() && !_retried) {
+            await showApiConfigDialog('請先設定後端伺服器 URL 才能使用此功能');
+        }
+
         const resolvedUrl = resolveUrl(url);
 
         const controller = new AbortController();
@@ -291,6 +336,22 @@ export const api = {
                 signal: controller.signal
             });
             clearTimeout(id);
+
+            // ── 關鍵修正：偵測 HTML 回應 (Capacitor 本機伺服器回傳 HTML 而非 JSON) ──
+            // 在 APK 中，如果後端 URL 錯誤或未設定，Capacitor 的本機 Web Server
+            // 會回傳 index.html (Content-Type: text/html) 而非 API 的 JSON 回應。
+            // 若不攔截，後續 .json() 解析會得到 "Unexpected token '<'" 錯誤。
+            const contentType = response.headers.get('content-type') || '';
+            if (contentType.includes('text/html')) {
+                if (!_retried) {
+                    await showApiConfigDialog(
+                        '後端 URL 設定錯誤 — 收到 HTML 而非 API 回應\n請輸入正確的後端伺服器 URL'
+                    );
+                    return this._fetch(url, options, timeout, true);
+                }
+                throw new Error('後端 URL 錯誤：收到 HTML 頁面而非 JSON API 回應');
+            }
+
             return response;
         } catch (error) {
             clearTimeout(id);
