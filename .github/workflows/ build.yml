@@ -58,9 +58,9 @@ jobs:
         run: |
           npx cap add android
 
-      - name: Allow Cleartext HTTP Traffic
-        # Android blocks cleartext (HTTP) traffic by default.
-        # This python script modifies AndroidManifest.xml to enable it for debugging.
+      - name: Configure Android Manifest (Cleartext & Camera Permissions)
+        # Android blocks HTTP by default and does not include camera permissions in standard Capacitor template.
+        # This script modifies AndroidManifest.xml to enable cleartext traffic and add camera permission / features.
         run: |
           python3 -c "
           import os
@@ -68,11 +68,24 @@ jobs:
           if os.path.exists(path):
               with open(path, 'r', encoding='utf-8') as f:
                   data = f.read()
+              
+              # Enable cleartext
               if 'android:usesCleartextTraffic' not in data:
                   data = data.replace('<application', '<application\n        android:usesCleartextTraffic=\"true\"')
-                  with open(path, 'w', encoding='utf-8') as f:
-                      f.write(data)
-                  print('Enabled Cleartext HTTP Traffic in AndroidManifest.xml')
+              
+              # Add camera permissions and features if missing
+              if 'android.permission.CAMERA' not in data:
+                  camera_declarations = '''
+                      <!-- Camera Permissions & Features -->
+                      <uses-permission android:name=\"android.permission.CAMERA\" />
+                      <uses-feature android:name=\"android.hardware.camera\" android:required=\"false\" />
+                      <uses-feature android:name=\"android.hardware.camera.autofocus\" android:required=\"false\" />
+                  '''
+                  data = data.replace('</manifest>', f'{camera_declarations}\n</manifest>')
+                  
+              with open(path, 'w', encoding='utf-8') as f:
+                  f.write(data)
+              print('Successfully configured AndroidManifest.xml (Cleartext & Camera)')
           "
 
       - name: Fix Kotlin stdlib duplicate classes
