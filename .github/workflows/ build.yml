@@ -46,7 +46,10 @@ jobs:
             "appName": "SimSoldier",
             "webDir": "frontend",
             "server": {
-              "androidScheme": "https"
+              "androidScheme": "http"
+            },
+            "android": {
+              "allowMixedContent": true
             }
           }
           EOF
@@ -54,6 +57,23 @@ jobs:
       - name: Add Android Platform
         run: |
           npx cap add android
+
+      - name: Allow Cleartext HTTP Traffic
+        # Android blocks cleartext (HTTP) traffic by default.
+        # This python script modifies AndroidManifest.xml to enable it for debugging.
+        run: |
+          python3 -c "
+          import os
+          path = 'android/app/src/main/AndroidManifest.xml'
+          if os.path.exists(path):
+              with open(path, 'r', encoding='utf-8') as f:
+                  data = f.read()
+              if 'android:usesCleartextTraffic' not in data:
+                  data = data.replace('<application', '<application\n        android:usesCleartextTraffic=\"true\"')
+                  with open(path, 'w', encoding='utf-8') as f:
+                      f.write(data)
+                  print('Enabled Cleartext HTTP Traffic in AndroidManifest.xml')
+          "
 
       - name: Fix Kotlin stdlib duplicate classes
         # kotlin-stdlib >= 1.8 bundles jdk7/jdk8 classes, but old transitive
