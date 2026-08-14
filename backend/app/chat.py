@@ -1,4 +1,6 @@
 from google import genai
+from google.genai import types
+from google.genai import errors
 import chromadb
 import os
 import json
@@ -94,7 +96,7 @@ def get_working_flash_model(client: genai.Client) -> str:
             )
             print(f"✅ Selected active model: {model_name}")
             return model_name
-        except APIError as e:
+        except errors.APIError as e:
             if e.code == 429:
                 print(f"⏭ Skipping {model_name} (Rate Limited / Quota Exhausted)")
             else:
