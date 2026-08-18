@@ -4,17 +4,17 @@ from google import genai
 
 load_dotenv()
 
-api_key = os.getenv("GEMINI_API_KEY")
-if not api_key:
+api_keys = [k.strip() for k in os.getenv("GEMINI_API_KEY", "").split(",") if k.strip()]
+if not api_keys:
     print("GEMINI_API_KEY not found in environment.")
     exit(1)
 
-client = genai.Client(api_key=api_key)
-
-try:
-    print("Listing models...")
-    for model in client.models.list():
-        print(f"Model: {model.name}")
-        # print(f"  Supported generation methods: {model.supported_generation_methods}")
-except Exception as e:
-    print(f"Error listing models: {e}")
+for i, api_key in enumerate(api_keys, 1):
+    print(f"\n--- Testing API Key #{i} ---")
+    try:
+        client = genai.Client(api_key=api_key)
+        print("Listing models...")
+        for model in client.models.list():
+            print(f"Model: {model.name}")
+    except Exception as e:
+        print(f"Error listing models for key #{i}: {e}")

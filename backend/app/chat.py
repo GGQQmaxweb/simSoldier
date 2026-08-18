@@ -11,14 +11,9 @@ from . import chat_config
 
 load_dotenv()
 
-# Initialize Gemini Client
-api_key = os.getenv("GEMINI_API_KEY")
-client = None
-if api_key:
-    try:
-        client = genai.Client(api_key=api_key)
-    except Exception as e:
-        print(f"Failed to initialize Gemini client: {e}")
+def get_api_keys() -> list:
+    raw_keys = os.getenv("GEMINI_API_KEY", "")
+    return [k.strip() for k in raw_keys.split(",") if k.strip()]
 
 # Setup local vector database
 chroma_client = chromadb.Client()
@@ -104,7 +99,7 @@ def get_working_flash_model(client: genai.Client) -> str:
         except Exception:
             continue
 
-    return 'gemini-2.5-flash'
+    return None
 
 
 def init_knowledge_base():
@@ -112,95 +107,114 @@ def init_knowledge_base():
     Initialize the knowledge base with embeddings.
     Only seeds if the collection is currently empty to save API quota.
     """
-    if not client:
+    if collection.count() > 0:
         return
 
-    try:
-        # Check if already seeded (Chroma in-memory persists for the life of the process)
-        if collection.count() > 0:
-            return
+    api_keys = get_api_keys()
+    if not api_keys:
+        print("⚠️ No GEMINI_API_KEY configured for knowledge base seeding.")
+        return
 
-        print("Seeding knowledge base...")
-        for i, text in enumerate(documents):
-            result = client.models.embed_content(
-                model="models/gemini-embedding-001",
-                contents=text
-            )
-            collection.add(
-                ids=[str(i)],
-                embeddings=[result.embeddings[0].values],
-                documents=[text]
-            )
-        print("Knowledge base seeded successfully.")
-    except Exception as e:
-        print(f"Failed to generate/store embeddings: {e}")
+    for key in api_keys:
+        try:
+            client = genai.Client(api_key=key)
+            print("Seeding knowledge base...")
+            embeddings = []
+            for text in documents:
+                result = client.models.embed_content(
+                    model="models/gemini-embedding-001",
+                    contents=text
+                )
+                embeddings.append(result.embeddings[0].values)
+
+            for i, (text, emb) in enumerate(zip(documents, embeddings)):
+                collection.add(
+                    ids=[str(i)],
+                    embeddings=[emb],
+                    documents=[text]
+                )
+            print("Knowledge base seeded successfully.")
+            return
+        except Exception as e:
+            print(f"⚠️ Seeding knowledge base failed with API key: {e}. Trying next key...")
 
 # Run initialization once at module load
 init_knowledge_base()
 
 def ask_gemini(user_info, question: str):
-    if not client:
+    api_keys = get_api_keys()
+    if not api_keys:
         return "Chat service is currently unavailable (API Key missing or invalid)."
 
-    try:
-        # 1. Embed the question
-        result = client.models.embed_content(
-            model="models/gemini-embedding-001",
-            contents=question
-        )
-        
-        # 2. Search for similar documents
-        results = collection.query(
-            query_embeddings=[result.embeddings[0].values],
-            n_results=2
-        )
-        
-        # 3. Build context from search results
-        chroma_context_parts = []
-        if results['documents']:
-             for doc in results['documents'][0]:
-                 chroma_context_parts.append(f"【來源：chat_config.py 內部知識庫】\n{doc}")
-        chroma_context = "\n\n".join(chroma_context_parts)
-             
-        # 3.5. JSON Keyword Matching
-        json_context_parts = []
-        lower_q = question.lower()
-        for item in rights_act_data:
-            keywords = item.get("Keywords", [])
-            if any(kw.lower() in lower_q for kw in keywords):
-                for faq in item.get("FAQ", []):
-                    json_context_parts.append(f"【來源：軍人權益法條索引.json (關鍵字：{', '.join(keywords)})】\n問：{faq['Question']}\n答：{faq['Answer']}")
-        
-        context = chroma_context
-        if json_context_parts:
-             context = "\n\n".join(json_context_parts) + "\n\n" + chroma_context
-        
-        # 4. Ask Gemini with the context
-        user_info_str = format_user_info(user_info)
-        prompt = chat_config.prompt_template.format(
-            context=context,
-            user_info=user_info_str,
-            question=question
-        )
-        selected_model = get_working_flash_model(client)
-        
-        response = client.models.generate_content(
-            model=selected_model,
-            contents=prompt
-        )
-        
-        cleaned_text = response.text.replace("**", "").replace("*", "").replace("##", "")
-        final_text = chat_config.append_image_to_response(cleaned_text, question)
-        return final_text
-    except Exception as e:
-        error_msg = str(e)
-        print(f"Error during chat: {error_msg}")
-        
-        # Specific help for API Quota issues
-        if "429" in error_msg or "RESOURCE_EXHAUSTED" in error_msg:
-            return "【系統提示】教官現在太累了 (API 額度已達上限)。請稍等 1 分鐘後再試，或檢查您的 API Key 配額設定。"
+    last_error = None
+
+    for key in api_keys:
+        try:
+            client = genai.Client(api_key=key)
+
+            # 1. Embed the question
+            result = client.models.embed_content(
+                model="models/gemini-embedding-001",
+                contents=question
+            )
             
-        return f"I'm sorry, I'm having trouble connecting to my brain right now. Error: {error_msg}"
+            # 2. Search for similar documents
+            results = collection.query(
+                query_embeddings=[result.embeddings[0].values],
+                n_results=2
+            )
+            
+            # 3. Build context from search results
+            chroma_context_parts = []
+            if results['documents']:
+                 for doc in results['documents'][0]:
+                     chroma_context_parts.append(f"【來源：chat_config.py 內部知識庫】\n{doc}")
+            chroma_context = "\n\n".join(chroma_context_parts)
+                 
+            # 3.5. JSON Keyword Matching
+            json_context_parts = []
+            lower_q = question.lower()
+            for item in rights_act_data:
+                keywords = item.get("Keywords", [])
+                if any(kw.lower() in lower_q for kw in keywords):
+                    for faq in item.get("FAQ", []):
+                        json_context_parts.append(f"【來源：軍人權益法條索引.json (關鍵字：{', '.join(keywords)})】\n問：{faq['Question']}\n答：{faq['Answer']}")
+            
+            context = chroma_context
+            if json_context_parts:
+                 context = "\n\n".join(json_context_parts) + "\n\n" + chroma_context
+            
+            # 4. Ask Gemini with the context
+            user_info_str = format_user_info(user_info)
+            prompt = chat_config.prompt_template.format(
+                context=context,
+                user_info=user_info_str,
+                question=question
+            )
+            selected_model = get_working_flash_model(client)
+            if not selected_model:
+                raise Exception("No working Gemini model found for current API key.")
+
+            response = client.models.generate_content(
+                model=selected_model,
+                contents=prompt
+            )
+            
+            cleaned_text = response.text.replace("**", "").replace("*", "").replace("##", "")
+            final_text = chat_config.append_image_to_response(cleaned_text, question)
+            return final_text
+        except Exception as e:
+            last_error = e
+            print(f"⚠️ API key attempt failed: {e}. Switching to next API key...")
+
+    error_msg = str(last_error) if last_error else "Unknown error"
+    print(f"Error during chat (all API keys failed): {error_msg}")
+    
+    # Specific help for API Quota issues
+    if "429" in error_msg or "RESOURCE_EXHAUSTED" in error_msg:
+        return "【系統提示】教官現在太累了 (API 額度已達上限)。請稍等 1 分鐘後再試，或檢查您的 API Key 配額設定。"
+        
+    return f"I'm sorry, I'm having trouble connecting to my brain right now. Error: {error_msg}"
 
 # Test
 if __name__ == "__main__":
