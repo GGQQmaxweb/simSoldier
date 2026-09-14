@@ -268,10 +268,10 @@ async function prepareSystem() {
 
     // 優先檢查是否在 APK (Capacitor) 環境或已載入本機 vendor 資源
     const isLocalBundle = !!document.querySelector('script[src*="vendor/mediapipe"]') ||
-                          (typeof window.Capacitor !== 'undefined' && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()) ||
-                          (window.location.origin === 'http://localhost' && !window.location.port);
+        (typeof window.Capacitor !== 'undefined' && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()) ||
+        (window.location.origin === 'http://localhost' && !window.location.port);
     const mediapipePoseBase = window.__MEDIAPIPE_BASE_PATH__ ||
-                              (isLocalBundle ? 'vendor/mediapipe/pose/' : 'https://cdn.jsdelivr.net/npm/@mediapipe/pose/');
+        (isLocalBundle ? 'vendor/mediapipe/pose/' : 'https://cdn.jsdelivr.net/npm/@mediapipe/pose/');
 
     poseTracker = new Pose({
         locateFile: file => `${mediapipePoseBase}${file}`
@@ -559,60 +559,46 @@ function detectSquat(lm) {
 
 // ── Push-up (side view: elbow angle) ────────────────────────────────────────
 function detectPushup(lm) {
-    const lS = lm[11], lE = lm[13], lW = lm[15], lH = lm[23], lK = lm[25], lA = lm[27];
-    const rS = lm[12], rE = lm[14], rW = lm[16], rH = lm[24], rK = lm[26], rA = lm[28];
+    const lS = lm[11], lE = lm[13], lW = lm[15], lH = lm[23], lA = lm[27];
+    const rS = lm[12], rE = lm[14], rW = lm[16], rH = lm[24], rA = lm[28];
 
-    // 檢查側身手臂主要關節點的置信度 (放寬門檻至 0.35；腳踝設為可選，不強制入鏡)
-    const lArmOk = lS.visibility > 0.35 && lE.visibility > 0.35 && lW.visibility > 0.35;
-    const rArmOk = rS.visibility > 0.35 && rE.visibility > 0.35 && rW.visibility > 0.35;
+    // 檢查側身主要關節點的置信度 (包含臀與踝)
+    const lOk = lS.visibility > 0.5 && lE.visibility > 0.5 && lW.visibility > 0.5 && lH.visibility > 0.4 && lA.visibility > 0.4;
+    const rOk = rS.visibility > 0.5 && rE.visibility > 0.5 && rW.visibility > 0.5 && rH.visibility > 0.4 && rA.visibility > 0.4;
 
-    if (!lArmOk && !rArmOk) {
-        updateFeedback('請將側面手臂與上半身入鏡', 'text-yellow-400', 'bg-yellow-900/30');
+    if (!lOk && !rOk) {
+        updateFeedback('請將側面全身（手、軀幹、腳踝）完整入鏡', 'text-yellow-400', 'bg-yellow-900/30');
         return;
     }
     if (ui.rule1) ui.rule1.className = 'transition-colors text-green-400';
 
-    // 選擇手臂置信度較高的一側
-    const lScore = lS.visibility + lE.visibility + lW.visibility + (lH.visibility || 0);
-    const rScore = rS.visibility + rE.visibility + rW.visibility + (rH.visibility || 0);
-    const useLeft = lArmOk && (!rArmOk || lScore >= rScore);
+    // 選擇可見度較高的一側
+    const useLeft = lOk && (!rOk || (lS.visibility + lE.visibility + lW.visibility) > (rS.visibility + rE.visibility + rW.visibility));
+    const [S, E, W, H, A] = useLeft ? [lS, lE, lW, lH, lA] : [rS, rE, rW, rH, rA];
 
-    const [S, E, W, H, K, A] = useLeft
-        ? [lS, lE, lW, lH, lK, lA]
-        : [rS, rE, rW, rH, rK, rA];
+    // 1. 計算軀幹（肩膀到臀部）與水平線的角度
+    // dx, dy 取絕對值計算與水平軸的傾角
+    const torsoDx = Math.abs(H.x - S.x);
+    const torsoDy = Math.abs(H.y - S.y);
+    const torsoAngleToGround = Math.atan2(torsoDy, torsoDx) * (180 / Math.PI); // 0°=完全水平, 90°=垂直站立
 
-    // 1. 如果臀部可見，判斷軀幹是否大致呈俯臥水平
-    if (H && H.visibility > 0.3) {
-        const torsoDx = Math.abs(H.x - S.x);
-        const torsoDy = Math.abs(H.y - S.y);
-        const torsoAngleToGround = Math.atan2(torsoDy, torsoDx) * (180 / Math.PI); // 0°=完全水平, 90°=垂直站立
+    // 2. 判斷身體是否為趴姿 (傾角通常小於 45°，放寬至 50° 避免相機俯視誤差)
+    const isHorizontal = torsoAngleToGround < 50;
 
-        // 放寬趴姿角度判定 (小於 65° 均算水平趴姿，避免相機角度仰俯誤差)
-        if (torsoAngleToGround > 65) {
-            updateFeedback('請保持水平俯臥姿態', 'text-orange-400', 'bg-orange-900/30');
-            return;
-        }
+    // 3. 檢查背部連線（肩-髖-踝）是否維持在直線上，避免站立彎腰
+    const bodyLineAngle = angle3(S, H, A);
+    const isBodyStraight = bodyLineAngle > 145 && bodyLineAngle < 200;
 
-        // 2. 腳踝/膝蓋可選：若有照到則輔助判定身體直線，未照到則不強制 (可有可無)
-        let isBodyStraight = true;
-        if (A && A.visibility > 0.35) {
-            const bodyLineAngle = angle3(S, H, A);
-            isBodyStraight = bodyLineAngle > 125 && bodyLineAngle < 235;
-        } else if (K && K.visibility > 0.35) {
-            const bodyLineAngle = angle3(S, H, K);
-            isBodyStraight = bodyLineAngle > 120 && bodyLineAngle < 240;
-        }
-
-        if (!isBodyStraight) {
-            updateFeedback('請盡量打直身體', 'text-orange-400', 'bg-orange-900/30');
-            return;
-        }
+    if (!isHorizontal || !isBodyStraight) {
+        updateFeedback('請保持水平俯臥並打直身體', 'text-orange-400', 'bg-orange-900/30');
+        return;
     }
 
-    // 3. 通過水平驗證後，判定手肘屈伸 (放寬條件：下壓手肘 < 100°，推起伸直 > 140°)
+    // 4. 通過水平驗證後，才判定手肘屈伸
     const elbowAngle = angle3(S, E, W);
-    repStateMachine(elbowAngle < 100, elbowAngle > 140);
+    repStateMachine(elbowAngle < 85, elbowAngle > 155);
 }
+
 
 // ── Lying Leg Raise (side view: ankle Y rise above hip Y) ────────────────
 // Very stable: when lying flat, ankle ≈ hip Y. When raising, ankle goes ABOVE hip.
