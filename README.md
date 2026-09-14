@@ -5,11 +5,47 @@
 [![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 [![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL%2015-336791?style=flat-square&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-[![Google Gemini](https://img.shields.io/badge/AI-Google%20Gemini%20API-4285F4?style=flat-square&logo=google&logoColor=white)](https://ai.google.dev/)
 [![MediaPipe](https://img.shields.io/badge/Vision-MediaPipe%20Pose-00C4B4?style=flat-square&logo=google&logoColor=white)](https://developers.google.com/mediapipe)
 [![Docker](https://img.shields.io/badge/Deployment-Docker%20Compose-2496ED?style=flat-square&logo=docker&logoColor=white)](https://www.docker.com/)
 
 ---
+
+## 快速啟動指南
+
+### 使用 Docker Compose（推薦，一鍵運行）
+
+1. **確認已安裝環境**：
+   - [Docker Desktop](https://www.docker.com/products/docker-desktop/) (已啟用 Docker Compose)
+   - [Git](https://git-scm.com/)
+
+2. **複製專案庫**：
+   ```bash
+   git clone -b master --single-branch https://github.com/XXXG-00W0-wing/simSoldier.git
+   cd simSoldier
+   ```
+
+3. **配置後端環境變數**：
+   檢查並確認 `backend/.env` 包含有效的 Google Gemini API Key：
+   ```env
+   DATABASE_URL=postgresql://postgres:postgres@db/simsoldier
+   SECRET_KEY=your_super_secret_key_change_me
+   ALGORITHM=HS256
+   ACCESS_TOKEN_EXPIRE_MINUTES=30
+   GEMINI_API_KEY=your_gemini_api_key_here
+   ```
+
+4. **啟動容器服務**：
+   ```bash
+   docker compose up -d --build
+   ```
+
+5. **存取服務**：
+   - **前端網站**：[http://localhost:8080](http://localhost:8080)（或 HTTPS [https://localhost:8443](https://localhost:8443)）
+   - **後端 API 文件**：[http://localhost:8000/docs](http://localhost:8000/docs)
+   - 預設測試帳號：`testuser` / 密碼：`password123`
+
+---
+
 
 ## 專案簡介
 
@@ -140,41 +176,7 @@ simSoldier/
 
 ---
 
-## 快速啟動指南
 
-### 使用 Docker Compose（推薦，一鍵運行）
-
-1. **確認已安裝環境**：
-   - [Docker Desktop](https://www.docker.com/products/docker-desktop/) (已啟用 Docker Compose)
-   - [Git](https://git-scm.com/)
-
-2. **複製專案庫**：
-   ```bash
-   git clone -b master --single-branch https://github.com/XXXG-00W0-wing/simSoldier.git
-   cd simSoldier
-   ```
-
-3. **配置後端環境變數**：
-   檢查並確認 `backend/.env` 包含有效的 Google Gemini API Key：
-   ```env
-   DATABASE_URL=postgresql://postgres:postgres@db/simsoldier
-   SECRET_KEY=your_super_secret_key_change_me
-   ALGORITHM=HS256
-   ACCESS_TOKEN_EXPIRE_MINUTES=30
-   GEMINI_API_KEY=your_gemini_api_key_here
-   ```
-
-4. **啟動容器服務**：
-   ```bash
-   docker compose up -d --build
-   ```
-
-5. **存取服務**：
-   - **前端網站**：[http://localhost:8080](http://localhost:8080)（或 HTTPS [https://localhost:8443](https://localhost:8443)）
-   - **後端 API 文件**：[http://localhost:8000/docs](http://localhost:8000/docs)
-   - 預設測試帳號：`testuser` / 密碼：`password123`
-
----
 
 
 
