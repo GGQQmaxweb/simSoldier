@@ -34,8 +34,6 @@ export function initShootingGame() {
     // Aiming Elements & T91 Gun
     const crosshair = document.getElementById('aim-crosshair');
     const t91GunContainer = document.getElementById('t91-gun-container');
-    const frontSight = document.getElementById('front-sight');
-    const rearSight = document.getElementById('rear-sight');
     const btnMobileAim = document.getElementById('btn-mobile-aim');
     const btnMobileShoot = document.getElementById('btn-mobile-shoot');
     const gameContainer = document.getElementById('shooting-game-container');
@@ -600,16 +598,6 @@ export function initShootingGame() {
         if (crosshair) {
             crosshair.style.left = `${cx}%`;
             crosshair.style.top = `${cy}%`;
-        }
-
-        if (frontSight) {
-            frontSight.style.left = `${cx}%`;
-            frontSight.style.top = `${cy + 24}%`;
-        }
-
-        if (rearSight) {
-            rearSight.style.left = `${cx}%`;
-            rearSight.style.top = `${cy}%`;
         }
 
         if (t91GunContainer) {
