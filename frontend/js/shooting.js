@@ -653,8 +653,8 @@ export function initShootingGame() {
             ringText = '手臂 6 分';
             textColor = 'text-stone-400';
         } else if (Math.abs(dxChest) < 22 && cy >= 10 && cy <= 88) {
-            roundScore = 5;
-            ringText = '擦邊 5 分';
+            roundScore = 0;
+            ringText = '擦邊 0 分';
             textColor = 'text-stone-500';
         }
 
