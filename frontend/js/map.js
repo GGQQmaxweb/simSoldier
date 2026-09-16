@@ -9,7 +9,6 @@ const mapLocations = {
     "太平里營區 (陸軍)": { lat: 24.8966, lng: 121.1353 },
     "龍華營區 (陸軍)": { lat: 24.9048, lng: 121.2858 },
     "犁頭山營區 (陸軍)": { lat: 24.8197, lng: 121.0375 },
-    "成功嶺營區 (陸軍)": { lat: 24.1141, lng: 120.6133 },
     "北埔營區 (陸軍)": { lat: 24.0242, lng: 121.6072 },
     "屏東龍泉 (海陸)": { lat: 22.656517, lng: 120.591038 },
     "左營營區 (海軍)": { lat: 22.7056, lng: 120.2882 }
@@ -53,6 +52,10 @@ function initMap() {
             .bindPopup(popupContent);
         marker.on('click', () => {
             triggerLocationTaskComplete();
+            const mobileSelect = document.getElementById('mobile-camp-select');
+            if (mobileSelect) {
+                mobileSelect.value = key;
+            }
         });
         markers[key] = marker;
     });
@@ -87,6 +90,10 @@ function initMap() {
         card.addEventListener('click', () => {
             triggerLocationTaskComplete();
             const title = card.querySelector('h4').innerText.trim();
+            const mobileSelect = document.getElementById('mobile-camp-select');
+            if (mobileSelect && mobileSelect.querySelector(`option[value="${title}"]`)) {
+                mobileSelect.value = title;
+            }
             if (mapLocations[title]) {
                 const loc = mapLocations[title];
                 leafletMap.flyTo([loc.lat, loc.lng], 14, {
@@ -114,11 +121,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
                 if (!targetNode.classList.contains('hidden')) {
                     // 當地圖顯示時，呼叫 invalidateSize 確保地圖正確渲染
-                    setTimeout(() => {
-                        if (leafletMap) {
-                            leafletMap.invalidateSize();
-                        }
-                    }, 100);
+                    [100, 250, 400].forEach(delay => {
+                        setTimeout(() => {
+                            if (leafletMap) {
+                                leafletMap.invalidateSize();
+                            }
+                        }, delay);
+                    });
                 }
             }
         }
@@ -128,10 +137,51 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(targetNode, observerOptions);
     }
 
+    // 視窗縮放或手機轉向時重新調整地圖圖層
+    window.addEventListener('resize', () => {
+        if (leafletMap) {
+            leafletMap.invalidateSize();
+        }
+    });
+
+    // 綁定手機版營區下拉式選單
+    const mobileCampSelect = document.getElementById('mobile-camp-select');
+    if (mobileCampSelect) {
+        mobileCampSelect.addEventListener('change', (e) => {
+            triggerLocationTaskComplete();
+            const val = e.target.value;
+            if (!leafletMap) return;
+
+            if (val === 'all') {
+                leafletMap.setView([23.973875, 120.982024], 7);
+                leafletMap.closePopup();
+            } else if (mapLocations[val]) {
+                const loc = mapLocations[val];
+                leafletMap.flyTo([loc.lat, loc.lng], 14, {
+                    animate: true,
+                    duration: 1.5
+                });
+                if (markers[val]) {
+                    markers[val].openPopup();
+                }
+            }
+        });
+    }
+
     window.selectLocation = function (name) {
         triggerLocationTaskComplete();
         if (window.switchTab) {
             window.switchTab('locations');
+        }
+
+        // 同步手機版下拉選單
+        if (mobileCampSelect) {
+            for (let opt of mobileCampSelect.options) {
+                if (opt.value.includes(name) || name.includes(opt.value)) {
+                    mobileCampSelect.value = opt.value;
+                    break;
+                }
+            }
         }
 
         // Find the card and click it

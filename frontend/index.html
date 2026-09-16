@@ -52,7 +52,7 @@
         <div
             class="bg-gradient-to-r from-stone-950 via-green-950 to-stone-950 p-5 text-center border-b border-stone-800 relative">
             <button id="btn-close-scenario-modal"
-                class="absolute right-4 top-4 text-stone-400 hover:text-white transition-colors hidden" title="關閉">
+                class="absolute right-4 top-4 text-stone-400 hover:text-white transition-colors hidden cursor-pointer p-2 z-20" title="關閉">
                 <i class="fa-solid fa-xmark text-xl"></i>
             </button>
             <div
@@ -120,7 +120,7 @@
                             役男入營
                         </h3>
                         <p class="text-xs text-stone-400 mt-2 leading-relaxed">
-                            適用於已在營受訓或服役軍人。掌握每日課表進度、AI 教官諮詢、單兵射擊口訣與戰情儀表板。
+                            適用於已在營受訓或服役軍人。掌握體能測驗進度、AI 教官諮詢、單兵射擊口訣與戰情儀表板。
                         </p>
                     </div>
                     <div class="mt-4 pt-3 border-t border-stone-800/80 space-y-1.5">
@@ -129,7 +129,7 @@
                             <span
                                 class="text-[11px] px-2 py-0.5 rounded bg-amber-950/60 text-amber-300 border border-amber-800/50">戰情儀表板</span>
                             <span
-                                class="text-[11px] px-2 py-0.5 rounded bg-amber-950/60 text-amber-300 border border-amber-800/50">今日課表</span>
+                                class="text-[11px] px-2 py-0.5 rounded bg-amber-950/60 text-amber-300 border border-amber-800/50">體能測驗</span>
                             <span
                                 class="text-[11px] px-2 py-0.5 rounded bg-amber-950/60 text-amber-300 border border-amber-800/50">教官聊天室</span>
                         </div>
@@ -175,7 +175,7 @@
                 class="hidden bg-stone-950 border border-stone-800 rounded-xl p-5 space-y-4 animate-fade-in">
                 <div class="flex items-start justify-between">
                     <div>
-                        <h4 id="guidance-title" class="text-base font-bold text-white">準備入營客製指南</h4>
+                        <h4 id="guidance-title" class="text-base font-bold text-white">行前準備客製指南</h4>
                         <p id="guidance-desc" class="text-xs text-stone-400 mt-0.5">專屬導覽與導覽列重新排程說明</p>
                     </div>
                     <button id="btn-reselect-scenario" class="text-xs text-stone-400 hover:text-white underline">
@@ -199,6 +199,72 @@
                         <i class="fa-solid fa-arrow-right text-xs"></i>
                     </button>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Exempt Notice Modal (免役體位提示彈窗) -->
+<div id="modal-exempt-notice"
+    class="fixed inset-0 z-[70] bg-black/90 flex items-center justify-center p-4 font-mono backdrop-blur-md hidden transition-all duration-300">
+    <div
+        class="max-w-xl w-full bg-stone-900 rounded-2xl border-2 border-emerald-600/80 shadow-[0_0_50px_rgba(16,185,129,0.2)] overflow-hidden flex flex-col animate-fade-in relative">
+        
+        <!-- Top Accent Bar -->
+        <div class="h-1.5 bg-gradient-to-r from-emerald-600 via-green-400 to-emerald-600"></div>
+
+        <!-- Close Button (已選取過時或允許關閉時顯示) -->
+        <button id="btn-close-exempt-modal"
+            class="absolute right-4 top-4 text-stone-400 hover:text-white transition-colors p-2 z-20 hidden" title="關閉">
+            <i class="fa-solid fa-xmark text-xl"></i>
+        </button>
+
+        <div class="p-8 text-center space-y-6">
+            <!-- Icon with Badge -->
+            <div class="relative inline-flex items-center justify-center">
+                <div class="w-24 h-24 rounded-full bg-emerald-950/80 border-2 border-emerald-500/50 flex items-center justify-center text-emerald-400 text-5xl shadow-[0_0_30px_rgba(16,185,129,0.35)] animate-pulse">
+                    <i class="fa-solid fa-dove"></i>
+                </div>
+                <div class="absolute -bottom-2 bg-emerald-600 text-stone-950 font-bold text-[11px] px-3 py-0.5 rounded-full uppercase tracking-wider shadow">
+                    體位判定完成
+                </div>
+            </div>
+
+            <!-- Titles -->
+            <div class="space-y-2">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-800 text-emerald-400 text-xs font-bold tracking-wider">
+                    <i class="fa-solid fa-circle-check"></i> 免役體位判定
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-white tracking-wide">
+                    恭喜符合免役條件，無須服役
+                </h2>
+                <p class="text-stone-300 text-sm md:text-base leading-relaxed max-w-md mx-auto">
+                    恭喜符合免役條件，無須服役，但仍可以體驗模擬大兵！
+                </p>
+            </div>
+
+            <!-- Information Card -->
+            <div class="bg-stone-950/90 rounded-xl p-4 border border-emerald-900/50 text-left space-y-3">
+                <div class="flex items-center gap-2.5 text-emerald-400 font-bold text-sm border-b border-stone-800 pb-2">
+                    <i class="fa-solid fa-circle-info text-base"></i>
+                    <span>免役身分與模擬體驗說明</span>
+                </div>
+                <p class="text-xs text-stone-300 leading-relaxed">
+                    因您已符合免役標準，系統將為您跳過「行前準備」與「役男入營」等服役情境選擇。您仍可自由暢玩「模擬大兵」的全套軍旅模擬、射擊口訣、天兵課堂、體能測驗與 AI 教官諮詢！
+                </p>
+                <div class="text-[11px] text-stone-400 flex items-center justify-between pt-1 border-t border-stone-800/60">
+                    <span>判定依據：<span id="exempt-modal-bmi-val" class="text-emerald-400 font-bold">BMI --</span> (<span id="exempt-modal-reason">BMI符合免役標準</span>)</span>
+                    <span class="text-stone-500 text-[10px]">*正式資格依主管機關體檢為準</span>
+                </div>
+            </div>
+
+            <!-- Action Button -->
+            <div>
+                <button id="btn-confirm-exempt"
+                    class="w-full bg-emerald-700 hover:bg-emerald-600 text-white font-bold py-3.5 px-6 rounded-xl transition-all shadow-lg hover:shadow-emerald-900/40 flex items-center justify-center gap-2 text-base group cursor-pointer">
+                    <span>進入模擬大兵體驗系統</span>
+                    <i class="fa-solid fa-arrow-right text-sm group-hover:translate-x-1 transition-transform"></i>
+                </button>
             </div>
         </div>
     </div>
@@ -550,7 +616,7 @@
                 <span class="block text-[10px] font-mono text-stone-400 uppercase tracking-wider">當前服役情境</span>
                 <div id="sidebar-scenario-tag"
                     class="text-xs font-bold text-emerald-400 flex items-center gap-1.5 mt-0.5 truncate">
-                    <i class="fa-solid fa-shield-halved"></i> <span>準備入營</span>
+                    <i class="fa-solid fa-shield-halved"></i> <span>行前準備</span>
                 </div>
             </div>
             <button id="btn-sidebar-switch-scenario"
@@ -734,14 +800,14 @@
                                     </div>
 
                                     <div id="countdown-content-exempt"
-                                        class="hidden w-full h-64 bg-stone-950/50 rounded-xl flex flex-col items-center justify-center border border-green-900/50 relative overflow-hidden">
-                                        <div class="absolute inset-0 bg-green-900/10 animate-pulse"></div>
-                                        <i class="fa-solid fa-dove text-6xl text-green-600 mb-4 opacity-80"></i>
-                                        <div class="font-mono text-4xl text-green-500 font-bold tracking-widest z-10">
+                                        class="hidden w-full h-64 bg-stone-950/50 rounded-xl flex flex-col items-center justify-center border border-emerald-900/50 relative overflow-hidden">
+                                        <div class="absolute inset-0 bg-emerald-900/10 animate-pulse"></div>
+                                        <i class="fa-solid fa-dove text-6xl text-emerald-500 mb-3 opacity-90"></i>
+                                        <div class="font-mono text-4xl text-emerald-400 font-bold tracking-widest z-10">
                                             無需入伍</div>
-                                        <p class="text-green-700 mt-2 mb-6 z-10">恭喜！您已符合免役標準</p>
+                                        <p class="text-emerald-400/90 mt-2 mb-6 z-10 text-sm font-bold text-center px-4">恭喜符合免役條件，無須服役，但仍可以體驗模擬大兵！</p>
                                         <button id="btn-fake-countdown"
-                                            class="z-10 bg-stone-900 hover:bg-stone-800 border border-stone-700 px-6 py-2 rounded text-stone-300 transition-colors flex items-center gap-2">
+                                            class="z-10 bg-stone-900 hover:bg-stone-800 border border-stone-700 px-6 py-2 rounded text-stone-300 transition-colors flex items-center gap-2 cursor-pointer">
                                             <i class="fa-solid fa-eye"></i> 體驗入伍緊張感
                                         </button>
                                     </div>
@@ -782,7 +848,7 @@
                         </div>
                     </div>
 
-                    <!-- 注意事項 (獨立專區，僅在「準備入營」與「延緩入營」情境顯示) -->
+                    <!-- 注意事項 (獨立專區，在戰情儀表板顯示) -->
                     <div id="section-notice"
                         class="bg-stone-900 p-6 rounded-lg shadow-lg flex flex-col justify-center border border-stone-800/80 transition-all duration-300">
                         <div class="flex items-center justify-between mb-4">
@@ -1134,13 +1200,7 @@
                                             class="fa-solid fa-shield-halved"></i></span>
                                 </div>
                                 <p id="status-type" class="text-green-600 font-bold text-2xl mb-2">常備役</p>
-                                <p class="text-stone-400 text-sm mb-4">判定依據：<span id="status-reason">體位正常</span></p>
-
-                                <div class="bg-stone-800 p-3 rounded text-sm text-stone-300">
-                                    <p class="font-bold text-yellow-500 mb-1 flex items-center gap-1"><i
-                                            class="fa-solid fa-circle-exclamation text-[14px]"></i> 指示：</p>
-                                    <span id="status-instruction">鍛鍊體能，調整作息，準備入營</span>
-                                </div>
+                                <p class="text-stone-400 text-sm">判定依據：<span id="status-reason">體位正常</span></p>
                             </div>
 
                             <!-- Widget: Training Location -->
@@ -1284,7 +1344,7 @@
                                 <div class="flex justify-between items-center mb-4">
                                     <div class="flex gap-2 items-center">
                                         <span
-                                            class="text-green-400 text-sm font-bold border border-green-800 px-2 py-1 rounded bg-green-900/20">今日課表</span>
+                                            class="text-green-400 text-sm font-bold border border-green-800 px-2 py-1 rounded bg-green-900/20">體能測驗</span>
                                         <span id="training-step-label" class="text-stone-400 text-xs">第 1 / 3
                                             項</span>
                                     </div>
@@ -1640,8 +1700,7 @@
                 <!-- TAB: RHAPSODY (Embedded Game) -->
                 <div id="view-rhapsody"
                     class="view-section hidden w-full h-[calc(100vh-100px)] md:aspect-video max-h-[85vh] bg-stone-900 rounded-lg shadow-lg border border-stone-800 relative expanded-desktop-format mx-auto">
-                    <iframe src="game/game.html" class="absolute inset-0 w-full h-full border-0"
-                        title="大兵狂想曲遊戲"></iframe>
+                    <iframe src="game/game.html" class="absolute inset-0 w-full h-full border-0" title="模擬軍旅"></iframe>
                     <!-- Fullscreen Toggle Button -->
                     <button id="btn-rhapsody-fullscreen" type="button"
                         class="absolute top-1/2 z-[9999] bg-green-700 hover:bg-green-600 text-white p-3 rounded-full shadow-lg transition-colors pointer-events-auto"
@@ -1707,30 +1766,76 @@
                 </div>
 
                 <!-- TAB: LOCATIONS -->
-                <div id="view-locations" class="view-section hidden expanded-desktop-format mx-auto">
-                    <div class="bg-stone-900 p-6 rounded-lg shadow-lg flex flex-col h-full">
-                        <h3 class="font-bold text-white mb-6 flex items-center gap-2 text-xl">
-                            <i class="fa-solid fa-map-location-dot text-[24px] text-green-500"></i>
-                            全台新訓中心一覽
-                        </h3>
-                        <p class="text-stone-400 mb-6 shrink-0">查詢各新訓中心的特色、交通與注意事項。</p>
+                <div id="view-locations"
+                    class="view-section hidden h-[calc(100dvh-130px)] md:h-[calc(100vh-120px)] lg:h-full expanded-desktop-format mx-auto">
+                    <div
+                        class="bg-stone-900 p-3 sm:p-4 lg:p-6 rounded-lg shadow-lg flex flex-col h-full overflow-hidden">
+                        <!-- Desktop Header (標題、說明與軍種篩選) -->
+                        <div class="hidden lg:block shrink-0">
+                            <h3 class="font-bold text-white mb-6 flex items-center gap-2 text-xl">
+                                <i class="fa-solid fa-map-location-dot text-[24px] text-green-500"></i>
+                                全台新訓中心一覽
+                            </h3>
+                            <p class="text-stone-400 mb-6 shrink-0">查詢各新訓中心的特色、交通與注意事項。</p>
 
-                        <!-- 軍種篩選下拉選單 -->
-                        <div class="mb-6 w-full md:w-1/3 shrink-0">
-                            <label for="branch-filter" class="block text-sm font-bold text-stone-400 mb-2">軍種篩選</label>
-                            <select id="branch-filter"
-                                class="w-full bg-stone-800 border border-stone-700 text-white rounded p-3 focus:outline-none focus:border-green-500 transition-colors cursor-pointer appearance-none">
-                                <option value="all">顯示所有軍種</option>
-                                <option value="陸軍">陸軍</option>
-                                <option value="海軍">海軍</option>
-                                <option value="海陸">海軍陸戰隊 (海陸)</option>
-                            </select>
+                            <!-- 軍種篩選下拉選單 -->
+                            <div class="mb-6 w-full md:w-1/3 shrink-0">
+                                <label for="branch-filter"
+                                    class="block text-sm font-bold text-stone-400 mb-2">軍種篩選</label>
+                                <select id="branch-filter"
+                                    class="w-full bg-stone-800 border border-stone-700 text-white rounded p-3 focus:outline-none focus:border-green-500 transition-colors cursor-pointer appearance-none">
+                                    <option value="all">顯示所有軍種</option>
+                                    <option value="陸軍">陸軍</option>
+                                    <option value="海軍">海軍</option>
+                                    <option value="海陸">海軍陸戰隊 (海陸)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Mobile Header (選擇營區 下拉式選單) -->
+                        <div class="block lg:hidden mb-2.5 shrink-0">
+                            <div
+                                class="flex items-center gap-2 bg-stone-800/95 border border-stone-700 rounded-lg p-2 shadow-md">
+                                <div
+                                    class="w-8 h-8 rounded-md bg-green-950/80 border border-green-700/50 flex items-center justify-center text-green-400 shrink-0">
+                                    <i class="fa-solid fa-map-location-dot text-sm"></i>
+                                </div>
+                                <div class="relative flex-1 min-w-0">
+                                    <select id="mobile-camp-select"
+                                        class="w-full bg-stone-900 border border-stone-700 text-white rounded-md py-1.5 pl-3 pr-8 text-sm focus:outline-none focus:border-green-500 transition-colors cursor-pointer appearance-none font-medium truncate">
+                                        <option value="all">全台新訓營區總覽</option>
+                                        <optgroup label="陸軍">
+                                            <option value="成功嶺 (陸軍)">成功嶺 (陸軍)</option>
+                                            <option value="金六結 (陸軍)">金六結 (陸軍)</option>
+                                            <option value="斗煥坪 (陸軍)">斗煥坪 (陸軍)</option>
+                                            <option value="關西營區 (陸軍)">關西營區 (陸軍)</option>
+                                            <option value="官田營區 (陸軍)">官田營區 (陸軍)</option>
+                                            <option value="中坑營區 (陸軍)">中坑營區 (陸軍)</option>
+                                            <option value="凌雲崗營區 (陸軍)">凌雲崗營區 (陸軍)</option>
+                                            <option value="太平里營區 (陸軍)">太平里營區 (陸軍)</option>
+                                            <option value="龍華營區 (陸軍)">龍華營區 (陸軍)</option>
+                                            <option value="犁頭山營區 (陸軍)">犁頭山營區 (陸軍)</option>
+                                            <option value="北埔營區 (陸軍)">北埔營區 (陸軍)</option>
+                                        </optgroup>
+                                        <optgroup label="海軍">
+                                            <option value="左營營區 (海軍)">左營營區 (海軍)</option>
+                                        </optgroup>
+                                        <optgroup label="海軍陸戰隊">
+                                            <option value="屏東龍泉 (海陸)">屏東龍泉 (海陸)</option>
+                                        </optgroup>
+                                    </select>
+                                    <div
+                                        class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-stone-400">
+                                        <i class="fa-solid fa-chevron-down text-xs"></i>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="flex flex-col lg:grid lg:grid-cols-3 gap-6 flex-1 min-h-0">
-                            <!-- List Column -->
+                            <!-- List Column (桌面版顯示，手機版隱藏) -->
                             <div
-                                class="h-72 lg:h-full lg:col-span-1 space-y-4 overflow-y-auto pr-2 custom-scrollbar shrink-0 border-b lg:border-b-0 border-stone-800 pb-2 lg:pb-0">
+                                class="hidden lg:block lg:h-full lg:col-span-1 space-y-4 overflow-y-auto pr-2 custom-scrollbar shrink-0 border-b lg:border-b-0 border-stone-800 pb-2 lg:pb-0">
                                 <!-- Card: 成功嶺 -->
                                 <div
                                     class="bg-stone-800 rounded-lg overflow-hidden border border-stone-700 hover:border-green-500 transition-colors group">
@@ -2116,35 +2221,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Card: 成功嶺 101旅 -->
-                                <div
-                                    class="bg-stone-800 rounded-lg overflow-hidden border border-stone-700 hover:border-green-500 transition-colors group">
-                                    <div class="flex justify-between items-center p-5 cursor-pointer hover:bg-stone-700/50 transition-colors"
-                                        onclick="toggleLocation(this)">
-                                        <h4 class="font-bold text-lg text-white">成功嶺營區 (陸軍)</h4>
-                                        <i
-                                            class="fa-solid fa-chevron-down text-stone-400 transition-transform duration-300"></i>
-                                    </div>
-                                    <div class="location-details hidden border-t border-stone-700 animate-fade-in">
-                                        <div class="p-5">
-                                            <div class="flex flex-wrap gap-2 mb-4">
-                                                <span
-                                                    class="text-xs bg-red-900/40 text-red-200 px-2 py-1 rounded">經典營區</span>
-                                                <span
-                                                    class="text-xs bg-stone-700 text-stone-300 px-2 py-1 rounded">步兵旅</span>
-                                                <span
-                                                    class="text-xs bg-red-900/40 text-red-200 px-2 py-1 rounded">台中烏日</span>
-                                            </div>
-                                            <p class="text-sm text-stone-400 leading-relaxed mb-4">
-                                                與104/302旅共用成功嶺營區，訓練場地與生活機能完整，是歷史悠久的新訓中心。
-                                            </p>
-                                            <div class="text-sm text-green-500 flex items-center gap-1">
-                                                <i class="fa-solid fa-train"></i> 高鐵台中站 / 台鐵成功站
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <!-- Card: 北埔 -->
                                 <div
                                     class="bg-stone-800 rounded-lg overflow-hidden border border-stone-700 hover:border-green-500 transition-colors group">
@@ -2204,10 +2280,10 @@
                                 </div>
                             </div>
 
-                            <!-- Map Column -->
+                            <!-- Map Column (手機版佔滿剩餘區塊，桌面版佔 2 欄) -->
                             <div
-                                class="flex-1 lg:col-span-2 bg-stone-800 rounded-lg overflow-hidden border border-stone-700 h-full sticky top-0 shadow-xl relative z-10 min-h-[300px]">
-                                <div id="map" class="absolute inset-0 w-full h-full z-0 lg:relative"></div>
+                                class="flex-1 lg:col-span-2 bg-stone-800 rounded-lg overflow-hidden border border-stone-700 h-full shadow-xl relative z-10 min-h-0 w-full">
+                                <div id="map" class="absolute inset-0 w-full h-full z-0"></div>
                             </div>
                         </div>
                     </div>
@@ -3568,21 +3644,25 @@
             <!-- Mobile Settings Popover -->
             <div id="settings-menu-mobile"
                 class="md:hidden hidden fixed bottom-[4.5rem] right-4 w-48 bg-stone-800 border border-stone-700 rounded-lg shadow-xl overflow-hidden z-[10000]">
-                <button onclick="document.getElementById('btn-edit-profile-new')?.click(); document.getElementById('settings-menu-mobile').classList.add('hidden');"
+                <button
+                    onclick="document.getElementById('btn-edit-profile-new')?.click(); document.getElementById('settings-menu-mobile').classList.add('hidden');"
                     class="w-full text-left px-4 py-3 text-sm text-stone-300 hover:bg-stone-700 hover:text-white transition-colors flex items-center gap-2">
                     <i class="fa-solid fa-pen-to-square w-4 text-center"></i> 修改資料
                 </button>
-                
+
                 <button id="btn-toggle-theme-mobile"
                     class="w-full text-left px-4 py-3 text-sm text-stone-300 hover:bg-stone-700 hover:text-white transition-colors flex items-center gap-2 border-t border-stone-700">
-                    <i id="theme-icon-mobile" class="fa-solid fa-sun w-4 text-center"></i> <span id="theme-text-mobile">切換淺色模式</span>
+                    <i id="theme-icon-mobile" class="fa-solid fa-sun w-4 text-center"></i> <span
+                        id="theme-text-mobile">切換淺色模式</span>
                 </button>
 
-                <button onclick="document.getElementById('btn-delete-account-new')?.click(); document.getElementById('settings-menu-mobile').classList.add('hidden');"
+                <button
+                    onclick="document.getElementById('btn-delete-account-new')?.click(); document.getElementById('settings-menu-mobile').classList.add('hidden');"
                     class="w-full text-left px-4 py-3 text-sm text-red-400 hover:bg-red-900/30 hover:text-red-300 transition-colors flex items-center gap-2 border-t border-stone-700">
                     <i class="fa-solid fa-user-xmark w-4 text-center"></i> 刪除帳號
                 </button>
-                <button onclick="document.getElementById('btn-logout-new')?.click(); document.getElementById('settings-menu-mobile').classList.add('hidden');"
+                <button
+                    onclick="document.getElementById('btn-logout-new')?.click(); document.getElementById('settings-menu-mobile').classList.add('hidden');"
                     class="w-full text-left px-4 py-3 text-sm text-red-400 hover:bg-red-900/30 hover:text-red-300 transition-colors flex items-center gap-2 border-t border-stone-700">
                     <i class="fa-solid fa-right-from-bracket w-4 text-center"></i> 登出
                 </button>
@@ -3611,7 +3691,7 @@
                     const btnThemeMobile = document.getElementById('btn-toggle-theme-mobile');
                     const themeIconMobile = document.getElementById('theme-icon-mobile');
                     const themeTextMobile = document.getElementById('theme-text-mobile');
-                    
+
                     if (btnThemeMobile) {
                         setTimeout(() => {
                             // Init state based on html class since desktop script might have run
