@@ -28,6 +28,9 @@ jobs:
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          packages: '' # Prevents setup-android from attempting to install legacy 'tools'
+          accept-android-sdk-licenses: true
 
       - name: Initialize npm & Install Dependencies
         run: |
