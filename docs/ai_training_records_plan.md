@@ -66,3 +66,5 @@ sequenceDiagram
 ### 3. 自動化測試驗證
 - **`backend/verify_api.py`**：
   - 新增 AI 訓練完整流程驗證（啟動 Session ➔ 提交深蹲紀錄 ➔ 查詢 History 確認歸戶）。
+
+.
