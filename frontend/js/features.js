@@ -479,7 +479,7 @@ export function initChatGreeting() {
     const isExempt = state.serviceStatus?.type?.includes('免役') || scenario === 'exempt';
 
     if (isExempt) {
-        greeting = `恭喜！${name}，經判定您符合免役標準，無須入營服役！在「模擬大兵」平台中，您仍可自由體驗軍旅生涯、射擊口訣、天兵課堂與各項互動功能，有任何役政法規或疑問，也隨時可以向教官發問！`;
+        greeting = `恭喜！${name}，經判定您符合免役標準，無須入營服役！在「模擬大兵」平台中，您仍可自由體驗軍旅生涯、射擊專區、天兵課堂與各項互動功能，有任何役政法規或疑問，也隨時可以向教官發問！`;
     } else if (scenario === 'enlisted') {
         greeting = `注意！${name}，現役在營期間請保持良好軍紀與作息！操課遇到瓶頸、射擊口訣要領、每日訓練或軍人權益申訴，有任何問題隨時向教官提問！`;
     } else if (scenario === 'deferred') {
@@ -1128,7 +1128,7 @@ export function openTaskDetailModal(taskId) {
             const tabNames = {
                 inventory: '前往入伍背包',
                 training: '前往體能測驗',
-                shooting: '前往射擊口訣',
+                shooting: '前往射擊專區',
                 quiz: '前往天兵課堂',
                 chat: targetTask.id === 't1_2' ? '諮詢體檢地點' : '諮詢 AI 教官',
                 locations: '前往新訓地點',
@@ -1461,7 +1461,7 @@ function renderJourneyTasksList() {
                 const tabNames = {
                     inventory: '前往入伍背包',
                     training: '前往體能測驗',
-                    shooting: '前往射擊口訣',
+                    shooting: '前往射擊專區',
                     quiz: '前往天兵課堂',
                     chat: task.id === 't1_2' ? '諮詢體檢地點' : '諮詢 AI 教官',
                     locations: '前往新訓地點',

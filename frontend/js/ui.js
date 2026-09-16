@@ -337,7 +337,7 @@ export const NAV_ITEMS_DICT = {
     delay: { id: 'delay', title: '延役專區', icon: 'fa-calendar-minus' },
     rhapsody: { id: 'rhapsody', title: '模擬軍旅', icon: 'fa-gamepad' },
     quiz: { id: 'quiz', title: '天兵課堂', icon: 'fa-graduation-cap' },
-    shooting: { id: 'shooting', title: '射擊口訣', icon: 'fa-crosshairs' }
+    shooting: { id: 'shooting', title: '射擊專區', icon: 'fa-crosshairs' }
 };
 
 /**
