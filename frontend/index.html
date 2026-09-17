@@ -52,7 +52,8 @@
         <div
             class="bg-gradient-to-r from-stone-950 via-green-950 to-stone-950 p-5 text-center border-b border-stone-800 relative">
             <button id="btn-close-scenario-modal"
-                class="absolute right-4 top-4 text-stone-400 hover:text-white transition-colors hidden cursor-pointer p-2 z-20" title="關閉">
+                class="absolute right-4 top-4 text-stone-400 hover:text-white transition-colors hidden cursor-pointer p-2 z-20"
+                title="關閉">
                 <i class="fa-solid fa-xmark text-xl"></i>
             </button>
             <div
@@ -209,7 +210,7 @@
     class="fixed inset-0 z-[70] bg-black/90 flex items-center justify-center p-4 font-mono backdrop-blur-md hidden transition-all duration-300">
     <div
         class="max-w-xl w-full bg-stone-900 rounded-2xl border-2 border-emerald-600/80 shadow-[0_0_50px_rgba(16,185,129,0.2)] overflow-hidden flex flex-col animate-fade-in relative">
-        
+
         <!-- Top Accent Bar -->
         <div class="h-1.5 bg-gradient-to-r from-emerald-600 via-green-400 to-emerald-600"></div>
 
@@ -222,17 +223,20 @@
         <div class="p-8 text-center space-y-6">
             <!-- Icon with Badge -->
             <div class="relative inline-flex items-center justify-center">
-                <div class="w-24 h-24 rounded-full bg-emerald-950/80 border-2 border-emerald-500/50 flex items-center justify-center text-emerald-400 text-5xl shadow-[0_0_30px_rgba(16,185,129,0.35)] animate-pulse">
+                <div
+                    class="w-24 h-24 rounded-full bg-emerald-950/80 border-2 border-emerald-500/50 flex items-center justify-center text-emerald-400 text-5xl shadow-[0_0_30px_rgba(16,185,129,0.35)] animate-pulse">
                     <i class="fa-solid fa-dove"></i>
                 </div>
-                <div class="absolute -bottom-2 bg-emerald-600 text-stone-950 font-bold text-[11px] px-3 py-0.5 rounded-full uppercase tracking-wider shadow">
+                <div
+                    class="absolute -bottom-2 bg-emerald-600 text-stone-950 font-bold text-[11px] px-3 py-0.5 rounded-full uppercase tracking-wider shadow">
                     體位判定完成
                 </div>
             </div>
 
             <!-- Titles -->
             <div class="space-y-2">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-800 text-emerald-400 text-xs font-bold tracking-wider">
+                <div
+                    class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-800 text-emerald-400 text-xs font-bold tracking-wider">
                     <i class="fa-solid fa-circle-check"></i> 免役體位判定
                 </div>
                 <h2 class="text-2xl md:text-3xl font-bold text-white tracking-wide">
@@ -245,15 +249,18 @@
 
             <!-- Information Card -->
             <div class="bg-stone-950/90 rounded-xl p-4 border border-emerald-900/50 text-left space-y-3">
-                <div class="flex items-center gap-2.5 text-emerald-400 font-bold text-sm border-b border-stone-800 pb-2">
+                <div
+                    class="flex items-center gap-2.5 text-emerald-400 font-bold text-sm border-b border-stone-800 pb-2">
                     <i class="fa-solid fa-circle-info text-base"></i>
                     <span>免役身分與模擬體驗說明</span>
                 </div>
                 <p class="text-xs text-stone-300 leading-relaxed">
                     因您已符合免役標準，系統將為您跳過「行前準備」與「役男入營」等服役情境選擇。您仍可自由暢玩「模擬大兵」的全套軍旅模擬、射擊口訣、天兵課堂、體能測驗與 AI 教官諮詢！
                 </p>
-                <div class="text-[11px] text-stone-400 flex items-center justify-between pt-1 border-t border-stone-800/60">
-                    <span>判定依據：<span id="exempt-modal-bmi-val" class="text-emerald-400 font-bold">BMI --</span> (<span id="exempt-modal-reason">BMI符合免役標準</span>)</span>
+                <div
+                    class="text-[11px] text-stone-400 flex items-center justify-between pt-1 border-t border-stone-800/60">
+                    <span>判定依據：<span id="exempt-modal-bmi-val" class="text-emerald-400 font-bold">BMI --</span> (<span
+                            id="exempt-modal-reason">BMI符合免役標準</span>)</span>
                     <span class="text-stone-500 text-[10px]">*正式資格依主管機關體檢為準</span>
                 </div>
             </div>
@@ -805,7 +812,9 @@
                                         <i class="fa-solid fa-dove text-6xl text-emerald-500 mb-3 opacity-90"></i>
                                         <div class="font-mono text-4xl text-emerald-400 font-bold tracking-widest z-10">
                                             無需入伍</div>
-                                        <p class="text-emerald-400/90 mt-2 mb-6 z-10 text-sm font-bold text-center px-4">恭喜符合免役條件，無須服役，但仍可以體驗模擬大兵！</p>
+                                        <p
+                                            class="text-emerald-400/90 mt-2 mb-6 z-10 text-sm font-bold text-center px-4">
+                                            恭喜符合免役條件，無須服役，但仍可以體驗模擬大兵！</p>
                                         <button id="btn-fake-countdown"
                                             class="z-10 bg-stone-900 hover:bg-stone-800 border border-stone-700 px-6 py-2 rounded text-stone-300 transition-colors flex items-center gap-2 cursor-pointer">
                                             <i class="fa-solid fa-eye"></i> 體驗入伍緊張感
@@ -2535,19 +2544,22 @@
                                                 class="bg-stone-800 border border-stone-700 hover:border-green-500 transition-colors rounded-2xl p-3 md:p-4 text-center aspect-square flex flex-col items-center justify-center cursor-pointer group rank-card">
                                                 <img src="docs/軍階/上士.png" alt="上士"
                                                     class="w-full flex-1 min-h-0 object-contain mb-3 drop-shadow-xl group-hover:scale-110 transition-transform drop-shadow-[0_0_8px_rgba(255,255,255,0.1)]">
-                                                <span class="text-stone-300 text-lg md:text-xl font-bold mt-2">上士</span>
+                                                <span
+                                                    class="text-stone-300 text-lg md:text-xl font-bold mt-2">上士(副排長、專業督導士官)</span>
                                             </div>
                                             <div
                                                 class="bg-stone-800 border border-stone-700 hover:border-green-500 transition-colors rounded-2xl p-3 md:p-4 text-center aspect-square flex flex-col items-center justify-center cursor-pointer group rank-card">
                                                 <img src="docs/軍階/中士.png" alt="中士"
                                                     class="w-full flex-1 min-h-0 object-contain mb-3 drop-shadow-xl group-hover:scale-110 transition-transform drop-shadow-[0_0_8px_rgba(255,255,255,0.1)]">
-                                                <span class="text-stone-300 text-lg md:text-xl font-bold mt-2">中士</span>
+                                                <span
+                                                    class="text-stone-300 text-lg md:text-xl font-bold mt-2">中士(班長)</span>
                                             </div>
                                             <div
                                                 class="bg-stone-800 border border-stone-700 hover:border-green-500 transition-colors rounded-2xl p-3 md:p-4 text-center aspect-square flex flex-col items-center justify-center cursor-pointer group rank-card">
                                                 <img src="docs/軍階/下士.png" alt="下士"
                                                     class="w-full flex-1 min-h-0 object-contain mb-3 drop-shadow-xl group-hover:scale-110 transition-transform drop-shadow-[0_0_8px_rgba(255,255,255,0.1)]">
-                                                <span class="text-stone-300 text-lg md:text-xl font-bold mt-2">下士</span>
+                                                <span
+                                                    class="text-stone-300 text-lg md:text-xl font-bold mt-2">下士(班長、副班長、專業士官)</span>
                                             </div>
                                         </div>
                                     </div>
@@ -2934,7 +2946,7 @@
             </div>
 
             <!-- TAB: SHOOTING -->
-             
+
             <div id="view-shooting" class="view-section hidden space-y-6">
                 <!-- 射擊流程 -->
                 <div class="bg-stone-900 border border-stone-800 rounded-xl overflow-hidden shadow-2xl p-6 relative">
@@ -2946,17 +2958,96 @@
                         </div>
                     </div>
                     <ol class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <li class="group bg-stone-800/40 border border-stone-700 rounded-2xl p-5 hover:border-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.18)] transition-all flex flex-col min-h-[190px]"><div class="flex items-center mb-4 pb-3 border-b border-stone-700/60"><span class="w-10 h-10 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-400 font-tech font-bold text-lg flex items-center justify-center">01</span></div><h3 class="text-white font-bold text-lg">射手就位</h3><p class="text-stone-400 text-sm leading-relaxed mt-2">射手由預備線起立，往射擊線移動，站立在靶位槍正後方一步，稍息站好。切記勿跑步。</p></li>
-                        <li class="group bg-stone-800/40 border border-stone-700 rounded-2xl p-5 hover:border-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.18)] transition-all flex flex-col min-h-[190px]"><div class="flex items-center mb-4 pb-3 border-b border-stone-700/60"><span class="w-10 h-10 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-400 font-tech font-bold text-lg flex items-center justify-center">02</span></div><h3 class="text-white font-bold text-lg">臥射預備</h3><p class="text-stone-400 text-sm leading-relaxed mt-2">射手依臥姿要領操作，不可與槍成一直線。</p></li>
-                        <li class="group bg-stone-800/40 border border-stone-700 rounded-2xl p-5 hover:border-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.18)] transition-all flex flex-col min-h-[190px]"><div class="flex items-center mb-4 pb-3 border-b border-stone-700/60"><span class="w-10 h-10 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-400 font-tech font-bold text-lg flex items-center justify-center">03</span></div><h3 class="text-white font-bold text-lg">X發、裝子彈</h3><p class="text-stone-400 text-sm leading-relaxed mt-2">導師覆誦「X發」，射手覆誦「裝子彈」。（可由導師直接操作）</p></li>
-                        <li class="group bg-stone-800/40 border border-stone-700 rounded-2xl p-5 hover:border-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.18)] transition-all flex flex-col min-h-[190px]"><div class="flex items-center mb-4 pb-3 border-b border-stone-700/60"><span class="w-10 h-10 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-400 font-tech font-bold text-lg flex items-center justify-center">04</span></div><h3 class="text-white font-bold text-lg">左線預備</h3><p class="text-stone-400 text-sm leading-relaxed mt-2">左線導師將紅旗平舉。</p></li>
-                        <li class="group bg-stone-800/40 border border-stone-700 rounded-2xl p-5 hover:border-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.18)] transition-all flex flex-col min-h-[190px]"><div class="flex items-center mb-4 pb-3 border-b border-stone-700/60"><span class="w-10 h-10 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-400 font-tech font-bold text-lg flex items-center justify-center">05</span></div><h3 class="text-white font-bold text-lg">右線預備</h3><p class="text-stone-400 text-sm leading-relaxed mt-2">右線導師將紅旗平舉。</p></li>
-                        <li class="group bg-stone-800/40 border border-stone-700 rounded-2xl p-5 hover:border-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.18)] transition-all flex flex-col min-h-[190px]"><div class="flex items-center mb-4 pb-3 border-b border-stone-700/60"><span class="w-10 h-10 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-400 font-tech font-bold text-lg flex items-center justify-center">06</span></div><h3 class="text-white font-bold text-lg">全線預備</h3><p class="text-stone-400 text-sm leading-relaxed mt-2">全部導師將紅旗放下。</p></li>
-                        <li class="group bg-stone-800/40 border border-stone-700 rounded-2xl p-5 hover:border-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.18)] transition-all flex flex-col min-h-[190px]"><div class="flex items-center mb-4 pb-3 border-b border-stone-700/60"><span class="w-10 h-10 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-400 font-tech font-bold text-lg flex items-center justify-center">07</span></div><h3 class="text-white font-bold text-lg">開保險</h3><p class="text-stone-400 text-sm leading-relaxed mt-2">射手右手下壓變換鈕，箭矢朝上。為安全起見，可由導師直接操作。</p></li>
-                        <li class="group bg-stone-800/40 border border-stone-700 rounded-2xl p-5 hover:border-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.18)] transition-all flex flex-col min-h-[190px]"><div class="flex items-center mb-4 pb-3 border-b border-stone-700/60"><span class="w-10 h-10 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-400 font-tech font-bold text-lg flex items-center justify-center">08</span></div><h3 class="text-white font-bold text-lg">開始射擊</h3><p class="text-stone-400 text-sm leading-relaxed mt-2">射手食指扣引扳機，導師注意槍口。遇槍枝故障時，導師將紅旗高舉，由維修小組排除故障。</p></li>
-                        <li class="group bg-stone-800/40 border border-stone-700 rounded-2xl p-5 hover:border-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.18)] transition-all flex flex-col min-h-[190px]"><div class="flex items-center mb-4 pb-3 border-b border-stone-700/60"><span class="w-10 h-10 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-400 font-tech font-bold text-lg flex items-center justify-center">09</span></div><h3 class="text-white font-bold text-lg">停止射擊</h3><p class="text-stone-400 text-sm leading-relaxed mt-2">射手食指離開扳機，關保險。</p></li>
-                        <li class="group bg-stone-800/40 border border-stone-700 rounded-2xl p-5 hover:border-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.18)] transition-all flex flex-col min-h-[190px]"><div class="flex items-center mb-4 pb-3 border-b border-stone-700/60"><span class="w-10 h-10 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-400 font-tech font-bold text-lg flex items-center justify-center">10</span></div><h3 class="text-white font-bold text-lg">起立</h3><p class="text-stone-400 text-sm leading-relaxed mt-2">射手起立站好稍息。</p></li>
-                        <li class="group bg-stone-800/40 border border-stone-700 rounded-2xl p-5 hover:border-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.18)] transition-all flex flex-col min-h-[190px] sm:col-span-2 lg:col-span-2"><div class="flex items-center mb-4 pb-3 border-b border-stone-700/60"><span class="w-10 h-10 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-400 font-tech font-bold text-lg flex items-center justify-center">11</span></div><h3 class="text-white font-bold text-lg">下靶台</h3><p class="text-stone-400 text-sm leading-relaxed mt-2">直接向後轉，下靶台。</p></li>
+                        <li
+                            class="group bg-stone-800/40 border border-stone-700 rounded-2xl p-5 hover:border-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.18)] transition-all flex flex-col min-h-[190px]">
+                            <div class="flex items-center mb-4 pb-3 border-b border-stone-700/60"><span
+                                    class="w-10 h-10 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-400 font-tech font-bold text-lg flex items-center justify-center">01</span>
+                            </div>
+                            <h3 class="text-white font-bold text-lg">射手就位</h3>
+                            <p class="text-stone-400 text-sm leading-relaxed mt-2">
+                                射手由預備線起立，往射擊線移動，站立在靶位槍正後方一步，稍息站好。切記勿跑步。</p>
+                        </li>
+                        <li
+                            class="group bg-stone-800/40 border border-stone-700 rounded-2xl p-5 hover:border-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.18)] transition-all flex flex-col min-h-[190px]">
+                            <div class="flex items-center mb-4 pb-3 border-b border-stone-700/60"><span
+                                    class="w-10 h-10 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-400 font-tech font-bold text-lg flex items-center justify-center">02</span>
+                            </div>
+                            <h3 class="text-white font-bold text-lg">臥射預備</h3>
+                            <p class="text-stone-400 text-sm leading-relaxed mt-2">射手依臥姿要領操作，不可與槍成一直線。</p>
+                        </li>
+                        <li
+                            class="group bg-stone-800/40 border border-stone-700 rounded-2xl p-5 hover:border-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.18)] transition-all flex flex-col min-h-[190px]">
+                            <div class="flex items-center mb-4 pb-3 border-b border-stone-700/60"><span
+                                    class="w-10 h-10 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-400 font-tech font-bold text-lg flex items-center justify-center">03</span>
+                            </div>
+                            <h3 class="text-white font-bold text-lg">X發、裝子彈</h3>
+                            <p class="text-stone-400 text-sm leading-relaxed mt-2">導師覆誦「X發」，射手覆誦「裝子彈」。（可由導師直接操作）</p>
+                        </li>
+                        <li
+                            class="group bg-stone-800/40 border border-stone-700 rounded-2xl p-5 hover:border-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.18)] transition-all flex flex-col min-h-[190px]">
+                            <div class="flex items-center mb-4 pb-3 border-b border-stone-700/60"><span
+                                    class="w-10 h-10 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-400 font-tech font-bold text-lg flex items-center justify-center">04</span>
+                            </div>
+                            <h3 class="text-white font-bold text-lg">左線預備</h3>
+                            <p class="text-stone-400 text-sm leading-relaxed mt-2">左線導師將紅旗平舉。</p>
+                        </li>
+                        <li
+                            class="group bg-stone-800/40 border border-stone-700 rounded-2xl p-5 hover:border-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.18)] transition-all flex flex-col min-h-[190px]">
+                            <div class="flex items-center mb-4 pb-3 border-b border-stone-700/60"><span
+                                    class="w-10 h-10 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-400 font-tech font-bold text-lg flex items-center justify-center">05</span>
+                            </div>
+                            <h3 class="text-white font-bold text-lg">右線預備</h3>
+                            <p class="text-stone-400 text-sm leading-relaxed mt-2">右線導師將紅旗平舉。</p>
+                        </li>
+                        <li
+                            class="group bg-stone-800/40 border border-stone-700 rounded-2xl p-5 hover:border-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.18)] transition-all flex flex-col min-h-[190px]">
+                            <div class="flex items-center mb-4 pb-3 border-b border-stone-700/60"><span
+                                    class="w-10 h-10 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-400 font-tech font-bold text-lg flex items-center justify-center">06</span>
+                            </div>
+                            <h3 class="text-white font-bold text-lg">全線預備</h3>
+                            <p class="text-stone-400 text-sm leading-relaxed mt-2">全部導師將紅旗放下。</p>
+                        </li>
+                        <li
+                            class="group bg-stone-800/40 border border-stone-700 rounded-2xl p-5 hover:border-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.18)] transition-all flex flex-col min-h-[190px]">
+                            <div class="flex items-center mb-4 pb-3 border-b border-stone-700/60"><span
+                                    class="w-10 h-10 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-400 font-tech font-bold text-lg flex items-center justify-center">07</span>
+                            </div>
+                            <h3 class="text-white font-bold text-lg">開保險</h3>
+                            <p class="text-stone-400 text-sm leading-relaxed mt-2">射手右手下壓變換鈕，箭矢朝上。為安全起見，可由導師直接操作。</p>
+                        </li>
+                        <li
+                            class="group bg-stone-800/40 border border-stone-700 rounded-2xl p-5 hover:border-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.18)] transition-all flex flex-col min-h-[190px]">
+                            <div class="flex items-center mb-4 pb-3 border-b border-stone-700/60"><span
+                                    class="w-10 h-10 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-400 font-tech font-bold text-lg flex items-center justify-center">08</span>
+                            </div>
+                            <h3 class="text-white font-bold text-lg">開始射擊</h3>
+                            <p class="text-stone-400 text-sm leading-relaxed mt-2">
+                                射手食指扣引扳機，導師注意槍口。遇槍枝故障時，導師將紅旗高舉，由維修小組排除故障。</p>
+                        </li>
+                        <li
+                            class="group bg-stone-800/40 border border-stone-700 rounded-2xl p-5 hover:border-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.18)] transition-all flex flex-col min-h-[190px]">
+                            <div class="flex items-center mb-4 pb-3 border-b border-stone-700/60"><span
+                                    class="w-10 h-10 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-400 font-tech font-bold text-lg flex items-center justify-center">09</span>
+                            </div>
+                            <h3 class="text-white font-bold text-lg">停止射擊</h3>
+                            <p class="text-stone-400 text-sm leading-relaxed mt-2">射手食指離開扳機，關保險。</p>
+                        </li>
+                        <li
+                            class="group bg-stone-800/40 border border-stone-700 rounded-2xl p-5 hover:border-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.18)] transition-all flex flex-col min-h-[190px]">
+                            <div class="flex items-center mb-4 pb-3 border-b border-stone-700/60"><span
+                                    class="w-10 h-10 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-400 font-tech font-bold text-lg flex items-center justify-center">10</span>
+                            </div>
+                            <h3 class="text-white font-bold text-lg">起立</h3>
+                            <p class="text-stone-400 text-sm leading-relaxed mt-2">射手起立站好稍息。</p>
+                        </li>
+                        <li
+                            class="group bg-stone-800/40 border border-stone-700 rounded-2xl p-5 hover:border-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.18)] transition-all flex flex-col min-h-[190px] sm:col-span-2 lg:col-span-2">
+                            <div class="flex items-center mb-4 pb-3 border-b border-stone-700/60"><span
+                                    class="w-10 h-10 rounded-full bg-amber-500/15 border border-amber-500/40 text-amber-400 font-tech font-bold text-lg flex items-center justify-center">11</span>
+                            </div>
+                            <h3 class="text-white font-bold text-lg">下靶台</h3>
+                            <p class="text-stone-400 text-sm leading-relaxed mt-2">直接向後轉，下靶台。</p>
+                        </li>
                     </ol>
                 </div>
 
@@ -2969,7 +3060,8 @@
                             <p class="text-stone-400 text-sm mt-1">T91 步槍構造、配件與功能說明</p>
                         </div>
                     </div>
-                    <div id="rifle-intro-carousel" class="relative bg-stone-950/70 border border-stone-700 rounded-2xl overflow-hidden">
+                    <div id="rifle-intro-carousel"
+                        class="relative bg-stone-950/70 border border-stone-700 rounded-2xl overflow-hidden">
                         <button id="btn-rifle-prev" type="button" aria-label="上一張槍枝介紹"
                             class="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-stone-900/90 border border-stone-600 text-white hover:bg-sky-700 hover:border-sky-400 transition-colors flex items-center justify-center shadow-lg">
                             <i class="fa-solid fa-chevron-left"></i>
@@ -3076,7 +3168,7 @@
                         </div>
                     </div>
 
-                    
+
                     <!-- Content: Grid of 8 cards -->
                     <div class="p-6 md:p-8">
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
